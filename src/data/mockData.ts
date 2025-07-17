@@ -248,7 +248,7 @@ export const creatorInsights: { [key: string]: CreatorInsight } = {
       'Classic film streaming service content curation'
     ],
     copyHooks: [
-      'Live your own La La Land story in the city of dreams',
+      'Create your own La La Land story in the city of dreams',
       'Where jazz meets romance in the heart of Hollywood',
       'Vintage glamour meets modern LA sophistication'
     ]
@@ -266,7 +266,7 @@ export const creatorInsights: { [key: string]: CreatorInsight } = {
     copyHooks: [
       'Discover the authentic flavors of the Southwest',
       'Where desert beauty meets family adventure',
-      'Learn, explore, and taste the real Phoenix'
+      'Follow the trail to authentic Phoenix experiences'
     ]
   }
 };

@@ -108,7 +108,7 @@ const Export: React.FC = () => {
       <div className="bg-purple-50 rounded-lg p-6">
         <h2 className="text-lg font-semibold text-purple-900 mb-2">Share Your Experience</h2>
         <p className="text-purple-700 mb-4">
-          After your day out, we'd love to hear how your TasteTrails experience went! 
+          After your day out, we'd love to hear how your vibetrail experience went! 
           This helps us improve our cross-domain recommendations powered by Qloo Taste AI.
         </p>
         <div className="text-sm text-purple-600">

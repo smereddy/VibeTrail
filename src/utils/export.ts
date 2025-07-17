@@ -3,7 +3,7 @@ import { TimeSlot } from '../types';
 export const generateCalendarText = (dayPlan: TimeSlot[], cityName: string, date: string = new Date().toISOString().split('T')[0]): string => {
   const events = dayPlan.filter(slot => slot.item);
   
-  let calendarText = `BEGIN:VCALENDAR\nVERSION:2.0\nPRODID:-//TasteTrails//EN\nCALSCALE:GREGORIAN\n\n`;
+  let calendarText = `BEGIN:VCALENDAR\nVERSION:2.0\nPRODID:-//vibetrail//EN\nCALSCALE:GREGORIAN\n\n`;
   
   events.forEach(slot => {
     if (slot.item) {

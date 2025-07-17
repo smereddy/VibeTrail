@@ -23,7 +23,7 @@ const Layout: React.FC = () => {
               )}
               <Link to="/" className="flex items-center space-x-2">
                 <Coffee className="h-8 w-8 text-purple-600" />
-                <span className="text-2xl font-bold text-gray-900">TasteTrails</span>
+                <span className="text-2xl font-bold text-gray-900">vibetrail</span>
               </Link>
             </div>
             <div className="flex items-center space-x-4">

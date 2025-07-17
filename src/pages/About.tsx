@@ -9,7 +9,7 @@ const About: React.FC = () => {
       <div className="text-center">
         <div className="flex items-center justify-center mb-4">
           <Coffee className="h-12 w-12 text-purple-600 mr-4" />
-          <h1 className="text-4xl font-bold text-gray-900">TasteTrails</h1>
+          <h1 className="text-4xl font-bold text-gray-900">vibetrail</h1>
         </div>
         <p className="text-xl text-gray-600">
           Turn any vibe into a day you can actually do
@@ -26,7 +26,7 @@ const About: React.FC = () => {
         <h2 className="text-2xl font-semibold text-gray-900 mb-4">About This Project</h2>
         <div className="space-y-4 text-gray-700">
           <p>
-            TasteTrails is a hackathon prototype built for the <strong>Qloo Global Hackathon</strong>. 
+            vibetrail is a hackathon prototype built for the <strong>Qloo Global Hackathon</strong>. 
             It demonstrates how combining Large Language Models with Qloo's Taste AI can transform 
             simple user vibes into actionable, culturally coherent day plans.
           </p>
@@ -99,7 +99,7 @@ const About: React.FC = () => {
         </div>
         <div className="space-y-4 text-gray-700">
           <p>
-            TasteTrails is designed with privacy as a core principle, aligned with Qloo's 
+            vibetrail is designed with privacy as a core principle, aligned with Qloo's 
             privacy-first approach to cultural intelligence:
           </p>
           <ul className="space-y-2 list-disc list-inside">

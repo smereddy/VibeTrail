@@ -1,10 +1,10 @@
-# TasteTrails - Qloo Global Hackathon Prototype
+# vibetrail - Qloo Global Hackathon Prototype
 
 Transform any vibe into a day you can actually do.
 
 ## 🎯 Project Overview
 
-TasteTrails is a hackathon prototype built for the **Qloo Global Hackathon** that demonstrates the synergy between Large Language Models and Qloo's Taste AI. It transforms simple user vibes or preferences into actionable, culturally coherent day plans spanning food, activities, and media.
+vibetrail is a hackathon prototype built for the **Qloo Global Hackathon** that demonstrates the synergy between Large Language Models and Qloo's Taste AI. It transforms simple user vibes or preferences into actionable, culturally coherent day plans spanning food, activities, and media.
 
 ### The Challenge
 Create something that neither an LLM nor Qloo's API could accomplish alone - showcasing cross-domain cultural intelligence paired with natural language understanding.
@@ -58,7 +58,7 @@ A privacy-first web application that:
 ```bash
 # Clone the repository
 git clone [repository-url]
-cd tastetrails
+cd vibetrail
 
 # Install dependencies
 npm install
@@ -129,7 +129,7 @@ src/
 ## 📊 Demo Script
 
 ### 1. Introduction (30 seconds)
-"TasteTrails transforms any vibe into a day you can actually do by combining LLM understanding with Qloo's cross-domain taste intelligence."
+"vibetrail transforms any vibe into a day you can actually do by combining LLM understanding with Qloo's cross-domain taste intelligence."
 
 ### 2. Input Demo (30 seconds)
 - Show vibe input: "La La Land weekend"
