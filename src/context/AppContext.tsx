@@ -16,6 +16,7 @@ import {
 import { cities } from '../data/mockData';
 import { QlooService } from '../services/QlooService';
 import { CulturalEcosystemService, CulturalEcosystem } from '../services/CulturalEcosystemService';
+import { environment } from '../config/environment';
 
 // Helper functions for context detection
 const getCurrentTimeOfDay = (): 'morning' | 'afternoon' | 'evening' | 'night' => {
@@ -271,8 +272,8 @@ export const AppProvider: React.FC<{ children: ReactNode }> = ({ children }) => 
       
       console.log(`🎯 Processing vibe: "${vibe}" in ${city}`);
       
-      // Single API call to our taste endpoint (via proxy server)
-      const response = await fetch('http://localhost:3001/api/taste', {
+      // Single API call to our taste endpoint (now via Netlify Functions)
+      const response = await fetch(`${environment.app.apiProxyUrl}/taste`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -582,8 +583,8 @@ export const AppProvider: React.FC<{ children: ReactNode }> = ({ children }) => 
       
       console.log(`🗓️ [${requestId}] Building day plan for ${selectedItems.length} items in ${currentCity.name}`);
       
-      // Call our day planning API endpoint
-      const response = await fetch('http://localhost:3001/api/plan-day', {
+      // Call our day planning API endpoint (now via Netlify Functions)
+      const response = await fetch(`${environment.app.apiProxyUrl}/plan-day`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',

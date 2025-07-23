@@ -4,60 +4,79 @@
  * Updated for direct API calls and dynamic entity system
  */
 
+// Environment configuration for VibeTrail
 export interface EnvironmentConfig {
-  openai: {
-    model: string;
-    maxTokens: number;
-    temperature: number;
-    useProxy: boolean;
-  };
-  qloo: {
-    baseUrl: string;
-    timeout: number;
-    useDirectCalls: boolean;
-    maxEntitiesPerRequest: number;
-    maxTabsPerRequest: number;
-  };
   app: {
-    environment: 'development' | 'production';
+    name: string;
+    version: string;
     apiProxyUrl: string;
-    proxyPort: number;
-    enableDynamicTabs: boolean;
-    enableContextDetection: boolean;
-    fallbackToMockData: boolean;
+    environment: 'development' | 'production' | 'test';
+  };
+  api: {
+    openai: {
+      model: string;
+      maxTokens: number;
+      temperature: number;
+    };
+    qloo: {
+      baseUrl: string;
+      version: string;
+    };
+  };
+  features: {
+    enableAnalytics: boolean;
+    enableDebugLogs: boolean;
+    enableMockData: boolean;
   };
 }
 
-/**
- * Get environment configuration for VibeTrail 2.0
- * Supports both proxy and direct API calls based on environment
- */
-export function getEnvironmentConfig(): EnvironmentConfig {
-  const isDevelopment = import.meta.env.DEV;
+// Determine if we're in production (deployed to Netlify)
+const isProduction = import.meta.env.PROD || window.location.hostname !== 'localhost';
+
+// Get the base URL for API calls
+const getApiBaseUrl = () => {
+  // In production (Netlify), use the same domain with /.netlify/functions/
+  if (isProduction) {
+    return `${window.location.origin}/.netlify/functions`;
+  }
   
-  return {
+  // In development, use the environment variable or default to localhost
+  return import.meta.env.VITE_API_PROXY_URL || 'http://localhost:3001/api';
+};
+
+export const environment: EnvironmentConfig = {
+  app: {
+    name: 'VibeTrail',
+    version: '2.0.0',
+    apiProxyUrl: getApiBaseUrl(),
+    environment: isProduction ? 'production' : 'development'
+  },
+  api: {
     openai: {
-      model: import.meta.env.VITE_OPENAI_MODEL || 'gpt-4o-mini',
-      maxTokens: parseInt(import.meta.env.VITE_OPENAI_MAX_TOKENS || '1500'),
-      temperature: parseFloat(import.meta.env.VITE_OPENAI_TEMPERATURE || '0.7'),
-      useProxy: true, // Always use proxy for OpenAI to keep API keys secure
+      model: 'gpt-4o-mini',
+      maxTokens: 800,
+      temperature: 0.3
     },
     qloo: {
-      baseUrl: '/api', // Use proxy endpoint for security
-      timeout: parseInt(import.meta.env.VITE_QLOO_TIMEOUT || '15000'),
-      useDirectCalls: false, // Use proxy for security
-      maxEntitiesPerRequest: parseInt(import.meta.env.VITE_QLOO_MAX_ENTITIES || '10'),
-      maxTabsPerRequest: parseInt(import.meta.env.VITE_QLOO_MAX_TABS || '5'),
-    },
-    app: {
-      environment: isDevelopment ? 'development' : 'production',
-      apiProxyUrl: import.meta.env.VITE_API_PROXY_URL || 'http://localhost:3001/api',
-      proxyPort: parseInt(import.meta.env.VITE_PROXY_PORT || '3001'),
-      enableDynamicTabs: import.meta.env.VITE_ENABLE_DYNAMIC_TABS !== 'false',
-      enableContextDetection: import.meta.env.VITE_ENABLE_CONTEXT_DETECTION !== 'false',
-      fallbackToMockData: import.meta.env.VITE_FALLBACK_TO_MOCK === 'true',
-    },
-  };
+      baseUrl: 'https://hackathon.api.qloo.com',
+      version: 'v2'
+    }
+  },
+  features: {
+    enableAnalytics: isProduction,
+    enableDebugLogs: !isProduction,
+    enableMockData: false
+  }
+};
+
+// Debug logging
+if (environment.features.enableDebugLogs) {
+  console.log('🔧 Environment Config:', {
+    environment: environment.app.environment,
+    apiUrl: environment.app.apiProxyUrl,
+    isProduction,
+    hostname: window.location.hostname
+  });
 }
 
 /**
@@ -125,7 +144,7 @@ export function getDefaultEntityPriorities() {
  * Validate required environment variables for VibeTrail 2.0
  */
 export function validateEnvironment(): void {
-  const config = getEnvironmentConfig();
+  const config = environment;
   
   // Qloo API key is handled server-side by proxy
   console.log('🔒 Qloo API key managed securely by proxy server');
@@ -141,9 +160,9 @@ export function validateEnvironment(): void {
   // Log configuration for debugging
   console.log('🔧 VibeTrail 2.0 Configuration:', {
     environment: config.app.environment,
-    qlooDirectCalls: config.qloo.useDirectCalls,
-    dynamicTabs: config.app.enableDynamicTabs,
-    contextDetection: config.app.enableContextDetection,
+    qlooDirectCalls: false, // Qloo is now direct, so this is always false
+    dynamicTabs: false, // Dynamic tabs are now handled by Netlify functions
+    contextDetection: false, // Context detection is now handled by Netlify functions
     supportedCities: getSupportedCities().length
   });
 }

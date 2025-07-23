@@ -6,6 +6,7 @@ import {
   APIResponse,
   QlooInsight 
 } from '../types';
+import { environment } from '../config/environment';
 
 /**
  * Cultural Ecosystem Interfaces
@@ -1060,7 +1061,7 @@ Be intellectually rigorous but accessible. Avoid clichés. Provide genuine insig
     try {
       console.log('🤖 Calling AI ecosystem analysis API...');
       
-      const response = await fetch('http://localhost:3001/api/ecosystem-analysis', {
+      const response = await fetch(`${environment.app.apiProxyUrl}/ecosystem-analysis`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
