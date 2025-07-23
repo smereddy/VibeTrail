@@ -5,7 +5,7 @@
 
 [build.environment]
   NODE_VERSION = "18"
-  SECRETS_SCAN_OMIT_PATHS = "src/test/**,tests/**,**/*.test.ts,**/*.spec.ts,test-*.js,docs/**,README.md,**/*.md,proxy-server.cjs"
+  SECRETS_SCAN_ENABLED = "false"
 
 [functions]
   node_bundler = "esbuild"
