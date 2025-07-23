@@ -240,25 +240,34 @@ const Plan: React.FC = () => {
                 <p className="text-sm text-gray-500">{currentCity?.name} • {selectedItems.length} items</p>
               </div>
             </div>
-            <div className="flex items-center space-x-2">
-              <button
-                onClick={handleShare}
-                className="px-3 py-2 text-gray-600 hover:text-gray-900 hover:bg-gray-100 rounded-lg transition-colors"
-              >
-                <Share2 className="w-4 h-4" />
-              </button>
-              <button
-                onClick={handleExport}
-                disabled={isExporting}
-                className="px-3 py-2 text-gray-600 hover:text-gray-900 hover:bg-gray-100 rounded-lg transition-colors disabled:opacity-50"
-              >
-                {isExporting ? (
-                  <div className="animate-spin w-4 h-4 border-2 border-gray-300 border-t-gray-600 rounded-full"></div>
-                ) : (
-                  <Download className="w-4 h-4" />
-                )}
-              </button>
-            </div>
+                         <div className="flex items-center space-x-2">
+               <button
+                 onClick={handleShare}
+                 className="px-3 py-2 text-gray-600 hover:text-gray-900 hover:bg-gray-100 rounded-lg transition-colors"
+                 title="Share plan"
+               >
+                 <Share2 className="w-4 h-4" />
+               </button>
+               <button
+                 onClick={handleExport}
+                 disabled={isExporting}
+                 className="px-3 py-2 text-gray-600 hover:text-gray-900 hover:bg-gray-100 rounded-lg transition-colors disabled:opacity-50"
+                 title="Quick export"
+               >
+                 {isExporting ? (
+                   <div className="animate-spin w-4 h-4 border-2 border-gray-300 border-t-gray-600 rounded-full"></div>
+                 ) : (
+                   <Download className="w-4 h-4" />
+                 )}
+               </button>
+               <Link
+                 to="/export"
+                 className="px-3 py-2 text-blue-600 hover:text-blue-700 hover:bg-blue-50 rounded-lg transition-colors"
+                 title="More export options"
+               >
+                 <ExternalLink className="w-4 h-4" />
+               </Link>
+             </div>
           </div>
         </div>
       </div>
@@ -394,16 +403,16 @@ const Plan: React.FC = () => {
               animate={{ opacity: 1, y: 0 }}
               className="space-y-4"
             >
-              {dayPlan.map((timeSlot, index) => {
-                const PeriodIcon = getPeriodIcon(timeSlot);
-                return (
-                  <motion.div
-                    key={timeSlot.id}
-                    initial={{ opacity: 0, x: -20 }}
-                    animate={{ opacity: 1, x: 0 }}
-                    transition={{ delay: index * 0.1 }}
-                    className="bg-white rounded-lg shadow-sm border border-gray-200 overflow-hidden"
-                  >
+                             {dayPlan.map((timeSlot, index) => {
+                 const PeriodIcon = getPeriodIcon(timeSlot);
+                 return (
+                   <motion.div
+                     key={`${timeSlot.id}-${index}`}
+                     initial={{ opacity: 0, x: -20 }}
+                     animate={{ opacity: 1, x: 0 }}
+                     transition={{ delay: index * 0.1 }}
+                     className="bg-white rounded-lg shadow-sm border border-gray-200 overflow-hidden"
+                   >
                     <div className="p-6">
                       <div className="flex items-start space-x-4">
                         {/* Time */}
