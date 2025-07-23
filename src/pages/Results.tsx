@@ -245,12 +245,12 @@ const Results: React.FC = () => {
 
   if (isLoading) {
     return (
-      <div className="min-h-screen bg-gradient-to-br from-neutral-50 via-primary-50/30 to-neutral-100">
+      <div className="min-h-screen bg-white">
         <div data-testid="loading-spinner" className="flex items-center justify-center min-h-screen">
           <div className="text-center">
-            <div className="w-12 h-12 border-4 border-primary-200 border-t-primary-600 rounded-full animate-spin mx-auto mb-4"></div>
-            <p className="text-lg font-medium text-neutral-700">Finding your perfect recommendations...</p>
-            <p className="text-sm text-neutral-500 mt-2">This may take a moment</p>
+            <div className="w-12 h-12 border-4 border-blue-200 border-t-blue-600 rounded-full animate-spin mx-auto mb-4"></div>
+            <p className="text-lg font-medium text-gray-700">Finding your perfect recommendations...</p>
+            <p className="text-sm text-gray-500 mt-2">This may take a moment</p>
           </div>
         </div>
       </div>
@@ -258,36 +258,36 @@ const Results: React.FC = () => {
   }
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-neutral-50 via-primary-50/30 to-neutral-100">
-      {/* Optimized Header - More Compact */}
-      <div className="bg-white/80 backdrop-blur-sm border-b border-neutral-200 sticky top-0 z-10">
+    <div className="min-h-screen bg-gray-50">
+      {/* Clean Header */}
+      <div className="bg-white border-b border-gray-200 sticky top-0 z-10">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4">
           <div className="flex items-center justify-between">
             <div className="flex items-center space-x-4">
               <Link
                 to="/create-plan"
-                className="btn-ghost"
+                className="flex items-center px-3 py-2 text-gray-600 hover:text-gray-900 hover:bg-gray-100 rounded-lg transition-colors"
               >
                 <ArrowLeft className="w-4 h-4 mr-2" />
                 Back
               </Link>
               <div className="hidden sm:block">
-                <h1 className="text-xl font-bold text-neutral-800">Your Perfect Day in {currentCity.name}</h1>
-                <p className="text-sm text-neutral-600">Based on "{vibeInput}"</p>
+                <h1 className="text-xl font-bold text-gray-900">Your Perfect Day in {currentCity.name}</h1>
+                <p className="text-sm text-gray-600">Based on "{vibeInput}"</p>
               </div>
             </div>
             
-            {/* Compact Selection Status */}
+            {/* Selection Status */}
             <div className="flex items-center space-x-3">
-              <div className="text-sm text-neutral-600">
-                <span className="font-semibold text-primary-600">{getSelectedCount().total}</span> selected
+              <div className="text-sm text-gray-600">
+                <span className="font-semibold text-blue-600">{getSelectedCount().total}</span> selected
               </div>
               
               {/* Surprise Me Button */}
               <button
                 onClick={surpriseMe}
                 data-testid="surprise-me-button"
-                className={`flex items-center space-x-2 px-3 py-2 bg-gradient-to-r from-purple-500 to-pink-500 text-white rounded-lg font-medium hover:from-purple-600 hover:to-pink-600 transition-all duration-200 shadow-sm hover:shadow-md text-sm ${
+                className={`flex items-center space-x-2 px-3 py-2 bg-gradient-to-r from-purple-600 to-blue-600 text-white rounded-lg font-medium hover:from-purple-700 hover:to-blue-700 transition-all duration-200 shadow-sm hover:shadow-md text-sm ${
                   isSuprising ? 'opacity-75 cursor-not-allowed' : ''
                 }`}
                 disabled={recommendations.length === 0 || isSuprising}
@@ -304,10 +304,10 @@ const Results: React.FC = () => {
               <Link
                 to="/plan"
                 data-testid="create-plan-from-selections"
-                className={`px-4 py-2 rounded-xl font-semibold transition-all duration-200 ${
+                className={`flex items-center px-4 py-2 rounded-lg font-semibold transition-all duration-200 ${
                   canBuildPlan() 
-                    ? 'bg-primary-600 text-white hover:bg-primary-700 shadow-sm hover:shadow-md' 
-                    : 'bg-neutral-200 text-neutral-400 cursor-not-allowed'
+                    ? 'bg-blue-600 text-white hover:bg-blue-700 shadow-sm hover:shadow-md' 
+                    : 'bg-gray-200 text-gray-400 cursor-not-allowed'
                 }`}
                 onClick={canBuildPlan() ? undefined : (e) => e.preventDefault()}
               >
@@ -319,13 +319,13 @@ const Results: React.FC = () => {
         </div>
       </div>
 
-      {/* Main Content - Optimized Layout */}
+      {/* Main Content */}
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6">
         
         {/* Mobile Header */}
         <div className="sm:hidden mb-6">
-          <h1 className="text-2xl font-bold text-neutral-800 mb-2">Your Perfect Day in {currentCity.name}</h1>
-          <p className="text-neutral-600 mb-4">Based on "{vibeInput}"</p>
+          <h1 className="text-2xl font-bold text-gray-900 mb-2">Your Perfect Day in {currentCity.name}</h1>
+          <p className="text-gray-600 mb-4">Based on "{vibeInput}"</p>
         </div>
 
         {/* Surprise Message */}
@@ -334,7 +334,7 @@ const Results: React.FC = () => {
             initial={{ opacity: 0, y: -20 }}
             animate={{ opacity: 1, y: 0 }}
             exit={{ opacity: 0, y: -20 }}
-            className="mb-6 p-3 bg-gradient-to-r from-purple-100 to-pink-100 border border-purple-200 rounded-lg text-center"
+            className="mb-6 p-3 bg-gradient-to-r from-purple-50 to-blue-50 border border-purple-200 rounded-lg text-center"
           >
             <p className="text-purple-800 font-medium text-sm">
               {surpriseMessage}
@@ -342,25 +342,24 @@ const Results: React.FC = () => {
           </motion.div>
         )}
 
-        {/* Cultural Ecosystem Link - Always visible */}
+        {/* Cultural Ecosystem Link */}
         <div className="mb-6">
           <div className="flex items-center justify-between mb-3">
             {extractedSeeds.length > 0 ? (
               <div className="flex items-center space-x-2">
                 <Lightbulb className="w-4 h-4 text-amber-500" />
-                <span className="text-sm font-medium text-neutral-700">Detected themes from your vibe</span>
+                <span className="text-sm font-medium text-gray-700">Detected themes from your vibe</span>
               </div>
             ) : (
               <div className="flex items-center space-x-2">
-                <Zap className="w-4 h-4 text-primary-500" />
-                <span className="text-sm font-medium text-neutral-700">Discover your cultural connections</span>
+                <Zap className="w-4 h-4 text-blue-500" />
+                <span className="text-sm font-medium text-gray-700">Discover your cultural connections</span>
               </div>
             )}
             
-            {/* Cultural Ecosystem Link - Always visible */}
             <Link 
               to="/cultural-ecosystem"
-              className="flex items-center space-x-2 px-3 py-2 bg-gradient-to-r from-primary-500 to-purple-500 text-white rounded-lg text-sm font-medium hover:from-primary-600 hover:to-purple-600 transition-all duration-200 shadow-sm hover:shadow-md relative"
+              className="flex items-center space-x-2 px-3 py-2 bg-gradient-to-r from-blue-600 to-purple-600 text-white rounded-lg text-sm font-medium hover:from-blue-700 hover:to-purple-700 transition-all duration-200 shadow-sm hover:shadow-md relative"
             >
               <Zap className="w-4 h-4" />
               <span>Explore Cultural Ecosystem</span>
@@ -374,7 +373,7 @@ const Results: React.FC = () => {
               {extractedSeeds.slice(0, 6).map((seed, index) => (
                 <span 
                   key={index}
-                  className="px-3 py-1 bg-primary-100 text-primary-700 rounded-full text-xs font-medium"
+                  className="px-3 py-1 bg-blue-100 text-blue-700 rounded-full text-xs font-medium"
                 >
                   {seed.text} • {Math.round(seed.confidence * 100)}%
                 </span>
@@ -383,10 +382,10 @@ const Results: React.FC = () => {
           )}
         </div>
 
-        {/* Context Indicators - Display only when context is detected */}
+        {/* Context Indicators */}
         {vibeContext && (vibeContext.isIndoor || vibeContext.isOutdoor || vibeContext.isHybrid) && (
           <div className="mb-6">
-            <div className="flex items-center space-x-3 text-sm text-neutral-600">
+            <div className="flex items-center space-x-3 text-sm text-gray-600">
               <Target className="w-4 h-4" />
               <span className="font-medium">Context detected:</span>
               <div className="flex space-x-2">
@@ -415,11 +414,11 @@ const Results: React.FC = () => {
           </div>
         )}
 
-        {/* Optimized Tabbed Recommendations */}
+        {/* Tabbed Recommendations */}
         {tabs.length > 0 ? (
           <div className="space-y-6">
-            {/* Dynamic Horizontal Scrollable Tab Navigation */}
-            <div className="flex space-x-1 bg-neutral-100 p-1 rounded-xl overflow-x-auto">
+            {/* Tab Navigation */}
+            <div className="flex space-x-1 bg-gray-100 p-1 rounded-lg overflow-x-auto">
               {tabs.map((tab) => {
                 const Icon = tab.icon;
                 const isActive = activeTab === tab.name;
@@ -428,22 +427,21 @@ const Results: React.FC = () => {
                     key={tab.id}
                     data-testid="category-tab"
                     onClick={() => setActiveTab(tab.name)}
-                    className={`flex items-center space-x-2 px-4 py-2 rounded-lg font-medium transition-all duration-200 whitespace-nowrap ${
+                    className={`flex items-center space-x-2 px-4 py-2 rounded-md font-medium transition-all duration-200 whitespace-nowrap ${
                       isActive
-                        ? 'bg-white text-neutral-900 shadow-sm'
-                        : 'text-neutral-600 hover:text-neutral-800 hover:bg-neutral-50'
+                        ? 'bg-white text-gray-900 shadow-sm'
+                        : 'text-gray-600 hover:text-gray-800 hover:bg-gray-50'
                     }`}
                   >
                     <Icon className="w-4 h-4" />
                     <span className="hidden sm:inline">{tab.name}</span>
                     <span className="sm:hidden">{tab.name.split(' ')[0]}</span>
                     
-                    {/* Enhanced count display with priority indicator for dynamic tabs */}
                     <div className="flex items-center space-x-1">
                       <span className={`text-xs px-2 py-0.5 rounded-full ${
                         isActive 
-                          ? `bg-${tab.color}-100 text-${tab.color}-700` 
-                          : 'bg-neutral-200 text-neutral-500'
+                          ? 'bg-blue-100 text-blue-700' 
+                          : 'bg-gray-200 text-gray-500'
                       }`}>
                         {tab.count}
                       </span>
@@ -458,14 +456,13 @@ const Results: React.FC = () => {
               })}
             </div>
 
-            {/* Optimized Recommendations Grid */}
+            {/* Recommendations Grid */}
             <div data-testid="recommendations-grid" className="space-y-4">
               <div className="flex items-center justify-between">
                 <div className="flex items-center space-x-3">
-                  <h2 className="text-lg font-semibold text-neutral-800">
+                  <h2 className="text-lg font-semibold text-gray-900">
                     {tabs.find(tab => tab.name === activeTab)?.name}
                   </h2>
-                  {/* Show dynamic tab indicator */}
                   {activeTabs.length > 0 && (
                     <span className="px-2 py-1 bg-green-100 text-green-700 text-xs rounded font-medium">
                       Smart recommendations
@@ -473,19 +470,18 @@ const Results: React.FC = () => {
                   )}
                 </div>
                 <div className="text-right">
-                  <p className="text-sm text-neutral-500">
+                  <p className="text-sm text-gray-500">
                     {currentTabItems.length} recommendations based on your vibe
                   </p>
-                  {/* Show estimated count for dynamic tabs */}
                   {activeTabs.length > 0 && (
-                    <p className="text-xs text-neutral-400">
+                    <p className="text-xs text-gray-400">
                       Context-aware selection
                     </p>
                   )}
                 </div>
               </div>
 
-              {/* Dense Grid Layout */}
+              {/* Grid Layout */}
               <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4">
                 {currentTabItems.map((item, index) => (
                   <motion.div
@@ -494,27 +490,27 @@ const Results: React.FC = () => {
                     initial={{ opacity: 0, y: 20 }}
                     animate={{ opacity: 1, y: 0 }}
                     transition={{ delay: index * 0.05 }}
-                    className={`card p-4 cursor-pointer transition-all duration-200 hover:shadow-md ${
+                    className={`bg-white rounded-lg p-4 shadow-sm border cursor-pointer transition-all duration-200 hover:shadow-md ${
                       selectedItems.some(selected => selected.id === item.id)
-                        ? 'ring-2 ring-primary-500 bg-primary-50 selected'
-                        : 'hover:shadow-lg'
+                        ? 'ring-2 ring-blue-500 bg-blue-50 selected border-blue-200'
+                        : 'border-gray-200 hover:border-gray-300'
                     }`}
                     onClick={() => toggleItemSelection(item)}
                   >
-                    {/* Compact Card Content */}
+                    {/* Card Content */}
                     <div className="space-y-3">
                       {/* Header */}
                       <div className="flex items-start justify-between">
-                        <h3 className="font-semibold text-neutral-800 text-sm leading-tight line-clamp-2">
+                        <h3 className="font-semibold text-gray-900 text-sm leading-tight line-clamp-2">
                           {item.name}
                         </h3>
                         <div className="flex items-center space-x-1 ml-2">
                           {selectedItems.some(selected => selected.id === item.id) && (
-                            <Heart className="w-4 h-4 text-primary-500 fill-current" />
+                            <Heart className="w-4 h-4 text-blue-500 fill-current" />
                           )}
                           <div className="flex items-center">
                             <Star className="w-3 h-3 text-yellow-400 fill-current" />
-                            <span className="text-xs text-neutral-600 ml-1">
+                            <span className="text-xs text-gray-600 ml-1">
                               {Math.round(item.tasteStrength * 100)}%
                             </span>
                           </div>
@@ -522,20 +518,20 @@ const Results: React.FC = () => {
                       </div>
 
                       {/* Description */}
-                      <p className="text-xs text-neutral-600 line-clamp-2">
+                      <p className="text-xs text-gray-600 line-clamp-2">
                         {item.description}
                       </p>
 
                       {/* Location & Why it fits */}
                       {item.location && (
-                        <div className="flex items-center text-xs text-neutral-500">
+                        <div className="flex items-center text-xs text-gray-500">
                           <MapPin className="w-3 h-3 mr-1" />
                           <span className="truncate">{item.location}</span>
                         </div>
                       )}
 
                       {item.whyItFits && (
-                        <div className="text-xs text-primary-600 bg-primary-50 px-2 py-1 rounded">
+                        <div className="text-xs text-blue-600 bg-blue-50 px-2 py-1 rounded">
                           {item.whyItFits}
                         </div>
                       )}
@@ -544,14 +540,14 @@ const Results: React.FC = () => {
                 ))}
               </div>
 
-              {/* Show more button if there are many items */}
+              {/* Empty state */}
               {currentTabItems.length === 0 && (
                 <div className="text-center py-12">
-                  <div className="text-neutral-400 mb-2">
+                  <div className="text-gray-400 mb-2">
                     <Camera className="w-12 h-12 mx-auto mb-4" />
                   </div>
-                  <p className="text-neutral-600">No recommendations found for this category</p>
-                  <p className="text-sm text-neutral-500 mt-1">Try a different category or refine your vibe</p>
+                  <p className="text-gray-600">No recommendations found for this category</p>
+                  <p className="text-sm text-gray-500 mt-1">Try a different category or refine your vibe</p>
                 </div>
               )}
             </div>
@@ -559,14 +555,14 @@ const Results: React.FC = () => {
         ) : (
           /* No recommendations fallback */
           <div className="text-center py-16">
-            <div className="text-neutral-400 mb-4">
+            <div className="text-gray-400 mb-4">
               <Star className="w-16 h-16 mx-auto mb-4" />
             </div>
-            <h3 className="text-xl font-semibold text-neutral-700 mb-2">No recommendations yet</h3>
-            <p className="text-neutral-600 mb-6">We're still finding the perfect matches for your vibe</p>
+            <h3 className="text-xl font-semibold text-gray-700 mb-2">No recommendations yet</h3>
+            <p className="text-gray-600 mb-6">We're still finding the perfect matches for your vibe</p>
             <Link
               to="/create-plan"
-              className="btn-primary"
+              className="inline-flex items-center px-6 py-3 bg-blue-600 text-white font-semibold rounded-lg hover:bg-blue-700 transition-colors"
             >
               Try a different vibe
             </Link>

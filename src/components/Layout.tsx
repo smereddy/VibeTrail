@@ -20,12 +20,12 @@ const Layout: React.FC<LayoutProps> = ({ children }) => {
   const isHomePage = location.pathname === '/';
 
   return (
-    <div className="min-h-screen bg-neutral-50">
+    <div className="min-h-screen bg-gray-50">
       {/* Navigation Header */}
       <header className={`fixed top-0 left-0 right-0 z-40 transition-all duration-300 ${
-        isHomePage ? 'bg-transparent' : 'bg-white/95 backdrop-blur-sm shadow-soft'
+        isHomePage ? 'bg-transparent' : 'bg-white/95 backdrop-blur-sm shadow-sm'
       }`}>
-        <div className="container-custom">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex items-center justify-between h-16 md:h-20">
             {/* Logo */}
             <Link 
@@ -33,12 +33,12 @@ const Layout: React.FC<LayoutProps> = ({ children }) => {
               className="flex items-center space-x-2 group"
             >
               <div className={`w-8 h-8 rounded-lg flex items-center justify-center transition-colors ${
-                isHomePage ? 'bg-white/20 text-white' : 'bg-primary-100 text-primary-600'
+                isHomePage ? 'bg-white/20 text-white' : 'bg-blue-100 text-blue-600'
               }`}>
                 <Sparkles className="w-5 h-5" />
               </div>
               <span className={`text-xl font-bold transition-colors ${
-                isHomePage ? 'text-white' : 'text-neutral-900'
+                isHomePage ? 'text-white' : 'text-gray-900'
               }`}>
                 VibeTrail
               </span>
@@ -50,8 +50,8 @@ const Layout: React.FC<LayoutProps> = ({ children }) => {
                 <Link
                   key={item.name}
                   to={item.href}
-                  className={`flex items-center space-x-1 text-sm font-medium transition-colors hover:text-primary-600 ${
-                    isHomePage ? 'text-white/90 hover:text-white' : 'text-neutral-600 hover:text-primary-600'
+                  className={`flex items-center space-x-1 text-sm font-medium transition-colors hover:text-blue-600 ${
+                    isHomePage ? 'text-white/90 hover:text-white' : 'text-gray-600 hover:text-blue-600'
                   }`}
                 >
                   {item.icon}
@@ -64,7 +64,11 @@ const Layout: React.FC<LayoutProps> = ({ children }) => {
             <div className="hidden md:flex items-center space-x-4">
               <Link
                 to="/create-plan"
-                className={isHomePage ? 'btn-hero' : 'btn-primary'}
+                className={`px-6 py-2 rounded-lg font-semibold transition-all duration-200 ${
+                  isHomePage 
+                    ? 'bg-white text-blue-600 hover:bg-gray-100 shadow-sm' 
+                    : 'bg-blue-600 text-white hover:bg-blue-700 shadow-sm hover:shadow-md'
+                }`}
               >
                 Create a plan
               </Link>
@@ -74,7 +78,7 @@ const Layout: React.FC<LayoutProps> = ({ children }) => {
             <button
               onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
               className={`md:hidden p-2 rounded-lg transition-colors ${
-                isHomePage ? 'text-white hover:bg-white/20' : 'text-neutral-600 hover:bg-neutral-100'
+                isHomePage ? 'text-white hover:bg-white/20' : 'text-gray-600 hover:bg-gray-100'
               }`}
             >
               {mobileMenuOpen ? (
@@ -92,26 +96,26 @@ const Layout: React.FC<LayoutProps> = ({ children }) => {
             initial={{ opacity: 0, y: -20 }}
             animate={{ opacity: 1, y: 0 }}
             exit={{ opacity: 0, y: -20 }}
-            className="md:hidden bg-white border-t border-neutral-200 shadow-large"
+            className="md:hidden bg-white border-t border-gray-200 shadow-lg"
           >
-            <div className="container-custom py-4">
+            <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4">
               <nav className="space-y-4">
                 {navigation.map((item) => (
                   <Link
                     key={item.name}
                     to={item.href}
                     onClick={() => setMobileMenuOpen(false)}
-                    className="flex items-center space-x-2 text-neutral-600 hover:text-primary-600 py-2"
+                    className="flex items-center space-x-2 text-gray-600 hover:text-blue-600 py-2"
                   >
                     {item.icon}
                     <span>{item.name}</span>
                   </Link>
                 ))}
-                <div className="pt-4 border-t border-neutral-200">
+                <div className="pt-4 border-t border-gray-200">
                   <Link
                     to="/create-plan"
                     onClick={() => setMobileMenuOpen(false)}
-                    className="btn-primary w-full justify-center"
+                    className="flex items-center justify-center w-full px-6 py-2 bg-blue-600 text-white font-semibold rounded-lg hover:bg-blue-700 transition-colors"
                   >
                     Create a plan
                   </Link>
@@ -128,24 +132,24 @@ const Layout: React.FC<LayoutProps> = ({ children }) => {
       </main>
 
       {/* Footer */}
-      <footer className="bg-neutral-900 text-white">
-        <div className="container-custom py-16">
+      <footer className="bg-gray-900 text-white">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16">
           <div className="grid md:grid-cols-4 gap-8">
             {/* Logo & Description */}
             <div className="md:col-span-2">
               <Link to="/" className="flex items-center space-x-2 mb-4">
-                <div className="w-8 h-8 bg-primary-600 rounded-lg flex items-center justify-center">
+                <div className="w-8 h-8 bg-blue-600 rounded-lg flex items-center justify-center">
                   <Sparkles className="w-5 h-5 text-white" />
                 </div>
                 <span className="text-xl font-bold">VibeTrail</span>
               </Link>
-              <p className="text-neutral-400 max-w-md leading-relaxed">
+              <p className="text-gray-400 max-w-md leading-relaxed">
                 Your perfect day, planned in seconds. AI-powered cultural intelligence 
                 for personalized city experiences.
               </p>
               <div className="mt-6">
-                <p className="text-sm text-neutral-500">
-                  © 2024 VibeTrail. All rights reserved.
+                <p className="text-sm text-gray-500">
+                  © 2025 VibeTrail. All rights reserved.
                 </p>
               </div>
             </div>
@@ -155,22 +159,22 @@ const Layout: React.FC<LayoutProps> = ({ children }) => {
               <h3 className="font-semibold mb-4">Product</h3>
               <ul className="space-y-2">
                 <li>
-                  <Link to="/about" className="text-neutral-400 hover:text-white transition-colors">
+                  <Link to="/about" className="text-gray-400 hover:text-white transition-colors">
                     About
                   </Link>
                 </li>
                 <li>
-                  <Link to="/how-it-works" className="text-neutral-400 hover:text-white transition-colors">
+                  <Link to="/how-it-works" className="text-gray-400 hover:text-white transition-colors">
                     How it Works
                   </Link>
                 </li>
                 <li>
-                  <Link to="/privacy" className="text-neutral-400 hover:text-white transition-colors">
+                  <Link to="/privacy" className="text-gray-400 hover:text-white transition-colors">
                     Privacy Policy
                   </Link>
                 </li>
                 <li>
-                  <Link to="/terms" className="text-neutral-400 hover:text-white transition-colors">
+                  <Link to="/terms" className="text-gray-400 hover:text-white transition-colors">
                     Terms of Service
                   </Link>
                 </li>
@@ -182,17 +186,17 @@ const Layout: React.FC<LayoutProps> = ({ children }) => {
               <h3 className="font-semibold mb-4">Support</h3>
               <ul className="space-y-2">
                 <li>
-                  <a href="#" className="text-neutral-400 hover:text-white transition-colors">
+                  <a href="#" className="text-gray-400 hover:text-white transition-colors">
                     Help Center
                   </a>
                 </li>
                 <li>
-                  <a href="#" className="text-neutral-400 hover:text-white transition-colors">
+                  <a href="#" className="text-gray-400 hover:text-white transition-colors">
                     Community
                   </a>
                 </li>
                 <li>
-                  <a href="#" className="text-neutral-400 hover:text-white transition-colors">
+                  <a href="#" className="text-gray-400 hover:text-white transition-colors">
                     Status
                   </a>
                 </li>

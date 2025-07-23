@@ -93,7 +93,7 @@ const Terms: React.FC = () => {
               The ground rules for using VibeTrail. We've kept them simple and fair.
             </p>
             <div className="mt-6 text-sm text-neutral-500">
-              Last updated: January 2024
+              Last updated: January 2025
             </div>
           </motion.div>
         </div>

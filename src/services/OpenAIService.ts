@@ -559,6 +559,28 @@ export class OpenAIService extends BaseAPIService {
   }
 
   /**
+   * Generate a response from OpenAI with given prompt and options
+   */
+  async generateResponse(prompt: string, options: { maxTokens?: number; temperature?: number } = {}): Promise<string> {
+    try {
+      const response = await this.makeRequest<{ content: string }>('generate', {
+        prompt,
+        maxTokens: options.maxTokens || 500,
+        temperature: options.temperature || 0.7
+      });
+
+      if (response.success && response.data) {
+        return response.data.content;
+      } else {
+        throw new Error(response.error || 'Failed to generate response');
+      }
+    } catch (error) {
+      console.error('❌ OpenAI generate response failed:', error);
+      throw error;
+    }
+  }
+
+  /**
    * Generate explanations for recommendation items (enhanced for context)
    */
   async generateExplanations(

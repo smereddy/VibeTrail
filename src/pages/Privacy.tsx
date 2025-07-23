@@ -93,7 +93,7 @@ const Privacy: React.FC = () => {
               Your privacy matters to us. Here's how we collect, use, and protect your information.
             </p>
             <div className="mt-6 text-sm text-neutral-500">
-              Last updated: January 2024
+              Last updated: January 2025
             </div>
           </motion.div>
         </div>
