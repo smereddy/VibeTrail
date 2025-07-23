@@ -6,7 +6,7 @@ import { ExtractedSeed, ItemExplanation, ScheduledPlan, TasteItem } from '../../
 vi.mock('../../config/environment', () => ({
   getEnvironmentConfig: () => ({
     openai: {
-      apiKey: 'test-api-key',
+      apiKey: 'mock-key-for-testing',
       model: 'gpt-4',
       maxTokens: 1000,
       temperature: 0.7,

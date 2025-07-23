@@ -1,12 +1,14 @@
 import { test, expect } from '@playwright/test';
 
 test.describe('VibeTrail Smoke Tests', () => {
+  const pageTimeout = 10 * 1000; // 10 seconds
+  
   test('home page loads successfully', async ({ page }) => {
     try {
       await page.goto('/');
       
       // Very loose check - just that page loads
-      await expect(page.locator('html')).toBeVisible({ timeout: 10000 });
+      await expect(page.locator('html')).toBeVisible({ timeout: pageTimeout });
       
       console.log('✅ Home page loads successfully');
     } catch (error) {
@@ -20,7 +22,7 @@ test.describe('VibeTrail Smoke Tests', () => {
       await page.goto('/create-plan');
       
       // Very loose check - just that page loads
-      await expect(page.locator('html')).toBeVisible({ timeout: 10000 });
+      await expect(page.locator('html')).toBeVisible({ timeout: pageTimeout });
       
       console.log('✅ Create plan page accessible');
     } catch (error) {

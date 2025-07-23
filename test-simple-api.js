@@ -12,8 +12,9 @@ async function testAPIHealth() {
   
   try {
     // Test health endpoint
+    const apiTimeout = 10 * 1000; // 10 seconds
     const healthResponse = await axios.get(`${baseURL}/health`, {
-      timeout: 10000,
+      timeout: apiTimeout,
       validateStatus: () => true // Accept any status code
     });
     
