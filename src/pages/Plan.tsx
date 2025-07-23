@@ -21,7 +21,7 @@ import {
 } from 'lucide-react';
 
 const Plan: React.FC = () => {
-  const { selectedItems, currentCity, vibeInput, removeFromSelectedItems } = useApp();
+  const { selectedItems, currentCity, vibeInput, removeFromSelectedItems, dayPlan, buildDayPlan, isDayPlanBuilding } = useApp();
   const [isExporting, setIsExporting] = useState(false);
   const [exportSuccess, setExportSuccess] = useState(false);
 
@@ -239,6 +239,112 @@ const Plan: React.FC = () => {
           </div>
         </div>
       </section>
+
+      {/* AI Scheduled Day Plan */}
+      {dayPlan.length > 0 && (
+        <section className="py-8 bg-gradient-to-r from-blue-50 to-purple-50 border-b border-slate-200">
+          <div className="container-custom">
+            <div className="max-w-4xl mx-auto">
+              <div className="text-center mb-8">
+                <h2 className="text-2xl font-bold text-slate-900 mb-2 flex items-center justify-center space-x-2">
+                  <Clock className="w-6 h-6 text-blue-600" />
+                  <span>Your AI-Planned Day</span>
+                </h2>
+                <p className="text-slate-600">Optimally scheduled based on timing, location, and flow</p>
+              </div>
+              
+              <div className="bg-white rounded-2xl shadow-lg border border-slate-200 overflow-hidden">
+                <div className="p-6">
+                  <div className="space-y-4">
+                    {dayPlan.map((timeSlot, index) => (
+                      <motion.div
+                        key={index}
+                        initial={{ opacity: 0, x: -20 }}
+                        animate={{ opacity: 1, x: 0 }}
+                        transition={{ delay: index * 0.1 }}
+                        className="flex items-start space-x-4 p-4 bg-slate-50 rounded-xl border border-slate-200"
+                      >
+                        <div className="flex-shrink-0 text-center">
+                          <div className="text-lg font-bold text-blue-600">{timeSlot.time}</div>
+                          <div className="text-xs text-slate-500 capitalize">{timeSlot.period}</div>
+                        </div>
+                        
+                        <div className="flex-1">
+                          <h3 className="font-semibold text-slate-900 text-lg mb-1">
+                            {timeSlot.item?.name || 'Free Time'}
+                          </h3>
+                          
+                          {timeSlot.item && (
+                            <>
+                              <div className="flex items-center space-x-4 text-sm text-slate-600 mb-2">
+                                <span className="capitalize">{timeSlot.item.category}</span>
+                                <span>•</span>
+                                <span>{timeSlot.duration || 90} minutes</span>
+                                {timeSlot.item.location && (
+                                  <>
+                                    <span>•</span>
+                                    <div className="flex items-center space-x-1">
+                                      <MapPin className="w-3 h-3" />
+                                      <span>{timeSlot.item.location}</span>
+                                    </div>
+                                  </>
+                                )}
+                              </div>
+                              
+                              {timeSlot.reasoning && (
+                                <p className="text-sm text-slate-600 italic">
+                                  "{timeSlot.reasoning}"
+                                </p>
+                              )}
+                            </>
+                          )}
+                        </div>
+                        
+                        <div className="flex-shrink-0">
+                          <div className="text-2xl">
+                            {timeSlot.item ? getCategoryIcon(timeSlot.item.category) : '⏰'}
+                          </div>
+                        </div>
+                      </motion.div>
+                    ))}
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
+      )}
+
+      {/* Generate Day Plan Button */}
+      {selectedItems.length > 0 && dayPlan.length === 0 && (
+        <section className="py-8 bg-gradient-to-r from-green-50 to-blue-50 border-b border-slate-200">
+          <div className="container-custom">
+            <div className="max-w-4xl mx-auto text-center">
+              <h2 className="text-2xl font-bold text-slate-900 mb-4">Ready to Schedule Your Day?</h2>
+              <p className="text-slate-600 mb-6">
+                Let AI create an optimal timeline for your {selectedItems.length} selected items
+              </p>
+              <button
+                onClick={() => buildDayPlan(selectedItems)}
+                disabled={isDayPlanBuilding}
+                className="inline-flex items-center px-6 py-3 bg-gradient-to-r from-green-600 to-blue-600 text-white font-semibold rounded-lg hover:from-green-700 hover:to-blue-700 transition-all duration-200 shadow-lg hover:shadow-xl disabled:opacity-50"
+              >
+                {isDayPlanBuilding ? (
+                  <>
+                    <div className="animate-spin w-5 h-5 border-2 border-white/30 border-t-white rounded-full mr-2"></div>
+                    Creating Schedule...
+                  </>
+                ) : (
+                  <>
+                    <Sparkles className="w-5 h-5 mr-2" />
+                    Create AI Day Plan
+                  </>
+                )}
+              </button>
+            </div>
+          </div>
+        </section>
+      )}
 
       {/* Plan Content */}
       <section className="py-12">

@@ -563,14 +563,22 @@ export class OpenAIService extends BaseAPIService {
    */
   async generateResponse(prompt: string, options: { maxTokens?: number; temperature?: number } = {}): Promise<string> {
     try {
-      const response = await this.makeRequest<{ content: string }>('generate', {
-        prompt,
-        maxTokens: options.maxTokens || 500,
-        temperature: options.temperature || 0.7
-      });
+      const request: OpenAIRequest = {
+        model: this.config.api.openai.model,
+        max_tokens: options.maxTokens || 500,
+        temperature: options.temperature || 0.7,
+        messages: [
+          {
+            role: 'user',
+            content: prompt
+          }
+        ]
+      };
 
-      if (response.success && response.data) {
-        return response.data.content;
+      const response = await this.makeRequest<OpenAIResponse>('chat/completions', request);
+
+      if (response.success && response.data?.choices?.[0]?.message?.content) {
+        return response.data.choices[0].message.content;
       } else {
         throw new Error(response.error || 'Failed to generate response');
       }
