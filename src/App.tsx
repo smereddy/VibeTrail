@@ -13,6 +13,9 @@ import Export from './pages/Export';
 import Weekend from './pages/Weekend';
 import Insights from './pages/Insights';
 import About from './pages/About';
+import HowItWorks from './pages/HowItWorks';
+import Privacy from './pages/Privacy';
+import Terms from './pages/Terms';
 
 function App() {
   return (
@@ -30,6 +33,9 @@ function App() {
             <Route path="/weekend" element={<Layout><Weekend /></Layout>} />
             <Route path="/insights" element={<Layout><Insights /></Layout>} />
             <Route path="/about" element={<Layout><About /></Layout>} />
+            <Route path="/how-it-works" element={<Layout><HowItWorks /></Layout>} />
+            <Route path="/privacy" element={<Layout><Privacy /></Layout>} />
+            <Route path="/terms" element={<Layout><Terms /></Layout>} />
           </Routes>
         </Router>
       </AppProvider>

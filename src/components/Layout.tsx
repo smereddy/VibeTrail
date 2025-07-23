@@ -14,9 +14,7 @@ const Layout: React.FC<LayoutProps> = ({ children }) => {
 
   const navigation = [
     { name: 'Home', href: '/', icon: <Sparkles className="w-4 h-4" /> },
-    { name: 'How it works', href: '#how-it-works', icon: null },
-    { name: 'Pricing', href: '#pricing', icon: null },
-    { name: 'Blog', href: '#blog', icon: null },
+    { name: 'How it works', href: '/how-it-works', icon: null },
   ];
 
   const isHomePage = location.pathname === '/';
@@ -157,24 +155,24 @@ const Layout: React.FC<LayoutProps> = ({ children }) => {
               <h3 className="font-semibold mb-4">Product</h3>
               <ul className="space-y-2">
                 <li>
-                  <a href="#" className="text-neutral-400 hover:text-white transition-colors">
+                  <Link to="/about" className="text-neutral-400 hover:text-white transition-colors">
                     About
-                  </a>
+                  </Link>
                 </li>
                 <li>
-                  <a href="#" className="text-neutral-400 hover:text-white transition-colors">
-                    Contact
-                  </a>
+                  <Link to="/how-it-works" className="text-neutral-400 hover:text-white transition-colors">
+                    How it Works
+                  </Link>
                 </li>
                 <li>
-                  <a href="#" className="text-neutral-400 hover:text-white transition-colors">
+                  <Link to="/privacy" className="text-neutral-400 hover:text-white transition-colors">
                     Privacy Policy
-                  </a>
+                  </Link>
                 </li>
                 <li>
-                  <a href="#" className="text-neutral-400 hover:text-white transition-colors">
+                  <Link to="/terms" className="text-neutral-400 hover:text-white transition-colors">
                     Terms of Service
-                  </a>
+                  </Link>
                 </li>
               </ul>
             </div>
