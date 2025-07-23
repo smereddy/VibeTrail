@@ -30,13 +30,18 @@ VibeTrail is optimized for deployment on **Netlify** with automatic serverless f
 git add .
 git commit -m "Prepare for Netlify deployment"
 git push origin main
+
+# Create and push production branch (if not already done)
+git checkout -b production
+git push -u origin production
 ```
 
 ### **2. Connect to Netlify**
 1. Go to [Netlify Dashboard](https://app.netlify.com)
 2. Click **"New site from Git"**
 3. Choose **GitHub** and select your repository
-4. Netlify will auto-detect the configuration from `netlify.toml`
+4. **Important**: Set branch to deploy as **`production`** (not `main`)
+5. Netlify will auto-detect the configuration from `netlify.toml`
 
 ### **3. Environment Variables**
 In your Netlify dashboard, go to **Site settings > Environment variables** and add:
@@ -47,8 +52,9 @@ QLOO_API_KEY=your_qloo_api_key_here
 ```
 
 ### **4. Deploy**
-- **Automatic**: Push to `main` branch triggers automatic deployment
+- **Automatic**: Push to `production` branch triggers automatic deployment
 - **Manual**: Click **"Deploy site"** in Netlify dashboard
+- **Branching Strategy**: See [Branching Strategy Guide](branching-strategy.md) for full workflow
 
 ---
 
@@ -182,10 +188,11 @@ Access-Control-Allow-Headers: Content-Type, Authorization
 ## 🚀 **CI/CD Pipeline**
 
 ### **Automatic Deployments**
-- **Trigger**: Push to `main` branch
+- **Trigger**: Push to `production` branch
 - **Build Command**: `npm run build`
 - **Publish Directory**: `dist/`
 - **Functions**: Automatically deployed from `netlify/functions/`
+- **Development**: `main` branch for active development (not deployed)
 
 ### **Branch Deployments**
 - **Feature branches**: Automatic preview deployments
@@ -194,7 +201,7 @@ Access-Control-Allow-Headers: Content-Type, Authorization
 
 ### **Build Process**
 ```bash
-# Netlify automatically runs:
+# Netlify automatically runs when production branch is updated:
 1. npm install
 2. npm run build
 3. Deploy functions from netlify/functions/
@@ -311,10 +318,14 @@ console.log('Hostname:', window.location.hostname);
 
 ### **Production Deployment**
 ```bash
-# Automatic (recommended)
-git push origin main
+# Automatic (recommended) - Deploy via production branch
+git checkout main
+git pull origin main
+git checkout production
+git merge main
+git push origin production  # Triggers automatic deployment
 
-# Manual
+# Manual deployment
 netlify deploy --prod --dir=dist
 ```
 
@@ -399,6 +410,7 @@ export default defineConfig({
 
 ## 📚 **Additional Resources**
 
+- [Branching Strategy Guide](branching-strategy.md) - Complete workflow documentation
 - [Netlify Functions Documentation](https://docs.netlify.com/functions/overview/)
 - [Netlify Environment Variables](https://docs.netlify.com/environment-variables/overview/)
 - [Netlify CLI Commands](https://cli.netlify.com/)
