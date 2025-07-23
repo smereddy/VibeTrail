@@ -575,7 +575,11 @@ export class OpenAIService extends BaseAPIService {
         ]
       };
 
-      const response = await this.makeRequest<OpenAIResponse>('chat/completions', request);
+      const response = await this.makeRequest<OpenAIResponse>({
+        method: 'POST',
+        url: '/chat/completions',
+        data: request,
+      });
 
       if (response.success && response.data?.choices?.[0]?.message?.content) {
         return response.data.choices[0].message.content;
