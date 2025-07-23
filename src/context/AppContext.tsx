@@ -581,6 +581,9 @@ export const AppProvider: React.FC<{ children: ReactNode }> = ({ children }) => 
       setIsLoading(true);
       setApiError(null);
       
+      // Clear existing plan to show loading state
+      setDayPlan([]);
+      
       console.log(`🗓️ [${requestId}] Building day plan for ${selectedItems.length} items in ${currentCity.name}`);
       
       // Call our day planning API endpoint (now via Netlify Functions)

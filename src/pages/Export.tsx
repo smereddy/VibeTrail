@@ -27,6 +27,18 @@ const Export: React.FC = () => {
   const [copied, setCopied] = useState(false);
   
   const scheduledItems = dayPlan.filter(slot => slot.item);
+  
+  // Calculate accurate stats based on selected items and AI-generated schedule
+  const getStats = () => {
+    const activities = selectedItems.length;
+    const categories = new Set(selectedItems.map(item => item.category)).size;
+    const duration = selectedItems.reduce((total, item) => total + (item.estimatedDuration || 90), 0);
+    const hasAISchedule = scheduledItems.length > 0;
+    
+    return { activities, categories, duration, hasAISchedule };
+  };
+  
+  const stats = getStats();
 
   const handleDownload = async () => {
     try {
@@ -83,9 +95,7 @@ const Export: React.FC = () => {
     }
   };
 
-  const getTotalDuration = () => {
-    return dayPlan.reduce((total, slot) => total + (slot.duration || 90), 0);
-  };
+
 
   return (
     <div className="min-h-screen bg-gray-50">
@@ -125,19 +135,19 @@ const Export: React.FC = () => {
             <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-5 gap-4 items-center">
               {/* Stats */}
               <div className="text-center">
-                <div className="text-lg font-bold text-blue-600">{scheduledItems.length}</div>
+                <div className="text-lg font-bold text-blue-600">{stats.activities}</div>
                 <div className="text-xs text-gray-600">Activities</div>
               </div>
               <div className="text-center">
-                <div className="text-lg font-bold text-orange-600">{Math.round(getTotalDuration() / 60)}h</div>
+                <div className="text-lg font-bold text-orange-600">{Math.round(stats.duration / 60)}h</div>
                 <div className="text-xs text-gray-600">Duration</div>
               </div>
               <div className="text-center">
-                <div className="text-lg font-bold text-purple-600">{new Set(selectedItems.map(item => item.category)).size}</div>
+                <div className="text-lg font-bold text-purple-600">{stats.categories}</div>
                 <div className="text-xs text-gray-600">Categories</div>
               </div>
               <div className="text-center">
-                <div className="text-lg font-bold text-green-600">AI</div>
+                <div className="text-lg font-bold text-green-600">{stats.hasAISchedule ? 'AI' : 'Manual'}</div>
                 <div className="text-xs text-gray-600">Optimized</div>
               </div>
               

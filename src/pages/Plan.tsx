@@ -42,9 +42,11 @@ const Plan: React.FC = () => {
   const [exportSuccess, setExportSuccess] = useState(false);
   const [viewMode, setViewMode] = useState<'schedule' | 'categories'>('schedule');
 
-  // Auto-generate day plan if we have selected items but no plan
+  // Auto-generate day plan if we have selected items but no AI-generated plan
   useEffect(() => {
-    if (selectedItems.length > 0 && dayPlan.length === 0 && !isDayPlanBuilding) {
+    const hasAIGeneratedPlan = dayPlan.some(slot => slot.item !== null && slot.item !== undefined);
+    if (selectedItems.length > 0 && !hasAIGeneratedPlan && !isDayPlanBuilding) {
+      console.log('🗓️ Plan page: Auto-generating AI day plan for', selectedItems.length, 'selected items');
       buildDayPlan(selectedItems);
     }
   }, [selectedItems, dayPlan, isDayPlanBuilding, buildDayPlan]);
