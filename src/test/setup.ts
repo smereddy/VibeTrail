@@ -4,7 +4,7 @@ import '@testing-library/jest-dom';
 Object.defineProperty(import.meta, 'env', {
   value: {
     DEV: true,
-    VITE_OPENAI_API_KEY: 'test-openai-key',
+    VITE_OPENAI_API_KEY: 'mock-key-for-testing',
     VITE_API_PROXY_URL: 'http://localhost:3001/api',
     VITE_OPENAI_MODEL: 'gpt-3.5-turbo',
     VITE_OPENAI_MAX_TOKENS: '1000',
