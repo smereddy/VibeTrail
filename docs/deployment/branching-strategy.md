@@ -67,22 +67,25 @@ git push -u origin feature/your-feature-name
 3. **Run Tests** (automated via GitHub Actions)
 4. **Merge to main** after approval
 
-### **3. Production Release**
+### **3. Production Release (PR-Based)**
 ```bash
 # Switch to main and ensure it's up to date
 git checkout main
 git pull origin main
 
-# Create PR from main to production
-# OR merge directly if you have permissions
-git checkout production
-git pull origin production
-git merge main
-git push origin production
+# Create Pull Request from main to production
+# This triggers comprehensive testing in GitHub Actions
+# 1. Go to GitHub repository
+# 2. Click "New Pull Request"
+# 3. Set base: production, compare: main
+# 4. Wait for all tests to pass
+# 5. Merge PR after approval and successful tests
 ```
 
-### **4. Automatic Deployment**
-- **Netlify automatically deploys** when `production` branch is updated
+### **4. Automated Testing & Deployment**
+- **GitHub Actions runs comprehensive tests** on PR to production
+- **All tests must pass** before merge is allowed
+- **Netlify automatically deploys** when production branch is updated
 - **Functions deployed** to `/.netlify/functions/`
 - **Environment variables** managed in Netlify dashboard
 
@@ -142,27 +145,47 @@ Restrictions:
 4. **Publish directory**: `dist`
 5. **Functions directory**: `netlify/functions`
 
+### **GitHub Secrets Configuration**
+Set these secrets in **GitHub Repository > Settings > Secrets and variables > Actions**:
+
+```
+OPENAI_API_KEY=your_openai_api_key
+QLOO_API_KEY=your_qloo_api_key
+```
+
+These are required for:
+- Function testing in GitHub Actions
+- E2E testing with real API calls
+- Integration testing for production readiness
+
 ---
 
 ## 🧪 **Testing Strategy**
 
-### **Branch-Specific Testing**
+### **Automated Testing Pipeline**
 
-#### **Feature Branches**
-- **Unit tests**: Run locally before committing
-- **Linting**: ESLint and TypeScript checks
-- **Build verification**: Ensure `npm run build` succeeds
+#### **All Branches & PRs**
+- **Linting & Build**: ESLint, TypeScript checks, build verification
+- **Unit Tests**: Component and service testing with coverage
+- **Function Tests**: Local Netlify Functions testing
+- **Security Checks**: npm audit and vulnerability scanning
 
-#### **`main` Branch**
-- **Integration tests**: Full E2E testing
-- **API tests**: Validate all Netlify Functions
-- **Performance tests**: Load testing and optimization
-- **Security scans**: Dependency vulnerability checks
+#### **PRs to `main` Branch**
+- **All basic tests** (above)
+- **E2E Tests**: Full Playwright browser testing
+- **Integration Tests**: API endpoint validation
 
-#### **`production` Branch**
-- **Production smoke tests**: Health checks after deployment
-- **Monitoring**: Real-time error tracking
-- **Rollback readiness**: Immediate rollback capability
+#### **PRs to `production` Branch** (Comprehensive)
+- **All tests above** +
+- **Extended Integration Tests**: Complete API flow testing
+- **Production Readiness Check**: Build verification, environment validation
+- **Performance Checks**: Build size analysis, function optimization
+- **Security Audit**: Comprehensive vulnerability assessment
+
+#### **Post-Production Deployment**
+- **Health Monitoring**: Automatic health checks
+- **Error Tracking**: Real-time error monitoring
+- **Performance Monitoring**: Core Web Vitals tracking
 
 ---
 
@@ -172,9 +195,11 @@ Restrictions:
 1. **Feature freeze** on `main` branch
 2. **Final testing** of integrated features
 3. **Create release PR** from `main` to `production`
-4. **Release notes** documenting changes
-5. **Merge to production** → **Auto-deploy**
-6. **Post-deployment verification**
+4. **Wait for GitHub Actions** to complete all tests
+5. **Code review** and approval (2+ reviewers required)
+6. **Release notes** documenting changes
+7. **Merge PR** → **GitHub Actions notifies** → **Netlify auto-deploys**
+8. **Post-deployment verification** via health checks
 
 ### **Hotfix Release (Emergency)**
 ```bash

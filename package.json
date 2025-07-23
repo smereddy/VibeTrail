@@ -19,10 +19,9 @@
     "test:ui": "vitest --ui",
     "test:e2e": "playwright test",
     "test:e2e:ui": "playwright test --ui",
-    "test:e2e:enhanced": "node tests/e2e/e2e_enhanced.cjs",
-    "test:e2e:simple": "node tests/e2e/e2e_test.cjs",
-    "test:debug": "node tests/debug/debug-qloo.cjs",
-    "test:all": "npm run test:run && npm run test:e2e && npm run test:e2e:enhanced",
+    "test:functions": "node test-taste-api.js && node test-plan-flow.js",
+    "test:integration": "NETLIFY_DEV=true npm run test:functions",
+    "test:all": "npm run test:run && npm run test:e2e && npm run test:functions",
     "clean": "rm -rf dist tests/reports/*.json tests/test-results tests/playwright-report",
     "clean:all": "npm run clean && rm -rf node_modules"
   },
