@@ -52,7 +52,10 @@ export class QlooService extends BaseAPIService {
         // Use proxy server for secure API key management (production ready)
         const apiUrl = config?.app?.apiProxyUrl || '/api';
         
-        super(apiUrl, config.qloo.timeout);
+        // Default timeout of 30 seconds for Qloo API calls
+        const timeout = 30000;
+        
+        super(apiUrl, timeout);
         this.config = config;
         
         console.log('Qloo Service: Using secure proxy at', apiUrl);

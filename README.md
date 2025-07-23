@@ -116,6 +116,7 @@ Transform any vibe into a comprehensive cultural ecosystem:
 - **[Design System](docs/development/design.md)** - UI/UX guidelines and component design
 - **[API Integration](docs/api/qloo.md)** - Qloo API integration details
 - **[Deployment Guide](docs/deployment/netlify.md)** - Netlify deployment instructions
+- **[Branching Strategy](docs/deployment/branching-strategy.md)** - Git workflow and release process
 
 ### Testing Documentation
 - **[E2E Testing Guide](docs/testing/E2E_TESTING.md)** - Comprehensive testing documentation

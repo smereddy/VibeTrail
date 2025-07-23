@@ -31,16 +31,21 @@ export interface EnvironmentConfig {
 }
 
 // Determine if we're in production (deployed to Netlify)
-const isProduction = import.meta.env.PROD || window.location.hostname !== 'localhost';
+const isProduction = import.meta.env.PROD;
 
 // Get the base URL for API calls
 const getApiBaseUrl = () => {
-  // In production (Netlify), use the same domain with /.netlify/functions/
-  if (isProduction) {
+  // During build time, just return a placeholder
+  if (typeof window === 'undefined') {
+    return isProduction ? '/.netlify/functions' : 'http://localhost:3001/api';
+  }
+  
+  // Runtime: In production (Netlify), use the same domain with /.netlify/functions/
+  if (isProduction || window.location.hostname !== 'localhost') {
     return `${window.location.origin}/.netlify/functions`;
   }
   
-  // In development, use the environment variable or default to localhost
+  // Development: use the environment variable or default to localhost
   return import.meta.env.VITE_API_PROXY_URL || 'http://localhost:3001/api';
 };
 
@@ -69,8 +74,16 @@ export const environment: EnvironmentConfig = {
   }
 };
 
-// Debug logging
-if (environment.features.enableDebugLogs) {
+/**
+ * Get environment configuration
+ * This function is used by services to access environment settings
+ */
+export function getEnvironmentConfig(): EnvironmentConfig {
+  return environment;
+}
+
+// Debug logging (only in browser environment)
+if (environment.features.enableDebugLogs && typeof window !== 'undefined') {
   console.log('🔧 Environment Config:', {
     environment: environment.app.environment,
     apiUrl: environment.app.apiProxyUrl,
