@@ -4,6 +4,22 @@
 
 VibeTrail is an intelligent cultural experience planner that adapts to your lifestyle and preferences. Using AI and Qloo's comprehensive cultural database, it creates personalized recommendations across multiple domains - from places and entertainment to books and games - tailored to your specific vibe and context.
 
+## 🏗️ **Architecture Overview**
+
+### **Serverless Backend Architecture**
+VibeTrail uses a modern serverless architecture with Netlify Functions:
+
+- **Frontend**: React 18 + TypeScript + Vite
+- **Backend**: Netlify Functions (Node.js serverless functions)
+- **APIs**: OpenAI GPT-4, Qloo Cross-Domain API
+- **Deployment**: Netlify with automatic CI/CD
+- **Environment Detection**: Automatic production/development switching
+
+### **Smart Environment Configuration**
+- **Production**: `/.netlify/functions/` endpoints (auto-detected)
+- **Development**: `http://localhost:3001/api/` endpoints (auto-detected)
+- **No manual configuration required**
+
 ## 🌟 **Core Innovation: Dynamic Experience Types**
 
 ### **Lifestyle-Based Modes**
@@ -136,7 +152,7 @@ Tabs are generated based on the most relevant entity types for your vibe:
 4. **WHEN** sharing plans **THEN** no personal information SHALL be included
 
 ### **API Security**
-1. **WHEN** calling external APIs **THEN** all requests SHALL go through secure proxy
+1. **WHEN** calling external APIs **THEN** all requests SHALL go through secure serverless functions
 2. **WHEN** handling API keys **THEN** they SHALL never be exposed client-side
 3. **WHEN** transmitting data **THEN** all communications SHALL use HTTPS
 4. **WHEN** errors occur **THEN** no sensitive information SHALL be leaked
@@ -161,16 +177,51 @@ Tabs are generated based on the most relevant entity types for your vibe:
 
 ## 🛠️ **Technical Constraints**
 
+### **Serverless Architecture**
+- **Netlify Functions**: All backend logic runs in serverless functions
+- **Cold Start Optimization**: Functions optimized for fast cold starts
+- **Stateless Design**: No server-side session storage
+- **Environment Variables**: Secure API key management via Netlify
+
 ### **API Dependencies**
-- **Qloo Hackathon API**: Primary source for cultural recommendations
+- **Qloo API**: Primary source for cultural recommendations
 - **OpenAI GPT**: Natural language processing and explanation generation
 - **Rate Limits**: Must handle API rate limiting gracefully
 - **Fallback Strategy**: Graceful degradation when APIs are unavailable
 
 ### **Deployment Requirements**
-- **Serverless Architecture**: Must deploy on Vercel or similar platform
-- **Environment Variables**: Secure API key management
-- **CDN Integration**: Fast global content delivery
+- **Netlify Platform**: Optimized for Netlify deployment and functions
+- **Environment Detection**: Automatic production/development switching
+- **CDN Integration**: Fast global content delivery via Netlify Edge
 - **Monitoring**: Basic error tracking and performance monitoring
 
-This requirements document establishes VibeTrail 2.0 as a sophisticated, adaptive cultural recommendation system that goes beyond simple category browsing to create truly personalized experience planning. 
+### **Function Specifications**
+- **`/taste`**: Main vibe processing (OpenAI + Qloo integration)
+- **`/plan-day`**: AI-powered day planning with OpenAI
+- **`/ecosystem-analysis`**: Cultural ecosystem analysis
+- **`/health`**: Health check and API status monitoring
+
+---
+
+## 🚀 **Deployment Architecture**
+
+### **Production Environment**
+- **Platform**: Netlify with automatic deployments
+- **Functions**: Serverless functions at `/.netlify/functions/`
+- **Environment Variables**: Managed via Netlify dashboard
+- **CDN**: Global edge distribution for optimal performance
+
+### **Development Environment**
+- **Local Development**: Vite dev server on auto-detected port
+- **Function Testing**: Local Netlify Functions simulation
+- **Environment Detection**: Automatic endpoint switching
+- **Hot Reload**: Instant updates during development
+
+### **CI/CD Pipeline**
+- **Source Control**: GitHub repository integration
+- **Automatic Builds**: Triggered on git push to main branch
+- **Build Command**: `npm run build`
+- **Function Deployment**: Automatic serverless function deployment
+- **Environment Variables**: Secure key management
+
+This requirements document establishes VibeTrail 2.0 as a sophisticated, serverless cultural recommendation system that leverages modern deployment practices and scalable architecture for optimal performance and user experience. 

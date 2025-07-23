@@ -6,13 +6,11 @@
 [![React](https://img.shields.io/badge/React-18.3.1-blue.svg)](https://reactjs.org/)
 [![TypeScript](https://img.shields.io/badge/TypeScript-5.5.3-blue.svg)](https://www.typescriptlang.org/)
 [![License](https://img.shields.io/badge/license-MIT-green.svg)](LICENSE)
-[![Qloo Hackathon](https://img.shields.io/badge/Qloo%20LLM-Hackathon%20Submission-gold.svg)](HACKATHON.md)
+[![Netlify](https://img.shields.io/badge/deploy-Netlify-00C7B7.svg)](https://netlify.com)
 
 ## 🌟 Overview
 
 VibeTrail is a groundbreaking **Cultural Intelligence Platform** that combines **OpenAI GPT-4** and **Qloo's Cross-Domain API** to create rich, interconnected cultural ecosystems from simple vibe descriptions. Our platform doesn't just recommend individual items—it reveals the hidden cultural connections that define your taste and identity.
-
-**🏆 Qloo LLM Hackathon Submission**: [Read our full hackathon documentation](HACKATHON.md)
 
 ### ✨ Revolutionary Features
 
@@ -63,11 +61,27 @@ npm install
 cp .env.example .env
 # Add your API keys to .env
 
-# Start development servers
-npm run dev:full
+# Start development server
+npm run dev
 ```
 
-Visit `http://localhost:5173` to explore your cultural ecosystem!
+Visit `http://localhost:5174` to explore your cultural ecosystem!
+
+## 🏗️ Architecture
+
+### Serverless Backend
+VibeTrail uses **Netlify Functions** for a scalable, serverless backend:
+
+- **`/taste`** - Main vibe processing endpoint (OpenAI + Qloo integration)
+- **`/plan-day`** - AI-powered day planning with OpenAI
+- **`/ecosystem-analysis`** - Cultural ecosystem analysis
+- **`/health`** - Health check and API status
+
+### Smart Environment Detection
+The app automatically detects production vs development environments:
+- **Production**: Uses `/.netlify/functions/` endpoints
+- **Development**: Uses `http://localhost:3001/api/` endpoints
+- **No manual configuration required**
 
 ## 🎭 Cultural Ecosystem Features
 
@@ -98,10 +112,10 @@ Transform any vibe into a comprehensive cultural ecosystem:
 ## 📚 Documentation
 
 ### Core Documentation
-- **[Hackathon Submission](HACKATHON.md)** - Complete hackathon documentation and technical details
 - **[Development Guide](docs/development/requirements.md)** - Technical requirements and architecture
 - **[Design System](docs/development/design.md)** - UI/UX guidelines and component design
 - **[API Integration](docs/api/qloo.md)** - Qloo API integration details
+- **[Deployment Guide](docs/deployment/netlify.md)** - Netlify deployment instructions
 
 ### Testing Documentation
 - **[E2E Testing Guide](docs/testing/E2E_TESTING.md)** - Comprehensive testing documentation
@@ -113,9 +127,8 @@ Transform any vibe into a comprehensive cultural ecosystem:
 
 ```bash
 # Development
-npm run dev              # Start Vite dev server
-npm run dev:full         # Start both app and proxy server
-npm run proxy           # Start API proxy server only
+npm run dev              # Start Vite dev server (auto-detects port)
+npm run dev:functions    # Start Netlify Functions locally (for testing)
 
 # Building
 npm run build           # Build for production
@@ -124,14 +137,12 @@ npm run preview         # Preview production build
 # Testing
 npm run test            # Run unit tests
 npm run test:e2e        # Run Playwright e2e tests
-npm run test:e2e:enhanced # Run comprehensive API tests
-npm run test:debug      # Run API debugging tests
+npm run test:functions  # Test Netlify Functions locally
 npm run test:all        # Run all tests
 
 # Maintenance
 npm run lint            # Run ESLint
 npm run clean           # Clean test reports and build files
-npm run clean:all       # Clean everything including node_modules
 ```
 
 ### Project Structure
@@ -140,31 +151,36 @@ npm run clean:all       # Clean everything including node_modules
 vibetrail/
 ├── src/                    # Source code
 │   ├── components/         # React components
-│   │   ├── CulturalNetworkVisualization.tsx  # Network graph
 │   │   ├── RecommendationGrid.tsx            # Dynamic tabs
-│   │   └── AdvancedVibeInput.tsx             # AI vibe processing
+│   │   ├── AdvancedVibeInput.tsx             # AI vibe processing
+│   │   └── TasteGraph.tsx                    # Network visualization
 │   ├── pages/             # Page components
-│   │   ├── CulturalEcosystem.tsx             # Main ecosystem page
-│   │   └── Results.tsx                       # Dynamic recommendations
+│   │   ├── Home.tsx                          # Landing page
+│   │   ├── Results.tsx                       # Dynamic recommendations
+│   │   └── About.tsx                         # How it works page
 │   ├── services/          # API services
-│   │   ├── CulturalEcosystemService.ts       # Core ecosystem engine
 │   │   ├── QlooService.ts                    # Qloo API integration
 │   │   └── OpenAIService.ts                  # AI integration
 │   ├── context/           # React context
 │   ├── types/             # TypeScript types
-│   └── utils/             # Utility functions
+│   └── config/            # Environment configuration
+├── netlify/               # Netlify Functions
+│   └── functions/         # Serverless functions
+│       ├── taste.js       # Main vibe processing
+│       ├── plan-day.js    # Day planning
+│       ├── ecosystem-analysis.js # Cultural analysis
+│       └── health.js      # Health check
 ├── tests/                 # Testing suite
 │   ├── e2e/              # End-to-end tests
 │   ├── unit/             # Unit tests
-│   ├── debug/            # Debug scripts
 │   └── reports/          # Test reports
 ├── docs/                  # Documentation
 │   ├── api/              # API documentation
 │   ├── development/      # Development guides
+│   ├── deployment/       # Deployment guides
 │   └── testing/          # Testing documentation
-├── api/                   # Vercel API routes
-├── proxy-server.cjs       # Development proxy server
-└── HACKATHON.md          # Hackathon submission documentation
+├── netlify.toml          # Netlify configuration
+└── package.json          # Dependencies and scripts
 ```
 
 ## 🔧 Technology Stack
@@ -174,11 +190,10 @@ vibetrail/
 - **TypeScript 5.5.3** - Type safety for complex cultural data structures
 - **Vite 5.4.2** - Build tool optimized for fast development
 - **Tailwind CSS 3.4.1** - Styling framework with custom cultural themes
-- **Framer Motion 12.23.6** - Smooth animations for network visualizations
 - **React Router 7.7.0** - Client-side routing for ecosystem navigation
 
 ### Backend & APIs
-- **Express 5.1.0** - Proxy server with advanced AI endpoints
+- **Netlify Functions** - Serverless functions for scalable backend
 - **OpenAI API 5.10.2** - GPT-4 for cultural intelligence and analysis
 - **Qloo Taste AI** - Cross-domain cultural recommendations (8 entity types)
 - **Axios 1.10.0** - HTTP client with intelligent retry logic
@@ -226,44 +241,58 @@ VibeTrail includes comprehensive testing for cultural intelligence:
 - **AI Enhancement**: Validate OpenAI cultural analysis
 - **Performance**: Network visualization and large dataset handling
 
-### API Tests
-- **Enhanced E2E**: Comprehensive cultural ecosystem testing
-- **Multi-Entity Processing**: Parallel API call validation
-- **Cultural Intelligence**: AI prompt and response validation
-- **Connection Algorithms**: Cultural relationship discovery testing
+### Function Tests
+- **Serverless Functions**: Test Netlify Functions locally and in production
+- **API Integration**: Validate OpenAI and Qloo API integration
+- **Error Handling**: Test graceful degradation and error responses
+- **Performance**: Load testing and timeout handling
 
 Run tests with:
 ```bash
 npm run test:all          # All tests including cultural ecosystem
 npm run test:e2e          # Playwright browser tests
-npm run test:e2e:enhanced # Cultural ecosystem API tests
-npm run test:debug        # Cultural intelligence debugging
+npm run test:functions    # Netlify Functions testing
 ```
-
-## 🏆 Hackathon Achievement
-
-**Qloo LLM Hackathon Submission**: VibeTrail represents a breakthrough in cultural intelligence, showcasing:
-
-- **Maximum Qloo Integration**: 8 entity types with parallel processing
-- **Advanced AI Usage**: Cultural anthropology-level analysis
-- **Novel Visualization**: Interactive cultural network graphs
-- **Real-World Application**: Scalable cultural intelligence platform
-
-[Read our complete hackathon documentation →](HACKATHON.md)
 
 ## 🚀 Deployment
 
-### Vercel (Recommended)
-```bash
-npm run build
-vercel --prod
-```
+### Netlify (Recommended)
 
-### Manual Deployment
+VibeTrail is optimized for Netlify deployment with automatic serverless functions:
+
+1. **Connect Repository**
+   ```bash
+   # Connect your GitHub repository to Netlify
+   # Netlify will auto-detect the configuration from netlify.toml
+   ```
+
+2. **Set Environment Variables**
+   In your Netlify dashboard, add:
+   ```
+   OPENAI_API_KEY=your_openai_api_key
+   QLOO_API_KEY=your_qloo_api_key
+   ```
+
+3. **Deploy**
+   ```bash
+   # Automatic deployment on git push
+   # Or manual deployment:
+   npm run build
+   netlify deploy --prod
+   ```
+
+### Environment Configuration
+The app automatically detects the environment:
+- **Production**: Uses Netlify Functions at `/.netlify/functions/`
+- **Development**: Uses local server at `http://localhost:3001/api/`
+- **No manual configuration required**
+
+### Custom Deployment
+For other platforms:
 ```bash
 npm run build
 # Deploy dist/ folder to your hosting provider
-# Ensure proxy server is configured for cultural ecosystem APIs
+# Ensure serverless functions are configured for API endpoints
 ```
 
 ## 🤝 Contributing
@@ -291,8 +320,8 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 
 - **Qloo** for providing revolutionary cross-domain cultural intelligence
 - **OpenAI** for enabling sophisticated cultural analysis with GPT-4
+- **Netlify** for seamless serverless deployment and functions
 - **React Team** for the foundation of our cultural platform
-- **Vercel** for seamless deployment of cultural experiences
 - **The Cultural Intelligence Community** for inspiring cross-domain thinking
 
 ---
