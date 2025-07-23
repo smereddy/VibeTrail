@@ -133,7 +133,7 @@ export class OpenAIService extends BaseAPIService {
    */
   async detectVibeContext(vibe: string): Promise<APIResponse<ContextDetectionResult>> {
     const request: OpenAIRequest = {
-      model: this.config.openai.model,
+      model: this.config.api.openai.model,
       max_tokens: 500,
       temperature: 0.3, // Lower temperature for more consistent context detection
       messages: [
@@ -238,7 +238,7 @@ export class OpenAIService extends BaseAPIService {
     ];
 
     const request: OpenAIRequest = {
-      model: this.config.openai.model,
+      model: this.config.api.openai.model,
       max_tokens: 800,
       temperature: 0.4,
       messages: [
@@ -330,9 +330,9 @@ export class OpenAIService extends BaseAPIService {
    */
   async extractSeeds(vibe: string): Promise<APIResponse<ExtractedSeed[]>> {
     const request: OpenAIRequest = {
-      model: this.config.openai.model,
-      max_tokens: this.config.openai.maxTokens,
-      temperature: this.config.openai.temperature,
+      model: this.config.api.openai.model,
+      max_tokens: this.config.api.openai.maxTokens,
+      temperature: this.config.api.openai.temperature,
       messages: [
         {
           role: 'system',
@@ -594,9 +594,9 @@ export class OpenAIService extends BaseAPIService {
       '';
 
     const request: OpenAIRequest = {
-      model: this.config.openai.model,
-      max_tokens: this.config.openai.maxTokens,
-      temperature: this.config.openai.temperature,
+      model: this.config.api.openai.model,
+      max_tokens: this.config.api.openai.maxTokens,
+      temperature: this.config.api.openai.temperature,
       messages: [
         {
           role: 'system',
@@ -674,9 +674,9 @@ export class OpenAIService extends BaseAPIService {
       '';
 
     const request: OpenAIRequest = {
-      model: this.config.openai.model,
-      max_tokens: this.config.openai.maxTokens,
-      temperature: this.config.openai.temperature,
+      model: this.config.api.openai.model,
+      max_tokens: this.config.api.openai.maxTokens,
+      temperature: this.config.api.openai.temperature,
       messages: [
         {
           role: 'system',
