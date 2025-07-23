@@ -35,13 +35,16 @@ const TasteGraph: React.FC = () => {
       }))
     ];
 
-    // Create links from relationships
-    const links = currentCity.relationships.map(rel => ({
-      source: rel.source,
-      target: rel.target,
-      strength: rel.strength,
-      reason: rel.reason
-    }));
+    // Create links from relationships, filtering out invalid references
+    const nodeIds = new Set(nodes.map(n => n.id));
+    const links = currentCity.relationships
+      .filter(rel => nodeIds.has(rel.source) && nodeIds.has(rel.target))
+      .map(rel => ({
+        source: rel.source,
+        target: rel.target,
+        strength: rel.strength,
+        reason: rel.reason
+      }));
 
     // Color scale for different categories
     const colorScale = d3.scaleOrdinal<string>()
@@ -174,11 +177,28 @@ const TasteGraph: React.FC = () => {
       </div>
       
       <div className="flex justify-center">
-        <svg
-          ref={svgRef}
-          className="border border-gray-200 rounded-lg"
-          style={{ maxWidth: '100%', height: 'auto' }}
-        />
+        {links.length === 0 ? (
+          <div className="text-center py-12">
+            <div className="text-gray-400 mb-4">
+              <svg className="h-16 w-16 mx-auto" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z" />
+              </svg>
+            </div>
+            <h3 className="text-lg font-medium text-gray-900 mb-2">
+              Taste Graph Generating
+            </h3>
+            <p className="text-gray-500">
+              Relationships between your taste preferences are being analyzed. 
+              This visualization will show connections once more data is processed.
+            </p>
+          </div>
+        ) : (
+          <svg
+            ref={svgRef}
+            className="border border-gray-200 rounded-lg"
+            style={{ maxWidth: '100%', height: 'auto' }}
+          />
+        )}
       </div>
     </motion.div>
   );

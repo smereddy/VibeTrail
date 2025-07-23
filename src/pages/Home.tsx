@@ -1,125 +1,200 @@
-import React, { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import React from 'react';
 import { motion } from 'framer-motion';
-import { Search, MapPin, Sparkles } from 'lucide-react';
-import { useApp } from '../context/AppContext';
-import { cities } from '../data/mockData';
+import { Link } from 'react-router-dom';
+import { MapPin, Sparkles, Clock, Heart, ArrowRight, Star, Users, Zap } from 'lucide-react';
 
 const Home: React.FC = () => {
-  const navigate = useNavigate();
-  const { setCurrentCity, setVibeInput, setIsLoading } = useApp();
-  const [inputValue, setInputValue] = useState('');
-  const [selectedCity, setSelectedCity] = useState(cities[0]);
 
-  const quickStartVibes = [
-    'La La Land weekend',
-    'Jazz and tacos',
-    'Family science day',
-    'Desert sunset vibes',
-    'Vintage cinema night'
+
+
+  const quickStartOptions = [
+    { text: "cozy coffee shop vibes", icon: "☕", category: "indoor" },
+    { text: "outdoor adventure day", icon: "🏔️", category: "outdoor" },
+    { text: "cultural exploration", icon: "🎭", category: "hybrid" },
+    { text: "foodie paradise tour", icon: "🍽️", category: "hybrid" },
+    { text: "nightlife and music", icon: "🎵", category: "indoor" },
+    { text: "family-friendly fun", icon: "👨‍👩‍👧‍👦", category: "hybrid" }
   ];
 
-  const handleSubmit = async (vibe: string) => {
-    if (!vibe.trim()) return;
-    
-    setVibeInput(vibe);
-    setCurrentCity(selectedCity);
-    setIsLoading(true);
-    
-    // Simulate API delay
-    setTimeout(() => {
-      navigate('/results');
-    }, 2000);
-  };
+  const features = [
+    {
+      icon: <MapPin className="w-6 h-6" />,
+      title: "Choose your city",
+      description: "Select the city you're exploring or planning to visit."
+    },
+    {
+      icon: <Sparkles className="w-6 h-6" />,
+      title: "Share your vibe",
+      description: "Tell us your interests or desired vibe for the day."
+    },
+    {
+      icon: <Heart className="w-6 h-6" />,
+      title: "Get your plan",
+      description: "Receive a personalized one-day plan with activities and locations."
+    }
+  ];
 
-  const handleQuickStart = (vibe: string) => {
-    setInputValue(vibe);
-    handleSubmit(vibe);
-  };
+  const stats = [
+    { number: "10+", label: "Cities" },
+    { number: "1000+", label: "Recommendations" },
+    { number: "AI-Powered", label: "Personalization" }
+  ];
 
   return (
-    <div className="min-h-[80vh] flex items-center justify-center">
-      <div className="max-w-4xl mx-auto text-center">
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.8 }}
-        >
-          <div className="flex items-center justify-center mb-6">
-            <Sparkles className="h-12 w-12 text-purple-600 mr-4" />
-            <h1 className="text-5xl font-bold text-gray-900">
-              Turn any vibe into a day you can actually do
-            </h1>
-          </div>
-          
-          <p className="text-xl text-gray-600 mb-8 max-w-2xl mx-auto">
-            Share your mood or list a few likes. We'll create a culturally coherent plan 
-            with food, activities, and media that fit your vibe — all in your chosen city.
-          </p>
-          
-          <div className="bg-white rounded-lg shadow-lg p-8 mb-8">
-            <div className="flex items-center space-x-4 mb-6">
-              <div className="flex-1">
-                <div className="relative">
-                  <Search className="absolute left-3 top-3 h-6 w-6 text-gray-400" />
-                  <input
-                    type="text"
-                    placeholder="Describe your vibe or list things you love..."
-                    value={inputValue}
-                    onChange={(e) => setInputValue(e.target.value)}
-                    onKeyPress={(e) => e.key === 'Enter' && handleSubmit(inputValue)}
-                    className="w-full pl-12 pr-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-transparent text-lg"
-                  />
-                </div>
-              </div>
-              
-              <div className="flex items-center space-x-2">
-                <MapPin className="h-5 w-5 text-gray-400" />
-                <select
-                  value={selectedCity.code}
-                  onChange={(e) => setSelectedCity(cities.find(city => city.code === e.target.value) || cities[0])}
-                  className="px-3 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-transparent"
-                >
-                  {cities.map(city => (
-                    <option key={city.code} value={city.code}>
-                      {city.name}
-                    </option>
-                  ))}
-                </select>
-              </div>
-            </div>
-            
-            <button
-              onClick={() => handleSubmit(inputValue)}
-              disabled={!inputValue.trim()}
-              className="w-full bg-gradient-to-r from-purple-600 to-pink-600 text-white font-semibold py-3 px-6 rounded-lg hover:from-purple-700 hover:to-pink-700 disabled:opacity-50 disabled:cursor-not-allowed transition-all duration-200 transform hover:scale-105"
+    <div className="min-h-screen bg-gradient-to-br from-neutral-50 via-primary-50/30 to-neutral-100">
+      {/* Hero Section */}
+      <section className="relative overflow-hidden">
+        {/* Background Image with Overlay */}
+        <div className="absolute inset-0 z-0">
+          <img
+            src="https://images.unsplash.com/photo-1449824913935-59a10b8d2000?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80"
+            alt="City skyline"
+            className="w-full h-full object-cover"
+          />
+          <div className="absolute inset-0 hero-overlay"></div>
+        </div>
+
+        <div className="relative z-10 container-custom section-padding">
+          <div className="max-w-4xl mx-auto text-center">
+            {/* Main Headline */}
+            <motion.div
+              initial={{ opacity: 0, y: 30 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.8 }}
+              className="mb-8"
             >
-              Generate My Day Plan
-            </button>
-          </div>
-          
-          <div className="mb-8">
-            <p className="text-sm text-gray-500 mb-4">Quick start with these vibes:</p>
-            <div className="flex flex-wrap justify-center gap-3">
-              {quickStartVibes.map((vibe) => (
-                <button
-                  key={vibe}
-                  onClick={() => handleQuickStart(vibe)}
-                  className="px-4 py-2 bg-purple-100 text-purple-700 rounded-full hover:bg-purple-200 transition-colors"
-                >
-                  {vibe}
-                </button>
+              <h1 className="text-5xl md:text-6xl font-bold text-white mb-6 text-shadow">
+                Your perfect day, planned in seconds
+              </h1>
+              <p className="text-xl md:text-2xl text-white/90 leading-relaxed max-w-3xl mx-auto text-shadow-sm">
+                Tell us your vibe or a few things you like, and we'll craft a one-day plan you'll love, in any city.
+              </p>
+            </motion.div>
+
+            {/* CTA Button */}
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.8, delay: 0.2 }}
+            >
+              <Link
+                to="/create-plan"
+                className="btn-hero"
+              >
+                Create a plan
+                <ArrowRight className="ml-2 w-5 h-5" />
+              </Link>
+            </motion.div>
+
+            {/* Stats */}
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.8, delay: 0.4 }}
+              className="mt-16 grid grid-cols-3 gap-8 max-w-md mx-auto"
+            >
+              {stats.map((stat, index) => (
+                <div key={index} className="text-center">
+                  <div className="text-2xl md:text-3xl font-bold text-white mb-1">
+                    {stat.number}
+                  </div>
+                  <div className="text-sm text-white/80 uppercase tracking-wide">
+                    {stat.label}
+                  </div>
+                </div>
               ))}
-            </div>
+            </motion.div>
           </div>
-          
-          <p className="text-sm text-gray-500">
-            <span className="font-semibold">Privacy-first:</span> We use taste signals only — no personal data needed.
-            <br />
-            Powered by <span className="text-purple-600 font-semibold">Qloo Taste AI</span> for cross-category cultural intelligence.
-          </p>
-        </motion.div>
-      </div>
+        </div>
+      </section>
+
+      {/* How it works Section */}
+      <section className="section-padding bg-white">
+        <div className="container-custom">
+          <div className="text-center mb-16">
+            <h2 className="heading-lg mb-4">How it works</h2>
+            <p className="body-lg max-w-2xl mx-auto">
+              VibeTrail makes planning your day effortless and fun.
+            </p>
+          </div>
+
+          <div className="grid md:grid-cols-3 gap-8 max-w-4xl mx-auto">
+            {features.map((feature, index) => (
+              <motion.div
+                key={index}
+                initial={{ opacity: 0, y: 30 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.6, delay: index * 0.1 }}
+                viewport={{ once: true }}
+                className="text-center"
+              >
+                <div className="w-16 h-16 mx-auto mb-6 bg-primary-100 rounded-2xl flex items-center justify-center text-primary-600">
+                  {feature.icon}
+                </div>
+                <h3 className="heading-sm mb-3">{feature.title}</h3>
+                <p className="body-base">
+                  {feature.description}
+                </p>
+              </motion.div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* Quick Start Section */}
+      <section className="section-padding bg-neutral-50">
+        <div className="container-custom">
+          <div className="text-center mb-12">
+            <h2 className="heading-lg mb-4">Quick Start Ideas</h2>
+            <p className="body-lg max-w-2xl mx-auto">
+              Not sure what you're in the mood for? Try one of these popular vibes.
+            </p>
+          </div>
+
+          <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-4 max-w-4xl mx-auto mb-12">
+            {quickStartOptions.map((option, index) => (
+              <motion.div
+                key={index}
+                initial={{ opacity: 0, y: 20 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.5, delay: index * 0.1 }}
+                viewport={{ once: true }}
+              >
+                <Link
+                  to="/create-plan"
+                  className="card-hover p-6 text-left group block"
+                >
+                  <div className="flex items-center space-x-3">
+                    <span className="text-2xl">{option.icon}</span>
+                    <span className="font-medium text-neutral-800 group-hover:text-primary-600 transition-colors">
+                      {option.text}
+                    </span>
+                  </div>
+                </Link>
+              </motion.div>
+            ))}
+          </div>
+
+
+        </div>
+      </section>
+
+      {/* CTA Section */}
+      <section className="section-padding bg-primary-600">
+        <div className="container-custom text-center">
+          <h2 className="text-3xl md:text-4xl font-bold text-white mb-4">
+            Ready to explore? Start planning your perfect day now.
+          </h2>
+          <Link
+            to="/create-plan"
+            className="btn-secondary mt-6"
+          >
+            Create a plan
+          </Link>
+        </div>
+      </section>
+
+
     </div>
   );
 };

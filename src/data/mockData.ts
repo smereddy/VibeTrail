@@ -172,6 +172,126 @@ export const cities: CityData[] = [
       { source: 'desert', target: 'desert-botanical-garden', strength: 0.89, reason: 'Desert environment' },
       { source: 'desert', target: 'desert-sounds-playlist', strength: 0.86, reason: 'Desert atmosphere music' }
     ]
+  },
+  {
+    name: 'New York',
+    code: 'NYC',
+    seeds: [
+      { id: 'jazz', text: 'Jazz', category: 'Music', confidence: 0.95 },
+      { id: 'broadway', text: 'Broadway Shows', category: 'Entertainment', confidence: 0.92 },
+      { id: 'artgallery', text: 'Art Galleries', category: 'Culture', confidence: 0.89 },
+      { id: 'rooftop', text: 'Rooftop Views', category: 'Experience', confidence: 0.87 }
+    ],
+    recommendations: [],
+    relationships: []
+  },
+  {
+    name: 'Denver',
+    code: 'DEN',
+    seeds: [
+      { id: 'mountains', text: 'Mountain Views', category: 'Nature', confidence: 0.94 },
+      { id: 'craft-beer', text: 'Craft Beer', category: 'Food', confidence: 0.91 },
+      { id: 'hiking', text: 'Outdoor Hiking', category: 'Activity', confidence: 0.88 },
+      { id: 'local-music', text: 'Local Music Scene', category: 'Music', confidence: 0.85 }
+    ],
+    recommendations: [],
+    relationships: []
+  },
+  {
+    name: 'Seattle',
+    code: 'SEA',
+    seeds: [
+      { id: 'coffee', text: 'Coffee Culture', category: 'Food', confidence: 0.93 },
+      { id: 'grunge', text: 'Grunge Music', category: 'Music', confidence: 0.90 },
+      { id: 'waterfront', text: 'Waterfront Views', category: 'Nature', confidence: 0.87 },
+      { id: 'tech-culture', text: 'Tech Culture', category: 'Culture', confidence: 0.84 }
+    ],
+    recommendations: [],
+    relationships: []
+  },
+  {
+    name: 'Dallas',
+    code: 'DAL',
+    seeds: [
+      { id: 'bbq', text: 'BBQ Culture', category: 'Food', confidence: 0.92 },
+      { id: 'country-music', text: 'Country Music', category: 'Music', confidence: 0.89 },
+      { id: 'cowboy-culture', text: 'Cowboy Heritage', category: 'Culture', confidence: 0.86 },
+      { id: 'sports', text: 'Sports Scene', category: 'Activity', confidence: 0.88 }
+    ],
+    recommendations: [],
+    relationships: []
+  },
+  {
+    name: 'Omaha',
+    code: 'OMA',
+    seeds: [
+      { id: 'steakhouse', text: 'Steakhouse Dining', category: 'Food', confidence: 0.90 },
+      { id: 'zoo', text: 'World-Class Zoo', category: 'Activity', confidence: 0.87 },
+      { id: 'riverfront', text: 'Missouri River', category: 'Nature', confidence: 0.84 },
+      { id: 'jazz-heritage', text: 'Jazz Heritage', category: 'Music', confidence: 0.82 }
+    ],
+    recommendations: [],
+    relationships: []
+  },
+  {
+    name: 'Chicago',
+    code: 'CHI',
+    seeds: [
+      { id: 'deep-dish', text: 'Deep Dish Pizza', category: 'Food', confidence: 0.94 },
+      { id: 'blues', text: 'Blues Music', category: 'Music', confidence: 0.91 },
+      { id: 'architecture', text: 'Architecture Tours', category: 'Culture', confidence: 0.88 },
+      { id: 'lakefront', text: 'Lake Michigan', category: 'Nature', confidence: 0.85 }
+    ],
+    recommendations: [],
+    relationships: []
+  },
+  {
+    name: 'Miami',
+    code: 'MIA',
+    seeds: [
+      { id: 'art-deco', text: 'Art Deco District', category: 'Culture', confidence: 0.92 },
+      { id: 'latin-music', text: 'Latin Music', category: 'Music', confidence: 0.90 },
+      { id: 'beach-culture', text: 'Beach Lifestyle', category: 'Activity', confidence: 0.89 },
+      { id: 'cuban-food', text: 'Cuban Cuisine', category: 'Food', confidence: 0.87 }
+    ],
+    recommendations: [],
+    relationships: []
+  },
+  {
+    name: 'Austin',
+    code: 'AUS',
+    seeds: [
+      { id: 'live-music', text: 'Live Music Capital', category: 'Music', confidence: 0.95 },
+      { id: 'food-trucks', text: 'Food Truck Scene', category: 'Food', confidence: 0.88 },
+      { id: 'keep-austin-weird', text: 'Weird Culture', category: 'Culture', confidence: 0.86 },
+      { id: 'outdoor-festivals', text: 'Music Festivals', category: 'Activity', confidence: 0.91 }
+    ],
+    recommendations: [],
+    relationships: []
+  },
+  {
+    name: 'San Francisco',
+    code: 'SF',
+    seeds: [
+      { id: 'golden-gate', text: 'Golden Gate Bridge', category: 'Nature', confidence: 0.93 },
+      { id: 'tech-scene', text: 'Tech Innovation', category: 'Culture', confidence: 0.90 },
+      { id: 'sourdough', text: 'Sourdough Bread', category: 'Food', confidence: 0.87 },
+      { id: 'cable-cars', text: 'Historic Cable Cars', category: 'Activity', confidence: 0.85 }
+    ],
+    recommendations: [],
+    relationships: []
+  },
+  {
+    name: 'Nashville',
+    code: 'NSH',
+    seeds: [
+      { id: 'country-music', text: 'Country Music Capital', category: 'Music', confidence: 0.96 },
+      { id: 'honky-tonk', text: 'Honky Tonk Bars', category: 'Activity', confidence: 0.92 },
+      { id: 'southern-food', text: 'Southern Cuisine', category: 'Food', confidence: 0.89 },
+      { id: 'music-city', text: 'Music City Culture', category: 'Culture', confidence: 0.94 }
+    ],
+    recommendations: [],
+    relationships: []
   }
 ];
 

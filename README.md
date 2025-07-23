@@ -1,324 +1,302 @@
-# vibetrail - Qloo Global Hackathon Prototype
+# VibeTrail 🎯
 
-Transform any vibe into a day you can actually do.
+> AI-powered cultural intelligence platform that transforms your vibes into interconnected cultural ecosystems
 
-## 🎯 Project Overview
+[![Version](https://img.shields.io/badge/version-2.0.0-blue.svg)](package.json)
+[![React](https://img.shields.io/badge/React-18.3.1-blue.svg)](https://reactjs.org/)
+[![TypeScript](https://img.shields.io/badge/TypeScript-5.5.3-blue.svg)](https://www.typescriptlang.org/)
+[![License](https://img.shields.io/badge/license-MIT-green.svg)](LICENSE)
+[![Qloo Hackathon](https://img.shields.io/badge/Qloo%20LLM-Hackathon%20Submission-gold.svg)](HACKATHON.md)
 
-vibetrail is a hackathon prototype built for the **Qloo Global Hackathon** that demonstrates the synergy between Large Language Models and Qloo's Taste AI. It transforms simple user vibes or preferences into actionable, culturally coherent day plans spanning food, activities, and media.
+## 🌟 Overview
 
-### The Challenge
-Create something that neither an LLM nor Qloo's API could accomplish alone - showcasing cross-domain cultural intelligence paired with natural language understanding.
+VibeTrail is a groundbreaking **Cultural Intelligence Platform** that combines **OpenAI GPT-4** and **Qloo's Cross-Domain API** to create rich, interconnected cultural ecosystems from simple vibe descriptions. Our platform doesn't just recommend individual items—it reveals the hidden cultural connections that define your taste and identity.
 
-### The Solution
-A privacy-first web application that:
-- Interprets user vibes using LLM processing
-- Generates cross-domain recommendations via Qloo's Taste AI
-- Creates schedulable day plans with AI explanations
-- Exports actionable calendar events
+**🏆 Qloo LLM Hackathon Submission**: [Read our full hackathon documentation](HACKATHON.md)
 
-## 🚀 Key Features
+### ✨ Revolutionary Features
 
-### Core Functionality
-- **Vibe Input**: Natural language processing of user moods and preferences
-- **Cross-Domain Recommendations**: Food, activities, and media suggestions
-- **Taste Relationship Graph**: Visual representation of cultural connections
-- **AI Day Planning**: Automated scheduling with explanations
-- **Calendar Export**: Downloadable .ics files for real-world use
+#### 🧠 **Cultural Ecosystem Discovery**
+- **Cross-Domain Intelligence**: Discover connections between food, music, movies, books, destinations, and more
+- **AI-Powered Analysis**: Sophisticated cultural anthropology insights about your taste profile
+- **Interactive Network Visualization**: See your cultural connections in real-time network graphs
+- **Psychological Profiling**: Understand the deeper patterns behind your cultural preferences
 
-### Advanced Features
-- **Weekend Planning**: Multi-day itinerary support
-- **Creator Insights**: Marketing intelligence for content creators
-- **Privacy-First Design**: No personal data collection
-- **Responsive Design**: Works across all devices
+#### 🎯 **Dynamic Vibe Processing**
+- **AI Seed Extraction**: OpenAI extracts meaningful cultural seeds from natural language
+- **Context-Aware Tabs**: Dynamic tab generation based on indoor/outdoor, time, and seasonal context
+- **Smart Recommendations**: Qloo API provides 8 entity types across cultural domains
+- **Ecosystem Scoring**: Quantitative analysis of cultural coherence and diversity
 
-## 🏗️ Technology Stack
+#### 🌐 **Advanced Visualization**
+- **Cultural Network Graph**: Interactive SVG visualization of entity relationships
+- **Connection Strength Mapping**: Visual representation of cultural affinity strength
+- **Domain Clustering**: Organized display of different cultural entity types
+- **Real-time Filtering**: Focus on connected entities for cleaner insights
 
-### Current (Prototype)
-- React 18 + TypeScript
-- Tailwind CSS for styling
-- Framer Motion for animations
-- D3.js for graph visualization
-- React Router for navigation
-- Mock data simulation
+#### 🤖 **AI-Enhanced Intelligence**
+- **Cultural Narrative Generation**: Compelling stories about your cultural identity
+- **Actionable Insights**: Personalized recommendations for cultural discovery
+- **Psychological Analysis**: Deep understanding of personality through cultural choices
+- **Theme Extraction**: Identification of unifying cultural themes across domains
 
-### Production (Future)
-- Qloo Taste AI API integration
-- OpenAI GPT-4 / Claude integration
-- Real-time event data feeds
-- Booking system integrations
-- Mobile app development
-
-## 🚦 Quick Start
+## 🚀 Quick Start
 
 ### Prerequisites
-- Node.js 18+ 
-- npm or yarn
+
+- Node.js >= 18.0.0
+- npm >= 8.0.0
+- OpenAI API Key
+- Qloo API Key
 
 ### Installation
+
 ```bash
 # Clone the repository
-git clone [repository-url]
+git clone https://github.com/your-org/vibetrail.git
 cd vibetrail
 
 # Install dependencies
 npm install
 
-# Start development server
-npm run dev
+# Set up environment variables
+cp .env.example .env
+# Add your API keys to .env
+
+# Start development servers
+npm run dev:full
 ```
 
-### Demo Flow (Under 3 Minutes)
-1. Enter vibe: "La La Land weekend" in Los Angeles
-2. Browse cross-domain recommendations
-3. View taste relationship graph
-4. Build day plan with drag-and-drop
-5. Export to calendar
+Visit `http://localhost:5173` to explore your cultural ecosystem!
 
-## 🎨 Design Philosophy
+## 🎭 Cultural Ecosystem Features
 
-### Privacy-First
-- No personal data collection
-- No user accounts required
-- Local browser processing
-- Taste signals only
+### 🔍 **Ecosystem Analysis**
+Transform any vibe into a comprehensive cultural ecosystem:
 
-### Cross-Domain Intelligence
-- Food recommendations linked to musical preferences
-- Activity suggestions based on film tastes
-- Media curation aligned with location vibes
-- Cultural coherence across categories
-
-### User Experience
-- Minimal friction input
-- Visual feedback systems
-- Accessible design patterns
-- Mobile-responsive layouts
-
-## 🔧 Architecture
-
-### Component Structure
 ```
-src/
-├── components/          # Reusable UI components
-├── pages/              # Route components
-├── context/            # Global state management
-├── data/               # Mock data and type definitions
-├── types/              # TypeScript definitions
-└── utils/              # Helper functions
+"cozy coffee shop vibes" →
+├── 🏪 Places: Artisan cafes, independent bookstores
+├── 🎵 Music: Indie folk, ambient jazz playlists  
+├── 📚 Books: Contemplative literature, coffee culture
+├── 🎬 Movies: Slow cinema, character-driven dramas
+└── 🌐 Connections: 23 cultural relationships discovered
 ```
 
-### State Management
-- React Context for global state
-- Local state for UI interactions
-- Mock data simulation for API calls
-- Persistent user selections
+### 📊 **Network Visualization**
+- **Interactive Graph**: Explore connections between cultural entities
+- **Strength Indicators**: Visual representation of relationship intensity
+- **Domain Filtering**: Focus on specific cultural areas
+- **Connection Details**: Understand why entities are related
 
-## 🌟 Key Differentiators
+### 🧭 **Cultural Intelligence**
+- **Ecosystem Coherence**: Measure how well your preferences align
+- **Cultural Themes**: Identify overarching patterns in your taste
+- **Psychological Insights**: Understand your cultural personality
+- **Discovery Recommendations**: Find new experiences that fit your profile
 
-### LLM + Qloo Synergy
-- **LLM**: Interprets user vibes and generates explanations
-- **Qloo**: Provides cross-domain taste relationships
-- **Combined**: Creates culturally coherent, actionable plans
+## 📚 Documentation
 
-### Cross-Domain Connections
-- Jazz music → Art Deco restaurants
-- Romantic films → Stargazing activities
-- Desert landscapes → Ambient music
-- Family activities → Educational media
+### Core Documentation
+- **[Hackathon Submission](HACKATHON.md)** - Complete hackathon documentation and technical details
+- **[Development Guide](docs/development/requirements.md)** - Technical requirements and architecture
+- **[Design System](docs/development/design.md)** - UI/UX guidelines and component design
+- **[API Integration](docs/api/qloo.md)** - Qloo API integration details
 
-## 📊 Demo Script
+### Testing Documentation
+- **[E2E Testing Guide](docs/testing/E2E_TESTING.md)** - Comprehensive testing documentation
+- **[Development Tasks](docs/development/tasks.md)** - Current development status and tasks
 
-### 1. Introduction (30 seconds)
-"vibetrail transforms any vibe into a day you can actually do by combining LLM understanding with Qloo's cross-domain taste intelligence."
+## 🛠️ Development
 
-### 2. Input Demo (30 seconds)
-- Show vibe input: "La La Land weekend"
-- Select Los Angeles
-- Demonstrate quick-start options
+### Available Scripts
 
-### 3. Results Exploration (60 seconds)
-- Browse food, activities, and media tabs
-- Show taste strength indicators
-- Explain cross-domain connections
-- Display taste relationship graph
+```bash
+# Development
+npm run dev              # Start Vite dev server
+npm run dev:full         # Start both app and proxy server
+npm run proxy           # Start API proxy server only
 
-### 4. Plan Building (45 seconds)
-- Select items across categories
-- Use auto-arrange AI feature
-- Show scheduling explanations
-- Export to calendar
+# Building
+npm run build           # Build for production
+npm run preview         # Preview production build
 
-### 5. Future Vision (15 seconds)
-- Weekend planning capabilities
-- Creator insights for marketing
-- Real-world API integration
+# Testing
+npm run test            # Run unit tests
+npm run test:e2e        # Run Playwright e2e tests
+npm run test:e2e:enhanced # Run comprehensive API tests
+npm run test:debug      # Run API debugging tests
+npm run test:all        # Run all tests
 
-## 🔒 Privacy & Security
-
-### Data Handling
-- No personal information collected
-- No user tracking or analytics
-- Local browser storage only
-- Taste signals are anonymous
-
-### Compliance
-- GDPR-friendly design
-- No cookies required
-- Transparent data usage
-- User control over all data
-
-## 📱 Responsive Design
-
-### Breakpoints
-- Mobile: <768px
-- Tablet: 768px-1024px
-- Desktop: >1024px
-
-### Optimizations
-- Touch-friendly interactions
-- Readable typography scales
-- Efficient image loading
-- Accessible color contrasts
-
-## 🎬 Video Demo Guidelines
-
-### Technical Requirements
-- Under 3 minutes total
-- Clear audio narration
-- Smooth screen recording
-- Functional demonstration
-
-### Content Structure
-1. Problem statement (15 seconds)
-2. Solution overview (30 seconds)
-3. Live demonstration (2 minutes)
-4. Technical innovation (30 seconds)
-5. Future potential (15 seconds)
-
-### Best Practices
-- Script the demo for timing
-- Practice transitions
-- Show actual functionality
-- Highlight LLM + Qloo synergy
-
-## 🛠️ Development Notes
-
-### Mock Data Structure
-- Two cities: Los Angeles and Phoenix
-- 6+ recommendations per city
-- Cross-domain relationships mapped
-- Realistic taste strength scores
-
-### API Integration Points
-```typescript
-// Where Qloo API will integrate
-const getRecommendations = async (seeds: string[], city: string) => {
-  // Replace with actual Qloo API call
-  return mockRecommendations;
-};
-
-// Where LLM API will integrate
-const interpretVibe = async (vibe: string) => {
-  // Replace with OpenAI/Claude API call
-  return mockSeeds;
-};
+# Maintenance
+npm run lint            # Run ESLint
+npm run clean           # Clean test reports and build files
+npm run clean:all       # Clean everything including node_modules
 ```
 
-### Performance Considerations
-- Lazy loading for images
-- Memoized expensive calculations
-- Efficient re-renders
-- Minimal bundle size
+### Project Structure
 
-## 🌍 Deployment
+```
+vibetrail/
+├── src/                    # Source code
+│   ├── components/         # React components
+│   │   ├── CulturalNetworkVisualization.tsx  # Network graph
+│   │   ├── RecommendationGrid.tsx            # Dynamic tabs
+│   │   └── AdvancedVibeInput.tsx             # AI vibe processing
+│   ├── pages/             # Page components
+│   │   ├── CulturalEcosystem.tsx             # Main ecosystem page
+│   │   └── Results.tsx                       # Dynamic recommendations
+│   ├── services/          # API services
+│   │   ├── CulturalEcosystemService.ts       # Core ecosystem engine
+│   │   ├── QlooService.ts                    # Qloo API integration
+│   │   └── OpenAIService.ts                  # AI integration
+│   ├── context/           # React context
+│   ├── types/             # TypeScript types
+│   └── utils/             # Utility functions
+├── tests/                 # Testing suite
+│   ├── e2e/              # End-to-end tests
+│   ├── unit/             # Unit tests
+│   ├── debug/            # Debug scripts
+│   └── reports/          # Test reports
+├── docs/                  # Documentation
+│   ├── api/              # API documentation
+│   ├── development/      # Development guides
+│   └── testing/          # Testing documentation
+├── api/                   # Vercel API routes
+├── proxy-server.cjs       # Development proxy server
+└── HACKATHON.md          # Hackathon submission documentation
+```
 
-### Build Command
+## 🔧 Technology Stack
+
+### Frontend
+- **React 18.3.1** - UI framework with advanced state management
+- **TypeScript 5.5.3** - Type safety for complex cultural data structures
+- **Vite 5.4.2** - Build tool optimized for fast development
+- **Tailwind CSS 3.4.1** - Styling framework with custom cultural themes
+- **Framer Motion 12.23.6** - Smooth animations for network visualizations
+- **React Router 7.7.0** - Client-side routing for ecosystem navigation
+
+### Backend & APIs
+- **Express 5.1.0** - Proxy server with advanced AI endpoints
+- **OpenAI API 5.10.2** - GPT-4 for cultural intelligence and analysis
+- **Qloo Taste AI** - Cross-domain cultural recommendations (8 entity types)
+- **Axios 1.10.0** - HTTP client with intelligent retry logic
+
+### Cultural Intelligence Engine
+- **Cross-Domain Analysis** - Connection discovery across 8 entity types
+- **AI-Powered Insights** - Cultural anthropology-level analysis
+- **Network Visualization** - SVG-based interactive cultural graphs
+- **Ecosystem Scoring** - Quantitative cultural coherence metrics
+
+### Testing & Quality
+- **Playwright 1.54.1** - E2E testing including cultural ecosystem flows
+- **Vitest 3.2.4** - Unit testing for cultural algorithms
+- **ESLint 9.9.1** - Code quality with cultural data validation
+- **TypeScript ESLint 8.3.0** - Type safety for complex cultural interfaces
+
+## 🌍 Supported Cities
+
+VibeTrail's cultural intelligence works across major cultural hubs:
+
+- **Los Angeles** - Entertainment and food culture
+- **New York** - Arts, theater, and diverse neighborhoods  
+- **Chicago** - Architecture, music, and deep-dish culture
+- **San Francisco** - Tech culture and innovative dining
+- **Austin** - Music scene and creative communities
+- **Seattle** - Coffee culture and indie music
+- **Miami** - International flavors and nightlife
+- **Denver** - Outdoor culture and craft brewing
+- **Portland** - Artisanal everything and food trucks
+- **Nashville** - Music heritage and Southern culture
+
+## 🧪 Testing
+
+VibeTrail includes comprehensive testing for cultural intelligence:
+
+### Cultural Ecosystem Tests
+- **Connection Discovery**: Validate cultural relationship algorithms
+- **AI Analysis**: Test cultural anthropology insights
+- **Network Visualization**: Component testing for interactive graphs
+- **Ecosystem Scoring**: Validate coherence calculations
+
+### E2E Tests
+- **Cultural Journey**: Complete flow from vibe to ecosystem
+- **Cross-Domain Integration**: Test all 8 Qloo entity types
+- **AI Enhancement**: Validate OpenAI cultural analysis
+- **Performance**: Network visualization and large dataset handling
+
+### API Tests
+- **Enhanced E2E**: Comprehensive cultural ecosystem testing
+- **Multi-Entity Processing**: Parallel API call validation
+- **Cultural Intelligence**: AI prompt and response validation
+- **Connection Algorithms**: Cultural relationship discovery testing
+
+Run tests with:
+```bash
+npm run test:all          # All tests including cultural ecosystem
+npm run test:e2e          # Playwright browser tests
+npm run test:e2e:enhanced # Cultural ecosystem API tests
+npm run test:debug        # Cultural intelligence debugging
+```
+
+## 🏆 Hackathon Achievement
+
+**Qloo LLM Hackathon Submission**: VibeTrail represents a breakthrough in cultural intelligence, showcasing:
+
+- **Maximum Qloo Integration**: 8 entity types with parallel processing
+- **Advanced AI Usage**: Cultural anthropology-level analysis
+- **Novel Visualization**: Interactive cultural network graphs
+- **Real-World Application**: Scalable cultural intelligence platform
+
+[Read our complete hackathon documentation →](HACKATHON.md)
+
+## 🚀 Deployment
+
+### Vercel (Recommended)
 ```bash
 npm run build
+vercel --prod
 ```
 
-### Deployment Options
-- Netlify (recommended)
-- Vercel
-- GitHub Pages
-- Custom hosting
-
-### Environment Variables
-None required for prototype version.
+### Manual Deployment
+```bash
+npm run build
+# Deploy dist/ folder to your hosting provider
+# Ensure proxy server is configured for cultural ecosystem APIs
+```
 
 ## 🤝 Contributing
 
-### Development Workflow
+We welcome contributions to enhance cultural intelligence:
+
 1. Fork the repository
-2. Create feature branch
-3. Implement changes
-4. Test thoroughly
-5. Submit pull request
+2. Create a feature branch: `git checkout -b feature/cultural-enhancement`
+3. Commit changes: `git commit -m 'Add cultural feature'`
+4. Push to branch: `git push origin feature/cultural-enhancement`
+5. Open a Pull Request
 
-### Code Standards
-- TypeScript strict mode
-- ESLint configuration
-- Prettier formatting
-- Component documentation
+### Contribution Areas
+- **Cultural Algorithms**: Improve connection discovery
+- **AI Prompts**: Enhance cultural analysis
+- **Visualization**: Expand network graph features
+- **Entity Types**: Add new cultural domains
+- **Testing**: Expand cultural intelligence tests
 
-## 📋 Hackathon Submission
+## 📄 License
 
-### Required Deliverables
-- [x] Working app URL
-- [x] Public GitHub repository
-- [x] Demo video under 3 minutes
-- [x] Technical documentation
+This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
 
-### Submission Checklist
-- [ ] Record demo video
-- [ ] Upload to public hosting
-- [ ] Prepare Devpost submission
-- [ ] Test all functionality
+## 🙏 Acknowledgments
 
-## 🔮 Future Roadmap
-
-### Phase 1: Live API Integration
-- Qloo Taste AI API
-- OpenAI GPT-4 integration
-- Real-time data feeds
-- Enhanced recommendations
-
-### Phase 2: Enhanced Features
-- Multi-day planning
-- Group coordination
-- Weather integration
-- Booking systems
-
-### Phase 3: Platform Expansion
-- Mobile applications
-- API for third parties
-- Enterprise solutions
-- Global city coverage
-
-## 📞 Support
-
-### Technical Issues
-- Check the GitHub Issues
-- Review documentation
-- Test with fresh browser
-
-### Demo Questions
-- Review the demo script
-- Practice with mock data
-- Time your presentation
+- **Qloo** for providing revolutionary cross-domain cultural intelligence
+- **OpenAI** for enabling sophisticated cultural analysis with GPT-4
+- **React Team** for the foundation of our cultural platform
+- **Vercel** for seamless deployment of cultural experiences
+- **The Cultural Intelligence Community** for inspiring cross-domain thinking
 
 ---
 
-**Built with ❤️ for the Qloo Global Hackathon**
+**Built with ❤️ and Cultural Intelligence by the VibeTrail Team**
 
-*Showcasing the power of LLM + Qloo Taste AI synergy*
-
-## 🎥 Demo Video Reminders
-
-- **Duration**: Must be under 3 minutes
-- **Content**: Show full user flow from vibe input to calendar export
-- **Focus**: Highlight LLM + Qloo synergy clearly
-- **Quality**: Clear audio, smooth recording, functional demonstration
-- **Script**: Practice timing to stay within limit
-
-Remember: Devpost emphasizes concise, story-driven videos that clearly demonstrate problem, solution, and technical innovation!
+*Transforming vibes into cultural ecosystems, one connection at a time.*
