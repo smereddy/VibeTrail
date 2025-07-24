@@ -41,13 +41,38 @@ const Plan: React.FC = () => {
   const [isExporting, setIsExporting] = useState(false);
   const [exportSuccess, setExportSuccess] = useState(false);
   const [viewMode, setViewMode] = useState<'schedule' | 'categories'>('schedule');
+  
+  // Track if we've already initiated planning for current selectedItems
+  const lastSelectedItemsRef = React.useRef<string>('');
+  const planInitiatedRef = React.useRef<boolean>(false);
 
   // Auto-generate day plan if we have selected items but no AI-generated plan
   useEffect(() => {
+    const selectedItemsKey = selectedItems.map(item => item.id).sort().join(',');
     const hasAIGeneratedPlan = dayPlan.some(slot => slot.item !== null && slot.item !== undefined);
-    if (selectedItems.length > 0 && !hasAIGeneratedPlan && !isDayPlanBuilding) {
+    const isNewSelection = selectedItemsKey !== lastSelectedItemsRef.current;
+    const shouldGenerate = selectedItems.length > 0 && !hasAIGeneratedPlan && !isDayPlanBuilding && (isNewSelection || !planInitiatedRef.current);
+    
+    console.log('🗓️ Plan page useEffect check:', {
+      selectedItemsCount: selectedItems.length,
+      hasAIGeneratedPlan,
+      isDayPlanBuilding,
+      isNewSelection,
+      planInitiated: planInitiatedRef.current,
+      shouldGenerate
+    });
+    
+    if (shouldGenerate) {
       console.log('🗓️ Plan page: Auto-generating AI day plan for', selectedItems.length, 'selected items');
+      lastSelectedItemsRef.current = selectedItemsKey;
+      planInitiatedRef.current = true;
       buildDayPlan(selectedItems);
+    }
+    
+    // Reset planning flag when day plan is completed and has items
+    if (hasAIGeneratedPlan && planInitiatedRef.current) {
+      console.log('🗓️ Plan page: AI plan completed, resetting flag');
+      planInitiatedRef.current = false;
     }
   }, [selectedItems, dayPlan, isDayPlanBuilding, buildDayPlan]);
 
@@ -385,16 +410,44 @@ const Plan: React.FC = () => {
           {/* AI Day Plan Building */}
           {isDayPlanBuilding && (
             <motion.div
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              className="bg-white rounded-lg shadow-sm border border-gray-200 p-8 text-center mb-8"
+              initial={{ opacity: 0, scale: 0.95 }}
+              animate={{ opacity: 1, scale: 1 }}
+              className="bg-gradient-to-br from-blue-50 to-purple-50 rounded-lg shadow-sm border border-blue-200 p-8 text-center mb-8"
             >
-              <div className="flex items-center justify-center space-x-3 mb-4">
-                <div className="animate-spin w-6 h-6 border-2 border-gray-300 border-t-blue-600 rounded-full"></div>
-                <Zap className="w-5 h-5 text-blue-600" />
+              <div className="flex items-center justify-center space-x-3 mb-6">
+                <div className="relative">
+                  <div className="animate-spin w-8 h-8 border-3 border-blue-200 border-t-blue-600 rounded-full"></div>
+                  <div className="absolute inset-0 animate-ping w-8 h-8 border border-blue-400 rounded-full opacity-20"></div>
+                </div>
+                <Sparkles className="w-6 h-6 text-purple-600 animate-pulse" />
               </div>
-              <h3 className="text-lg font-semibold text-gray-900 mb-2">Creating Your Perfect Day</h3>
-              <p className="text-gray-600">AI is optimizing your {selectedItems.length} items for timing, location, and flow...</p>
+              
+              <h3 className="text-xl font-bold text-gray-900 mb-3">🤖 AI is Planning Your Perfect Day</h3>
+              
+              <div className="space-y-2 mb-6">
+                <p className="text-gray-700 font-medium">Analyzing your {selectedItems.length} selected items...</p>
+                <div className="flex justify-center items-center space-x-4 text-sm text-gray-600">
+                  <span className="flex items-center space-x-1">
+                    <Clock className="w-4 h-4" />
+                    <span>Optimizing timing</span>
+                  </span>
+                  <span className="flex items-center space-x-1">
+                    <MapPin className="w-4 h-4" />
+                    <span>Minimizing travel</span>
+                  </span>
+                  <span className="flex items-center space-x-1">
+                    <Zap className="w-4 h-4" />
+                    <span>Maximizing flow</span>
+                  </span>
+                </div>
+              </div>
+              
+              {/* Progress indicator */}
+              <div className="w-full bg-gray-200 rounded-full h-2 mb-4">
+                <div className="bg-gradient-to-r from-blue-600 to-purple-600 h-2 rounded-full animate-pulse" style={{width: '70%'}}></div>
+              </div>
+              
+              <p className="text-sm text-gray-500">This usually takes 5-10 seconds...</p>
             </motion.div>
           )}
 
