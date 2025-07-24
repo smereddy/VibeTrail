@@ -110,9 +110,20 @@ const Plan: React.FC = () => {
 
   const handleRegeneratePlan = () => {
     if (selectedItems.length > 0) {
+      console.log('🔄 Manual replan triggered, calling buildDayPlan...');
       buildDayPlan(selectedItems);
     }
   };
+  
+  // Debug current state
+  React.useEffect(() => {
+    console.log('🗓️ Plan page state:', {
+      isDayPlanBuilding,
+      selectedItemsCount: selectedItems.length,
+      dayPlanLength: dayPlan.length,
+      hasItems: dayPlan.some(slot => slot.item)
+    });
+  }, [isDayPlanBuilding, selectedItems.length, dayPlan]);
 
   const getPeriodIcon = (timeSlot: any) => {
     const hour = parseInt(timeSlot.time.split(':')[0]);
@@ -392,7 +403,7 @@ const Plan: React.FC = () => {
                   ) : (
                     <>
                       <Zap className="w-4 h-4 mr-2 inline" />
-                      Replan
+                      Replan with AI
                     </>
                   )}
                 </button>

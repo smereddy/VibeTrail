@@ -582,6 +582,7 @@ export const AppProvider: React.FC<{ children: ReactNode }> = ({ children }) => 
     }
 
     try {
+      console.log(`🗓️ [${requestId}] Setting loading states...`);
       setIsDayPlanBuilding(true);
       setCurrentPlanRequestId(requestId);
       setIsLoading(true);
@@ -590,7 +591,11 @@ export const AppProvider: React.FC<{ children: ReactNode }> = ({ children }) => 
       // Clear existing plan to show loading state
       setDayPlan([]);
       
-      console.log(`🗓️ [${requestId}] Building day plan for ${selectedItems.length} items in ${currentCity.name}`);
+      console.log(`🗓️ [${requestId}] isDayPlanBuilding set to true, building day plan for ${selectedItems.length} items in ${currentCity.name}`);
+      
+      // Add minimum loading duration to ensure user sees the loading screen
+      const minLoadingTime = 2000; // 2 seconds minimum
+      const startTime = Date.now();
       
       // Call our day planning API endpoint (now via Netlify Functions)
       const response = await fetch(`${environment.app.apiProxyUrl}/plan-day`, {
@@ -645,6 +650,15 @@ export const AppProvider: React.FC<{ children: ReactNode }> = ({ children }) => 
         reasoning: slot.reasoning
       })));
 
+      // Ensure minimum loading time for better UX
+      const elapsedTime = Date.now() - startTime;
+      const remainingTime = Math.max(0, minLoadingTime - elapsedTime);
+      
+      if (remainingTime > 0) {
+        console.log(`🗓️ [${requestId}] Adding ${remainingTime}ms delay for better UX`);
+        await new Promise(resolve => setTimeout(resolve, remainingTime));
+      }
+      
       setDayPlan(timeSlots);
       
     } catch (error) {
@@ -666,8 +680,18 @@ export const AppProvider: React.FC<{ children: ReactNode }> = ({ children }) => 
         };
       });
       
+      // Ensure minimum loading time even for fallback
+      const elapsedTime = Date.now() - startTime;
+      const remainingTime = Math.max(0, minLoadingTime - elapsedTime);
+      
+      if (remainingTime > 0) {
+        console.log(`🗓️ [${requestId}] Adding ${remainingTime}ms delay for fallback UX`);
+        await new Promise(resolve => setTimeout(resolve, remainingTime));
+      }
+      
       setDayPlan(fallbackTimeSlots);
     } finally {
+      console.log(`🗓️ [${requestId}] Clearing loading states...`);
       setIsLoading(false);
       setIsDayPlanBuilding(false);
       setCurrentPlanRequestId(null);
