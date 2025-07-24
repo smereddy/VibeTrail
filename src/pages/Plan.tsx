@@ -42,39 +42,7 @@ const Plan: React.FC = () => {
   const [exportSuccess, setExportSuccess] = useState(false);
   const [viewMode, setViewMode] = useState<'schedule' | 'categories'>('schedule');
   
-  // Track if we've already initiated planning for current selectedItems
-  const lastSelectedItemsRef = React.useRef<string>('');
-  const planInitiatedRef = React.useRef<boolean>(false);
-
-  // Auto-generate day plan if we have selected items but no AI-generated plan
-  useEffect(() => {
-    const selectedItemsKey = selectedItems.map(item => item.id).sort().join(',');
-    const hasAIGeneratedPlan = dayPlan.some(slot => slot.item !== null && slot.item !== undefined);
-    const isNewSelection = selectedItemsKey !== lastSelectedItemsRef.current;
-    const shouldGenerate = selectedItems.length > 0 && !hasAIGeneratedPlan && !isDayPlanBuilding && (isNewSelection || !planInitiatedRef.current);
-    
-    console.log('🗓️ Plan page useEffect check:', {
-      selectedItemsCount: selectedItems.length,
-      hasAIGeneratedPlan,
-      isDayPlanBuilding,
-      isNewSelection,
-      planInitiated: planInitiatedRef.current,
-      shouldGenerate
-    });
-    
-    if (shouldGenerate) {
-      console.log('🗓️ Plan page: Auto-generating AI day plan for', selectedItems.length, 'selected items');
-      lastSelectedItemsRef.current = selectedItemsKey;
-      planInitiatedRef.current = true;
-      buildDayPlan(selectedItems);
-    }
-    
-    // Reset planning flag when day plan is completed and has items
-    if (hasAIGeneratedPlan && planInitiatedRef.current) {
-      console.log('🗓️ Plan page: AI plan completed, resetting flag');
-      planInitiatedRef.current = false;
-    }
-  }, [selectedItems, dayPlan, isDayPlanBuilding, buildDayPlan]);
+    // No longer auto-generate - plan is built on Results page before navigation
 
   const handleExport = async () => {
     if (selectedItems.length === 0) return;
