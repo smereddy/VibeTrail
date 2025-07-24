@@ -17,7 +17,9 @@ const Results: React.FC = () => {
     extractedSeeds,
     activeTabs,
     vibeContext,
-    getRecommendationsByTab
+    getRecommendationsByTab,
+    buildDayPlan,
+    isDayPlanBuilding
   } = useApp();
   const { currentTheme } = useTheme();
   const [mounted, setMounted] = useState(false);
@@ -59,6 +61,21 @@ const Results: React.FC = () => {
   const canBuildPlan = () => getSelectedCount().total >= 3;
 
   // Surprise Me functionality - intelligently selects items across categories
+  const handleBuildPlan = async () => {
+    if (!canBuildPlan()) return;
+    
+    try {
+      console.log('🗓️ Building plan for', selectedItems.length, 'selected items');
+      await buildDayPlan(selectedItems);
+      console.log('✅ Plan built successfully, navigating to /plan');
+      navigate('/plan');
+    } catch (error) {
+      console.error('❌ Failed to build plan:', error);
+      // Still navigate to plan page to show error state
+      navigate('/plan');
+    }
+  };
+
   const surpriseMe = () => {
     const recommendations = currentCity.recommendations || [];
     if (recommendations.length === 0) return;
@@ -301,19 +318,28 @@ const Results: React.FC = () => {
                 </span>
               </button>
               
-              <Link
-                to="/plan"
+              <button
+                onClick={handleBuildPlan}
+                disabled={!canBuildPlan() || isDayPlanBuilding}
                 data-testid="create-plan-from-selections"
                 className={`flex items-center px-4 py-2 rounded-lg font-semibold transition-all duration-200 ${
-                  canBuildPlan() 
+                  canBuildPlan() && !isDayPlanBuilding
                     ? 'bg-blue-600 text-white hover:bg-blue-700 shadow-sm hover:shadow-md' 
                     : 'bg-gray-200 text-gray-400 cursor-not-allowed'
                 }`}
-                onClick={canBuildPlan() ? undefined : (e) => e.preventDefault()}
               >
-                Build Plan
-                <ArrowRight className="ml-1 w-4 h-4" />
-              </Link>
+                {isDayPlanBuilding ? (
+                  <>
+                    <div className="animate-spin w-4 h-4 border-2 border-gray-300 border-t-white rounded-full mr-2"></div>
+                    Building Plan...
+                  </>
+                ) : (
+                  <>
+                    Build Plan
+                    <ArrowRight className="ml-1 w-4 h-4" />
+                  </>
+                )}
+              </button>
             </div>
           </div>
         </div>

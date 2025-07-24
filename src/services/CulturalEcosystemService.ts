@@ -246,8 +246,8 @@ export class CulturalEcosystemService {
         // Step 3: Extract cultural themes
         const culturalThemes = await this.extractCulturalThemes(entities, connections, vibe);
 
-        // Step 4: Perform AI-powered deep ecosystem analysis
-        console.log('🤖 Starting AI ecosystem analysis...', {
+        // Step 4: Generate simplified insights without heavy AI analysis
+        console.log('🎯 Generating simplified ecosystem analysis...', {
           vibe,
           city,
           entitiesCount: Object.keys(entities).length,
@@ -255,33 +255,14 @@ export class CulturalEcosystemService {
           themesCount: culturalThemes.length
         });
         
-        const aiAnalysis = await this.performAIEcosystemAnalysis(
-          vibe, 
-          city, 
-          entities, 
-          connections, 
-          culturalThemes, 
-          culturalInsights
-        );
+        // Step 5: Use existing connections and themes (no AI enhancement needed)
+        const enhancedConnections = connections;
+        const enhancedThemes = culturalThemes;
         
-        console.log('🤖 AI analysis result:', {
-          aiConnections: aiAnalysis.aiConnections.length,
-          aiThemes: aiAnalysis.aiThemes.length,
-          aiInsights: aiAnalysis.aiInsights.length,
-          hasNarrative: !!aiAnalysis.ecosystemNarrative,
-          narrativePreview: aiAnalysis.ecosystemNarrative?.substring(0, 100) + '...'
-        });
-
-        // Step 5: Merge AI analysis with algorithmic results
-        const enhancedConnections = [...connections, ...aiAnalysis.aiConnections];
-        const enhancedThemes = [...culturalThemes, ...aiAnalysis.aiThemes];
-        
-        // Step 6: Use AI insights from initial call + deep analysis
-        const baseInsights = culturalInsights 
+        // Step 6: Generate insights using existing data
+        const allInsights = culturalInsights 
           ? this.processCulturalInsights(culturalInsights, entities, connections, culturalThemes)
           : await this.generateCulturalInsights(vibe, entities, connections, culturalThemes);
-        
-        const allInsights = [...baseInsights, ...aiAnalysis.aiInsights];
 
         // Step 7: Calculate ecosystem coherence score with enhanced data
         const ecosystemScore = this.calculateEcosystemScore(enhancedConnections, enhancedThemes, entities);
@@ -294,7 +275,7 @@ export class CulturalEcosystemService {
           culturalThemes: enhancedThemes,
           ecosystemScore,
           insights: allInsights,
-          ecosystemNarrative: aiAnalysis.ecosystemNarrative
+          ecosystemNarrative: `Your ${vibe} cultural ecosystem in ${city} connects ${Object.keys(entities).length} different domains through ${connections.length} meaningful relationships.`
         };
 
         console.log('✅ Cultural ecosystem built from taste items:', {
@@ -687,7 +668,7 @@ export class CulturalEcosystemService {
   }
 
   /**
-   * Generate AI-powered cultural insights using OpenAI
+   * Generate simple cultural insights without AI dependency
    */
   private async generateAIInsights(
     vibe: string,
@@ -696,79 +677,47 @@ export class CulturalEcosystemService {
     themes: CulturalTheme[]
   ): Promise<CulturalInsight[]> {
     
-    // Prepare data summary for AI analysis
-    const entitySummary = Object.keys(entities).map(entityType => ({
-      type: entityType,
-      count: entities[entityType].length,
-      examples: entities[entityType].slice(0, 3).map(e => e.name)
-    }));
-
-    const connectionSummary = connections.slice(0, 5).map(conn => ({
-      from: conn.fromEntity.name,
-      to: conn.toEntity.name,
-      reason: conn.connectionReason,
-      strength: Math.round(conn.connectionStrength * 100)
-    }));
-
-    const themeSummary = themes.slice(0, 5).map(theme => ({
-      theme: theme.theme,
-      strength: Math.round(theme.strength * 100),
-      examples: theme.examples.slice(0, 2)
-    }));
-
-    const prompt = `Analyze this person's cultural ecosystem based on their "${vibe}" preferences:
-
-CULTURAL DOMAINS:
-${entitySummary.map(e => `• ${e.type}: ${e.count} items (${e.examples.join(', ')})`).join('\n')}
-
-CULTURAL CONNECTIONS:
-${connectionSummary.map(c => `• ${c.from} ↔ ${c.to}: ${c.reason} (${c.strength}% strength)`).join('\n')}
-
-THEMES DETECTED:
-${themeSummary.map(t => `• ${t.theme}: ${t.strength}% strength (${t.examples.join(', ')})`).join('\n')}
-
-Generate 2-3 sophisticated cultural insights about this person's taste profile. Each insight should:
-1. Reveal deeper patterns or psychological preferences
-2. Make unexpected connections between different cultural domains
-3. Provide actionable recommendations for cultural discovery
-
-Format as JSON array with this structure:
-[
-  {
-    "type": "pattern|connection|recommendation",
-    "title": "Insight Title",
-    "description": "Detailed insight description (2-3 sentences)",
-    "confidence": 0.7-0.95,
-    "supportingEntities": ["entity1", "entity2"]
-  }
-]
-
-Focus on psychological insights, cultural patterns, and sophisticated analysis that goes beyond surface-level observations.`;
-
-    try {
-      const response = await this.openaiService.generateResponse(prompt, {
-        maxTokens: 800,
-        temperature: 0.7
+    console.log('🎯 Generating simplified cultural insights (no AI dependency)');
+    
+    const insights: CulturalInsight[] = [];
+    
+    // Connection insight
+    if (connections.length > 0) {
+      const strongConnections = connections.filter(c => c.connectionStrength > 0.7);
+      insights.push({
+        type: 'connection',
+        title: 'Cultural Connections Discovered',
+        description: `Found ${connections.length} cultural connections in your ${vibe} taste profile${strongConnections.length > 0 ? `, with ${strongConnections.length} particularly strong links` : ''}.`,
+        confidence: 0.8,
+        supportingEntities: connections.slice(0, 3).map(c => c.fromEntity.name)
       });
-
-      // Parse AI response
-      const aiInsights = JSON.parse(response);
-      
-      // Validate and return insights
-      return aiInsights.filter((insight: any) => 
-        insight.title && insight.description && insight.type && insight.confidence
-      ).map((insight: any) => ({
-        type: insight.type as 'pattern' | 'connection' | 'recommendation',
-        title: insight.title,
-        description: insight.description,
-        confidence: Math.min(Math.max(insight.confidence, 0.5), 0.95),
-        supportingEntities: insight.supportingEntities || []
-      }));
-
-    } catch (error) {
-      console.error('❌ AI insights generation failed:', error);
-      return []; // Return empty array on failure
     }
+    
+    // Diversity insight
+    const entityTypes = Object.keys(entities);
+    if (entityTypes.length > 2) {
+      insights.push({
+        type: 'pattern',
+        title: 'Cross-Domain Taste Profile',
+        description: `Your ${vibe} preferences span ${entityTypes.length} different cultural domains, showing ${entityTypes.length >= 4 ? 'broad and diverse' : 'focused but varied'} cultural interests.`,
+        confidence: 0.85,
+        supportingEntities: entityTypes
+      });
+    }
+    
+    // Theme insight
+    if (themes.length > 0) {
+      const dominantTheme = themes[0];
+      insights.push({
+        type: 'recommendation',
+        title: `${dominantTheme.theme} Preferences`,
+        description: `Strong ${dominantTheme.theme.toLowerCase()} themes appear across your selections, suggesting this aesthetic resonates deeply with your taste.`,
+        confidence: dominantTheme.strength,
+        supportingEntities: dominantTheme.examples.slice(0, 3)
+      });
+    }
+    
+    return insights;
   }
 
   /**
@@ -954,7 +903,7 @@ Focus on psychological insights, cultural patterns, and sophisticated analysis t
   }
 
   /**
-   * AI-Powered Deep Ecosystem Analysis
+   * AI-Powered Deep Ecosystem Analysis (DISABLED for hackathon simplicity)
    * Provides sophisticated cultural intelligence beyond algorithmic analysis
    */
   private async performAIEcosystemAnalysis(

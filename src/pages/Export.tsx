@@ -27,6 +27,18 @@ const Export: React.FC = () => {
   const [copied, setCopied] = useState(false);
   
   const scheduledItems = dayPlan.filter(slot => slot.item);
+  
+  // Calculate accurate stats based on selected items and AI-generated schedule
+  const getStats = () => {
+    const activities = selectedItems.length;
+    const categories = new Set(selectedItems.map(item => item.category)).size;
+    const duration = selectedItems.reduce((total, item) => total + (item.estimatedDuration || 90), 0);
+    const hasAISchedule = scheduledItems.length > 0;
+    
+    return { activities, categories, duration, hasAISchedule };
+  };
+  
+  const stats = getStats();
 
   const handleDownload = async () => {
     try {
@@ -83,90 +95,91 @@ const Export: React.FC = () => {
     }
   };
 
-  const getTotalDuration = () => {
-    return dayPlan.reduce((total, slot) => total + (slot.duration || 90), 0);
-  };
+
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-neutral-50 via-primary-50/20 to-neutral-100">
-      {/* Compact Header */}
-      <div className="sticky top-0 z-10 bg-white/90 backdrop-blur-sm border-b border-neutral-200/50">
-        <div className="container-custom py-4">
+    <div className="min-h-screen bg-gray-50">
+      {/* Header */}
+      <div className="sticky top-0 z-10 bg-white border-b border-gray-200">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4">
           <div className="flex items-center justify-between">
-            <Link to="/plan" className="btn-ghost">
+            <Link
+              to="/plan"
+              className="flex items-center px-3 py-2 text-gray-600 hover:text-gray-900 hover:bg-gray-100 rounded-lg transition-colors"
+            >
               <ArrowLeft className="w-4 h-4 mr-2" />
               Back to Plan
             </Link>
             <div className="flex items-center space-x-3">
-              <div className="w-8 h-8 bg-green-100 rounded-xl flex items-center justify-center">
+              <div className="w-8 h-8 bg-green-100 rounded-lg flex items-center justify-center">
                 <CheckCircle className="w-4 h-4 text-green-600" />
               </div>
               <div>
-                <h1 className="text-lg font-semibold text-neutral-900">Export Plan</h1>
-                <p className="text-xs text-neutral-600">{currentCity.name}</p>
+                <h1 className="text-lg font-semibold text-gray-900">Export Plan</h1>
+                <p className="text-sm text-gray-500">{currentCity.name}</p>
               </div>
             </div>
-            <div className="w-16"></div> {/* Balance spacer */}
+            <div className="w-16"></div>
           </div>
         </div>
       </div>
 
-      <div className="container-custom py-4 sm:py-6">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
         <div className="max-w-4xl mx-auto">
-          {/* Compact Overview */}
+          {/* Overview */}
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
-            className="card p-6 mb-6"
+            className="bg-white rounded-lg shadow-sm border border-gray-200 p-6 mb-8"
           >
             <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-5 gap-4 items-center">
               {/* Stats */}
               <div className="text-center">
-                <div className="text-lg font-bold text-primary-600">{scheduledItems.length}</div>
-                <div className="text-xs text-neutral-600">Activities</div>
+                <div className="text-lg font-bold text-blue-600">{stats.activities}</div>
+                <div className="text-xs text-gray-600">Activities</div>
               </div>
               <div className="text-center">
-                <div className="text-lg font-bold text-orange-600">{Math.round(getTotalDuration() / 60)}h</div>
-                <div className="text-xs text-neutral-600">Duration</div>
+                <div className="text-lg font-bold text-orange-600">{Math.round(stats.duration / 60)}h</div>
+                <div className="text-xs text-gray-600">Duration</div>
               </div>
               <div className="text-center">
-                <div className="text-lg font-bold text-blue-600">{new Set(selectedItems.map(item => item.category)).size}</div>
-                <div className="text-xs text-neutral-600">Categories</div>
+                <div className="text-lg font-bold text-purple-600">{stats.categories}</div>
+                <div className="text-xs text-gray-600">Categories</div>
               </div>
               <div className="text-center">
-                <div className="text-lg font-bold text-green-600">AI</div>
-                <div className="text-xs text-neutral-600">Optimized</div>
+                <div className="text-lg font-bold text-green-600">{stats.hasAISchedule ? 'AI' : 'Manual'}</div>
+                <div className="text-xs text-gray-600">Optimized</div>
               </div>
               
               {/* Vibe */}
               <div className="text-center col-span-2 sm:col-span-1">
-                <div className="text-sm font-medium text-neutral-800 truncate">"{vibeInput}"</div>
-                <div className="text-xs text-neutral-600">Your Vibe</div>
+                <div className="text-sm font-medium text-gray-800 truncate">"{vibeInput}"</div>
+                <div className="text-xs text-gray-600">Your Vibe</div>
               </div>
             </div>
           </motion.div>
 
-          {/* Export Options - Compact */}
+          {/* Export Options */}
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.1 }}
-            className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4 mb-6"
+            className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6 mb-8"
           >
             {/* Calendar Export */}
-            <div className="card p-4">
-              <div className="flex items-center space-x-3 mb-3">
-                <div className="w-10 h-10 bg-primary-100 rounded-xl flex items-center justify-center">
-                  <Calendar className="w-5 h-5 text-primary-600" />
+            <div className="bg-white rounded-lg shadow-sm border border-gray-200 p-6">
+              <div className="flex items-center space-x-3 mb-4">
+                <div className="w-10 h-10 bg-blue-100 rounded-lg flex items-center justify-center">
+                  <Calendar className="w-5 h-5 text-blue-600" />
                 </div>
                 <div>
-                  <h3 className="font-semibold text-neutral-900 text-sm">Calendar</h3>
-                  <p className="text-xs text-neutral-600">Download .ics file</p>
+                  <h3 className="font-semibold text-gray-900">Calendar</h3>
+                  <p className="text-sm text-gray-600">Download .ics file</p>
                 </div>
               </div>
               <button
                 onClick={handleDownload}
-                className="w-full bg-primary-600 text-white py-2 px-3 rounded-lg hover:bg-primary-700 transition-colors text-sm font-medium"
+                className="w-full bg-blue-600 text-white py-3 px-4 rounded-lg hover:bg-blue-700 transition-colors font-medium"
               >
                 <Download className="w-4 h-4 mr-2 inline" />
                 Download
@@ -174,19 +187,19 @@ const Export: React.FC = () => {
             </div>
 
             {/* Text Export */}
-            <div className="card p-4">
-              <div className="flex items-center space-x-3 mb-3">
-                <div className="w-10 h-10 bg-blue-100 rounded-xl flex items-center justify-center">
-                  <FileText className="w-5 h-5 text-blue-600" />
+            <div className="bg-white rounded-lg shadow-sm border border-gray-200 p-6">
+              <div className="flex items-center space-x-3 mb-4">
+                <div className="w-10 h-10 bg-green-100 rounded-lg flex items-center justify-center">
+                  <FileText className="w-5 h-5 text-green-600" />
                 </div>
                 <div>
-                  <h3 className="font-semibold text-neutral-900 text-sm">Text</h3>
-                  <p className="text-xs text-neutral-600">Copy formatted text</p>
+                  <h3 className="font-semibold text-gray-900">Text</h3>
+                  <p className="text-sm text-gray-600">Copy formatted text</p>
                 </div>
               </div>
               <button
                 onClick={handleCopyText}
-                className="w-full bg-blue-600 text-white py-2 px-3 rounded-lg hover:bg-blue-700 transition-colors text-sm font-medium"
+                className="w-full bg-green-600 text-white py-3 px-4 rounded-lg hover:bg-green-700 transition-colors font-medium"
               >
                 <Copy className="w-4 h-4 mr-2 inline" />
                 {copied ? 'Copied!' : 'Copy'}
@@ -194,20 +207,20 @@ const Export: React.FC = () => {
             </div>
 
             {/* Mobile Share */}
-            <div className="card p-4">
-              <div className="flex items-center space-x-3 mb-3">
-                <div className="w-10 h-10 bg-purple-100 rounded-xl flex items-center justify-center">
+            <div className="bg-white rounded-lg shadow-sm border border-gray-200 p-6">
+              <div className="flex items-center space-x-3 mb-4">
+                <div className="w-10 h-10 bg-purple-100 rounded-lg flex items-center justify-center">
                   <Smartphone className="w-5 h-5 text-purple-600" />
                 </div>
                 <div>
-                  <h3 className="font-semibold text-neutral-900 text-sm">Share</h3>
-                  <p className="text-xs text-neutral-600">Native mobile share</p>
+                  <h3 className="font-semibold text-gray-900">Share</h3>
+                  <p className="text-sm text-gray-600">Native mobile share</p>
                 </div>
               </div>
               <button
                 onClick={handleMobileShare}
                 disabled={!navigator.share}
-                className="w-full bg-purple-600 text-white py-2 px-3 rounded-lg hover:bg-purple-700 transition-colors text-sm font-medium disabled:bg-neutral-300 disabled:cursor-not-allowed"
+                className="w-full bg-purple-600 text-white py-3 px-4 rounded-lg hover:bg-purple-700 transition-colors font-medium disabled:bg-gray-300 disabled:cursor-not-allowed"
               >
                 <Share2 className="w-4 h-4 mr-2 inline" />
                 {navigator.share ? 'Share' : 'Not Available'}
@@ -215,42 +228,42 @@ const Export: React.FC = () => {
             </div>
           </motion.div>
 
-          {/* Compact Plan Preview */}
+          {/* Plan Preview */}
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.2 }}
-            className="card p-6 mb-6"
+            className="bg-white rounded-lg shadow-sm border border-gray-200 p-6 mb-8"
           >
-            <h2 className="text-lg font-semibold text-neutral-900 mb-4">Plan Preview</h2>
+            <h2 className="text-lg font-semibold text-gray-900 mb-6">Plan Preview</h2>
 
-            <div className="space-y-3">
+            <div className="space-y-4">
               {scheduledItems.map((slot, index) => (
                 <div
                   key={slot.id}
-                  className="flex items-center space-x-4 p-3 bg-neutral-50 rounded-xl"
+                  className="flex items-center space-x-4 p-4 bg-gray-50 rounded-lg"
                 >
                   <div className="flex-shrink-0 text-center">
-                    <div className="w-10 h-10 bg-primary-100 rounded-lg flex items-center justify-center">
-                      <Clock className="w-4 h-4 text-primary-600" />
+                    <div className="w-10 h-10 bg-blue-100 rounded-lg flex items-center justify-center">
+                      <Clock className="w-4 h-4 text-blue-600" />
                     </div>
-                    <p className="text-xs font-medium text-neutral-600 mt-1">{slot.time}</p>
+                    <p className="text-xs font-medium text-gray-600 mt-1">{slot.time}</p>
                   </div>
                   
                   <div className="flex-1 min-w-0">
                     <div className="flex items-center justify-between">
-                      <h3 className="font-semibold text-neutral-900 text-sm truncate">
+                      <h3 className="font-semibold text-gray-900 truncate">
                         {slot.item?.name}
                       </h3>
                       {slot.item?.rating && (
-                        <div className="flex items-center space-x-1 text-xs">
+                        <div className="flex items-center space-x-1 text-sm">
                           <Star className="w-3 h-3 fill-yellow-400 text-yellow-400" />
-                          <span className="text-neutral-600">{slot.item.rating}</span>
+                          <span className="text-gray-600">{slot.item.rating}</span>
                         </div>
                       )}
                     </div>
                     
-                    <div className="flex items-center space-x-2 text-xs text-neutral-500 mt-1">
+                    <div className="flex items-center space-x-2 text-sm text-gray-500 mt-1">
                       <MapPin className="w-3 h-3" />
                       <span className="truncate">{slot.item?.location}</span>
                       <span>•</span>
@@ -262,27 +275,27 @@ const Export: React.FC = () => {
             </div>
           </motion.div>
 
-          {/* Compact Footer */}
+          {/* Footer */}
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.3 }}
-            className="card p-6 bg-gradient-to-r from-primary-50 via-primary-100/50 to-primary-50 border-primary-200"
+            className="bg-white rounded-lg shadow-sm border border-gray-200 p-6 bg-gradient-to-r from-blue-50 to-purple-50"
           >
             <div className="text-center">
-              <div className="flex items-center justify-center space-x-2 mb-3">
-                <Sparkles className="w-5 h-5 text-primary-600" />
-                <h3 className="text-lg font-semibold text-primary-900">Share Your Experience</h3>
+              <div className="flex items-center justify-center space-x-2 mb-4">
+                <Sparkles className="w-5 h-5 text-blue-600" />
+                <h3 className="text-lg font-semibold text-gray-900">Share Your Experience</h3>
               </div>
               
-              <p className="text-sm text-primary-700 mb-4 max-w-2xl mx-auto">
+              <p className="text-gray-600 mb-6 max-w-2xl mx-auto">
                 After your amazing day in {currentCity.name}, we'd love to hear how your VibeTrail experience went!
               </p>
               
               <div className="flex items-center justify-center space-x-4">
                 <a
                   href={`mailto:feedback@vibetrail.com?subject=My ${currentCity.name} Experience&body=${encodeURIComponent(generateShareableText())}`}
-                  className="btn-secondary py-2 px-4 text-sm"
+                  className="inline-flex items-center px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors"
                 >
                   <Mail className="w-4 h-4 mr-2" />
                   Send Feedback
@@ -291,15 +304,15 @@ const Export: React.FC = () => {
                   href="https://qloo.com"
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="btn-ghost text-primary-600 py-2 px-4 text-sm"
+                  className="inline-flex items-center px-4 py-2 text-gray-600 hover:text-gray-900 hover:bg-gray-100 rounded-lg transition-colors"
                 >
                   <ExternalLink className="w-4 h-4 mr-2" />
                   About Qloo
                 </a>
               </div>
 
-              <div className="mt-4 pt-4 border-t border-primary-200">
-                <p className="text-xs text-primary-600">
+              <div className="mt-6 pt-4 border-t border-gray-200">
+                <p className="text-sm text-gray-600">
                   🤖 AI-Powered • ✨ Qloo Taste Intelligence • 🔒 Privacy-First
                 </p>
               </div>

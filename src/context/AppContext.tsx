@@ -569,19 +569,29 @@ export const AppProvider: React.FC<{ children: ReactNode }> = ({ children }) => 
     // Create a unique request ID
     const requestId = Math.random().toString(36).substring(2, 15);
     
+    // Get call stack info for debugging
+    const stack = new Error().stack;
+    const caller = stack?.split('\n')[2]?.trim() || 'unknown';
+    
+    console.log(`🗓️ [${requestId}] buildDayPlan called from:`, caller);
+    
     // Prevent multiple simultaneous calls
     if (isDayPlanBuilding) {
-      console.log('🚫 Day plan already being built, skipping duplicate call');
+      console.log(`🚫 [${requestId}] Day plan already being built, skipping duplicate call from:`, caller);
       return;
     }
 
     try {
+      console.log(`🗓️ [${requestId}] Setting loading states...`);
       setIsDayPlanBuilding(true);
       setCurrentPlanRequestId(requestId);
       setIsLoading(true);
       setApiError(null);
       
-      console.log(`🗓️ [${requestId}] Building day plan for ${selectedItems.length} items in ${currentCity.name}`);
+      // Clear existing plan to show loading state
+      setDayPlan([]);
+      
+      console.log(`🗓️ [${requestId}] isDayPlanBuilding set to true, building day plan for ${selectedItems.length} items in ${currentCity.name}`);
       
       // Call our day planning API endpoint (now via Netlify Functions)
       const response = await fetch(`${environment.app.apiProxyUrl}/plan-day`, {
@@ -659,6 +669,7 @@ export const AppProvider: React.FC<{ children: ReactNode }> = ({ children }) => 
       
       setDayPlan(fallbackTimeSlots);
     } finally {
+      console.log(`🗓️ [${requestId}] Clearing loading states...`);
       setIsLoading(false);
       setIsDayPlanBuilding(false);
       setCurrentPlanRequestId(null);

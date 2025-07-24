@@ -45,17 +45,9 @@ const CulturalEcosystem: React.FC = () => {
     if (!vibeInput || !currentCity) return;
     
     setIsRefreshing(true);
-    console.log('🔄 Manually refreshing ecosystem for:', vibeInput);
     
     try {
       await processVibeInput(vibeInput, currentCity.name);
-      console.log('✅ Ecosystem refresh completed');
-      
-      // Force a re-render by updating the mounted state
-      setTimeout(() => {
-        console.log('🔄 Forcing component re-render with fresh data');
-      }, 1000);
-      
     } catch (error) {
       console.error('❌ Ecosystem refresh failed:', error);
     } finally {
@@ -66,21 +58,9 @@ const CulturalEcosystem: React.FC = () => {
   useEffect(() => {
     setMounted(true);
     
-    console.log('🌍 CulturalEcosystem mounted:', {
-      vibeInput,
-      isEcosystemLoading,
-      culturalEcosystem: !!culturalEcosystem,
-      ecosystemData: culturalEcosystem ? Object.keys(culturalEcosystem.entities || {}) : 'none',
-      hasNarrative: culturalEcosystem?.ecosystemNarrative ? 'YES' : 'NO',
-      narrativeLength: culturalEcosystem?.ecosystemNarrative?.length || 0,
-      insightsCount: culturalEcosystem?.insights?.length || 0,
-      connectionsCount: culturalEcosystem?.connections?.length || 0
-    });
-    
     // Only redirect if we have no vibe input AND we're not loading
     // Allow the page to show even if ecosystem is null (we'll show a message)
     if (!vibeInput && !isEcosystemLoading) {
-      console.log('⚠️ No vibe input, redirecting to create-plan');
       navigate('/create-plan');
     }
   }, [vibeInput, isEcosystemLoading, navigate, culturalEcosystem]);
@@ -251,25 +231,7 @@ const CulturalEcosystem: React.FC = () => {
               <div className="bg-white rounded-xl p-6 shadow-sm border border-neutral-200">
                 <h2 className="text-xl font-bold text-neutral-800 mb-4">Your Cultural Universe</h2>
                 
-                {/* Debug Info - Remove in production */}
-                <div className="mb-4 p-3 bg-yellow-50 border border-yellow-200 rounded text-xs">
-                  <strong>Debug:</strong> Narrative: {culturalEcosystem.ecosystemNarrative ? 'YES' : 'NO'} | 
-                  Insights: {culturalEcosystem.insights?.length || 0} | 
-                  Connections: {culturalEcosystem.connections?.length || 0}
-                  {culturalEcosystem.ecosystemNarrative && (
-                    <div className="mt-1 text-gray-600">Narrative length: {culturalEcosystem.ecosystemNarrative.length} chars</div>
-                  )}
-                  <div className="mt-2">
-                    <button 
-                      onClick={handleRefreshEcosystem}
-                      disabled={isRefreshing}
-                      className="px-2 py-1 bg-blue-500 text-white text-xs rounded hover:bg-blue-600 disabled:bg-gray-400"
-                    >
-                      {isRefreshing ? '🔄 Refreshing...' : '🔄 Refresh Ecosystem'}
-                    </button>
-                    <span className="ml-2 text-gray-600">Triggers fresh AI analysis with debug logs</span>
-                  </div>
-                </div>
+
 
                 {/* AI-Generated Ecosystem Narrative */}
                 {culturalEcosystem.ecosystemNarrative && (

@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
 import { Link } from 'react-router-dom';
 import { useApp } from '../context/AppContext';
@@ -17,13 +17,32 @@ import {
   CheckCircle,
   Edit3,
   Trash2,
-  Plus
+  Plus,
+  Zap,
+  Sun,
+  Sunset,
+  Moon,
+  Coffee,
+  Users,
+  Timer
 } from 'lucide-react';
 
 const Plan: React.FC = () => {
-  const { selectedItems, currentCity, vibeInput, removeFromSelectedItems } = useApp();
+  const { 
+    selectedItems, 
+    currentCity, 
+    vibeInput, 
+    removeFromSelectedItems, 
+    dayPlan, 
+    buildDayPlan, 
+    isDayPlanBuilding 
+  } = useApp();
+  
   const [isExporting, setIsExporting] = useState(false);
   const [exportSuccess, setExportSuccess] = useState(false);
+  const [viewMode, setViewMode] = useState<'schedule' | 'categories'>('schedule');
+  
+    // No longer auto-generate - plan is built on Results page before navigation
 
   const handleExport = async () => {
     if (selectedItems.length === 0) return;
@@ -45,17 +64,55 @@ const Plan: React.FC = () => {
       try {
         await navigator.share({
           title: `My Perfect Day in ${currentCity?.name}`,
-          text: `Check out my personalized day plan: ${selectedItems.length} amazing recommendations!`,
+          text: `Check out my AI-planned day: ${selectedItems.length} amazing recommendations scheduled perfectly!`,
           url: window.location.href,
         });
       } catch (error) {
         console.log('Error sharing:', error);
       }
     } else {
-      // Fallback: copy to clipboard
       navigator.clipboard.writeText(window.location.href);
       alert('Link copied to clipboard!');
     }
+  };
+
+  const handleRegeneratePlan = () => {
+    if (selectedItems.length > 0) {
+      console.log('🔄 Manual replan triggered, calling buildDayPlan...');
+      buildDayPlan(selectedItems);
+    }
+  };
+  
+  // Debug current state
+  React.useEffect(() => {
+    console.log('🗓️ Plan page state:', {
+      isDayPlanBuilding,
+      selectedItemsCount: selectedItems.length,
+      dayPlanLength: dayPlan.length,
+      hasItems: dayPlan.some(slot => slot.item)
+    });
+  }, [isDayPlanBuilding, selectedItems.length, dayPlan]);
+
+  const getPeriodIcon = (timeSlot: any) => {
+    const hour = parseInt(timeSlot.time.split(':')[0]);
+    const isPM = timeSlot.time.includes('PM');
+    const hour24 = isPM && hour !== 12 ? hour + 12 : hour;
+    
+    if (hour24 >= 6 && hour24 < 12) return Sun;
+    if (hour24 >= 12 && hour24 < 17) return Sun;
+    if (hour24 >= 17 && hour24 < 21) return Sunset;
+    return Moon;
+  };
+
+  const getPeriodColor = (timeSlot: any) => {
+    const hour = parseInt(timeSlot.time.split(':')[0]);
+    const isPM = timeSlot.time.includes('PM');
+    const hour24 = isPM && hour !== 12 ? hour + 12 : hour;
+    
+    if (hour24 >= 6 && hour24 < 12) return 'bg-yellow-100 text-yellow-800';
+    if (hour24 >= 12 && hour24 < 17) return 'bg-blue-100 text-blue-800';
+    if (hour24 >= 17 && hour24 < 21) return 'bg-purple-100 text-purple-800';
+    return 'bg-indigo-100 text-indigo-800';
   };
 
   const getCategoryIcon = (category: string) => {
@@ -90,28 +147,53 @@ const Plan: React.FC = () => {
 
   if (!selectedItems || selectedItems.length === 0) {
     return (
-      <div className="min-h-screen bg-slate-50 flex items-center justify-center">
-        <div className="text-center max-w-md mx-auto px-6">
-          <div className="w-20 h-20 bg-slate-100 rounded-full flex items-center justify-center mx-auto mb-6">
-            <Calendar className="w-10 h-10 text-slate-400" />
+      <div className="min-h-screen bg-gray-50">
+        {/* Header */}
+        <div className="sticky top-0 z-10 bg-white border-b border-gray-200">
+          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4">
+            <div className="flex items-center justify-between">
+              <Link
+                to="/results"
+                className="flex items-center px-3 py-2 text-gray-600 hover:text-gray-900 hover:bg-gray-100 rounded-lg transition-colors"
+              >
+                <ArrowLeft className="w-4 h-4 mr-2" />
+                Back to Results
+              </Link>
+              <div className="flex items-center space-x-3">
+                <div className="w-8 h-8 bg-green-100 rounded-lg flex items-center justify-center">
+                  <CheckCircle className="w-4 h-4 text-green-600" />
+                </div>
+                <h1 className="text-lg font-semibold text-gray-900">Your Plan</h1>
+              </div>
+              <div className="w-16"></div>
+            </div>
           </div>
-          <h2 className="text-3xl font-bold text-slate-900 mb-4">No plan created yet</h2>
-          <p className="text-slate-600 mb-8 leading-relaxed">
-            Start by creating a vibe and selecting some recommendations to build your perfect day.
-          </p>
-          <div className="space-y-4">
-            <Link
-              to="/create-plan"
-              className="block w-full px-6 py-4 bg-gradient-to-r from-blue-600 to-purple-600 text-white font-semibold rounded-xl hover:from-blue-700 hover:to-purple-700 transition-all duration-200 shadow-lg hover:shadow-xl"
-            >
-              Create Your Plan
-            </Link>
-            <Link
-              to="/results"
-              className="block w-full px-6 py-4 bg-white text-slate-700 font-semibold rounded-xl border-2 border-slate-200 hover:border-slate-300 transition-all duration-200"
-            >
-              Back to Results
-            </Link>
+        </div>
+
+        {/* Empty State */}
+        <div className="flex items-center justify-center min-h-[calc(100vh-80px)]">
+          <div className="text-center max-w-md mx-auto px-6">
+            <div className="w-20 h-20 bg-white rounded-full flex items-center justify-center mx-auto mb-6 shadow-sm">
+              <Calendar className="w-10 h-10 text-gray-400" />
+            </div>
+            <h2 className="text-2xl font-semibold text-gray-900 mb-4">No plan created yet</h2>
+            <p className="text-gray-600 mb-8 leading-relaxed">
+              Start by creating a vibe and selecting some recommendations to build your perfect day.
+            </p>
+            <div className="space-y-3">
+              <Link
+                to="/create-plan"
+                className="block w-full px-6 py-3 bg-blue-600 text-white font-medium rounded-lg hover:bg-blue-700 transition-colors shadow-sm"
+              >
+                Create Your Plan
+              </Link>
+              <Link
+                to="/results"
+                className="block w-full px-6 py-3 bg-white text-gray-700 font-medium rounded-lg border border-gray-300 hover:bg-gray-50 transition-colors"
+              >
+                Back to Results
+              </Link>
+            </div>
           </div>
         </div>
       </div>
@@ -140,195 +222,395 @@ const Plan: React.FC = () => {
     other: 'Other'
   };
 
+  const totalDuration = dayPlan.reduce((sum, slot) => sum + (slot.duration || 90), 0);
+
   return (
-    <div className="min-h-screen bg-slate-50">
-      {/* Header Section */}
-      <section className="bg-white border-b border-slate-200">
-        <div className="container-custom py-8 lg:py-12">
-          <div className="max-w-4xl mx-auto">
-            {/* Back Button */}
-            <div className="mb-8">
-              <Link
-                to="/results"
-                className="inline-flex items-center text-slate-600 hover:text-slate-900 transition-colors group"
-              >
-                <ArrowLeft className="w-4 h-4 mr-2 group-hover:-translate-x-1 transition-transform" />
-                Back to Results
-              </Link>
-            </div>
-
-            {/* Header */}
-            <div className="text-center mb-8">
-              <div className="flex items-center justify-center space-x-3 mb-4">
-                <div className="w-12 h-12 bg-gradient-to-r from-green-600 to-emerald-600 rounded-xl flex items-center justify-center shadow-lg">
-                  <CheckCircle className="w-6 h-6 text-white" />
-                </div>
-                <h1 className="text-3xl lg:text-4xl font-bold text-slate-900">
-                  Your Perfect Day Plan
-                </h1>
+    <div className="min-h-screen bg-gray-50">
+      {/* Header */}
+      <div className="sticky top-0 z-10 bg-white border-b border-gray-200">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4">
+          <div className="flex items-center justify-between">
+            <Link
+              to="/results"
+              className="flex items-center px-3 py-2 text-gray-600 hover:text-gray-900 hover:bg-gray-100 rounded-lg transition-colors"
+            >
+              <ArrowLeft className="w-4 h-4 mr-2" />
+              Back to Results
+            </Link>
+            <div className="flex items-center space-x-3">
+              <div className="w-8 h-8 bg-green-100 rounded-lg flex items-center justify-center">
+                <CheckCircle className="w-4 h-4 text-green-600" />
               </div>
-              
-              <div className="flex items-center justify-center space-x-6 text-slate-600 mb-6">
-                <div className="flex items-center space-x-2">
-                  <MapPin className="w-4 h-4" />
-                  <span className="font-medium">{currentCity?.name}</span>
-                </div>
-                <div className="flex items-center space-x-2">
-                  <Sparkles className="w-4 h-4" />
-                  <span>{selectedItems.length} recommendations</span>
-                </div>
+              <div>
+                <h1 className="text-lg font-semibold text-gray-900">Your Perfect Day Plan</h1>
+                <p className="text-sm text-gray-500">{currentCity?.name} • {selectedItems.length} items</p>
               </div>
-
-              {vibeInput && (
-                <div className="inline-flex items-center space-x-2 px-4 py-2 bg-blue-50 border border-blue-200 rounded-lg">
-                  <span className="text-sm text-blue-800">
-                    <span className="font-medium">Your vibe:</span> "{vibeInput}"
-                  </span>
-                </div>
-              )}
             </div>
-
-            {/* Action Buttons */}
-            <div className="flex flex-col sm:flex-row gap-4 justify-center">
-              <button
-                onClick={handleShare}
-                className="group inline-flex items-center justify-center px-6 py-3 bg-blue-600 text-white font-semibold rounded-lg hover:bg-blue-700 transition-all duration-200 shadow-lg hover:shadow-xl"
-              >
-                <Share2 className="w-5 h-5 mr-2 group-hover:scale-110 transition-transform" />
-                Share Plan
-              </button>
-              
-              <button
-                onClick={handleExport}
-                disabled={isExporting}
-                className="group inline-flex items-center justify-center px-6 py-3 bg-green-600 text-white font-semibold rounded-lg hover:bg-green-700 transition-all duration-200 shadow-lg hover:shadow-xl disabled:opacity-50"
-              >
-                {isExporting ? (
-                  <>
-                    <div className="animate-spin w-5 h-5 border-2 border-white/30 border-t-white rounded-full mr-2"></div>
-                    Exporting...
-                  </>
-                ) : (
-                  <>
-                    <Download className="w-5 h-5 mr-2 group-hover:scale-110 transition-transform" />
-                    Export Plan
-                  </>
-                )}
-              </button>
-
-              <Link
-                to="/results"
-                className="group inline-flex items-center justify-center px-6 py-3 bg-white text-slate-700 font-semibold rounded-lg border-2 border-slate-200 hover:border-slate-300 transition-all duration-200"
-              >
-                <Plus className="w-5 h-5 mr-2 group-hover:rotate-90 transition-transform" />
-                Add More
-              </Link>
-            </div>
-
-            {exportSuccess && (
-              <motion.div
-                initial={{ opacity: 0, y: 10 }}
-                animate={{ opacity: 1, y: 0 }}
-                className="mt-4 p-4 bg-green-50 border border-green-200 rounded-lg text-center"
-              >
-                <p className="text-green-800 font-medium">
-                  ✅ Plan exported successfully!
-                </p>
-              </motion.div>
-            )}
+                         <div className="flex items-center space-x-2">
+               <button
+                 onClick={handleShare}
+                 className="px-3 py-2 text-gray-600 hover:text-gray-900 hover:bg-gray-100 rounded-lg transition-colors"
+                 title="Share plan"
+               >
+                 <Share2 className="w-4 h-4" />
+               </button>
+               <button
+                 onClick={handleExport}
+                 disabled={isExporting}
+                 className="px-3 py-2 text-gray-600 hover:text-gray-900 hover:bg-gray-100 rounded-lg transition-colors disabled:opacity-50"
+                 title="Quick export"
+               >
+                 {isExporting ? (
+                   <div className="animate-spin w-4 h-4 border-2 border-gray-300 border-t-gray-600 rounded-full"></div>
+                 ) : (
+                   <Download className="w-4 h-4" />
+                 )}
+               </button>
+               <Link
+                 to="/export"
+                 className="px-3 py-2 text-blue-600 hover:text-blue-700 hover:bg-blue-50 rounded-lg transition-colors"
+                 title="More export options"
+               >
+                 <ExternalLink className="w-4 h-4" />
+               </Link>
+             </div>
           </div>
         </div>
-      </section>
+      </div>
 
-      {/* Plan Content */}
-      <section className="py-12">
-        <div className="container-custom">
-          <div className="max-w-4xl mx-auto">
-            <div className="space-y-8">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+        <div className="max-w-4xl mx-auto">
+          {/* Plan Summary */}
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            className="bg-white rounded-lg shadow-sm border border-gray-200 p-6 mb-8"
+          >
+            <div className="flex items-center justify-between mb-4">
+              <div>
+                <h2 className="text-xl font-semibold text-gray-900 mb-2">Plan Overview</h2>
+                {vibeInput && (
+                  <p className="text-gray-600">
+                    <span className="font-medium">Your vibe:</span> "{vibeInput}"
+                  </p>
+                )}
+              </div>
+              <div className="text-right">
+                <div className="text-2xl font-bold text-blue-600">{selectedItems.length}</div>
+                <div className="text-sm text-gray-500">recommendations</div>
+              </div>
+            </div>
+            
+            <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+              <div className="text-center p-3 bg-gray-50 rounded-lg">
+                <Clock className="w-5 h-5 text-gray-600 mx-auto mb-1" />
+                <div className="text-sm font-medium text-gray-900">
+                  {Math.round(totalDuration / 60)}h {totalDuration % 60}m
+                </div>
+                <div className="text-xs text-gray-500">Total time</div>
+              </div>
+              <div className="text-center p-3 bg-gray-50 rounded-lg">
+                <MapPin className="w-5 h-5 text-gray-600 mx-auto mb-1" />
+                <div className="text-sm font-medium text-gray-900">{currentCity?.name}</div>
+                <div className="text-xs text-gray-500">Location</div>
+              </div>
+              <div className="text-center p-3 bg-gray-50 rounded-lg">
+                <Sparkles className="w-5 h-5 text-gray-600 mx-auto mb-1" />
+                <div className="text-sm font-medium text-gray-900">
+                  {Object.keys(categoryGroups).length}
+                </div>
+                <div className="text-xs text-gray-500">Categories</div>
+              </div>
+              <div className="text-center p-3 bg-gray-50 rounded-lg">
+                <Zap className="w-5 h-5 text-gray-600 mx-auto mb-1" />
+                <div className="text-sm font-medium text-gray-900">AI Planned</div>
+                <div className="text-xs text-gray-500">Optimized</div>
+              </div>
+            </div>
+          </motion.div>
+
+          {/* View Toggle */}
+          {dayPlan.length > 0 && (
+            <div className="flex items-center justify-between mb-6">
+              <div className="flex bg-gray-100 rounded-lg p-1">
+                <button
+                  onClick={() => setViewMode('schedule')}
+                  className={`px-4 py-2 rounded-md text-sm font-medium transition-colors ${
+                    viewMode === 'schedule'
+                      ? 'bg-white text-gray-900 shadow-sm'
+                      : 'text-gray-600 hover:text-gray-900'
+                  }`}
+                >
+                  <Clock className="w-4 h-4 mr-2 inline" />
+                  Schedule
+                </button>
+                <button
+                  onClick={() => setViewMode('categories')}
+                  className={`px-4 py-2 rounded-md text-sm font-medium transition-colors ${
+                    viewMode === 'categories'
+                      ? 'bg-white text-gray-900 shadow-sm'
+                      : 'text-gray-600 hover:text-gray-900'
+                  }`}
+                >
+                  <Sparkles className="w-4 h-4 mr-2 inline" />
+                  Categories
+                </button>
+              </div>
+              
+              <div className="flex items-center space-x-2">
+                <button
+                  onClick={handleRegeneratePlan}
+                  disabled={isDayPlanBuilding}
+                  className="px-3 py-2 text-sm font-medium text-gray-600 hover:text-gray-900 hover:bg-gray-100 rounded-lg transition-colors disabled:opacity-50"
+                >
+                  {isDayPlanBuilding ? (
+                    <>
+                      <div className="animate-spin w-4 h-4 border-2 border-gray-300 border-t-gray-600 rounded-full mr-2 inline"></div>
+                      Replanning...
+                    </>
+                  ) : (
+                    <>
+                      <Zap className="w-4 h-4 mr-2 inline" />
+                      Replan with AI
+                    </>
+                  )}
+                </button>
+                <Link
+                  to="/results"
+                  className="px-3 py-2 text-sm font-medium text-blue-600 hover:text-blue-700 hover:bg-blue-50 rounded-lg transition-colors"
+                >
+                  <Plus className="w-4 h-4 mr-2 inline" />
+                  Add More
+                </Link>
+              </div>
+            </div>
+          )}
+
+          {/* AI Day Plan Building */}
+          {isDayPlanBuilding && (
+            <motion.div
+              initial={{ opacity: 0, scale: 0.95 }}
+              animate={{ opacity: 1, scale: 1 }}
+              className="bg-gradient-to-br from-blue-50 to-purple-50 rounded-lg shadow-sm border border-blue-200 p-8 text-center mb-8"
+            >
+              <div className="flex items-center justify-center space-x-3 mb-6">
+                <div className="relative">
+                  <div className="animate-spin w-8 h-8 border-3 border-blue-200 border-t-blue-600 rounded-full"></div>
+                  <div className="absolute inset-0 animate-ping w-8 h-8 border border-blue-400 rounded-full opacity-20"></div>
+                </div>
+                <Sparkles className="w-6 h-6 text-purple-600 animate-pulse" />
+              </div>
+              
+              <h3 className="text-xl font-bold text-gray-900 mb-3">🤖 AI is Planning Your Perfect Day</h3>
+              
+              <div className="space-y-2 mb-6">
+                <p className="text-gray-700 font-medium">Analyzing your {selectedItems.length} selected items...</p>
+                <div className="flex justify-center items-center space-x-4 text-sm text-gray-600">
+                  <span className="flex items-center space-x-1">
+                    <Clock className="w-4 h-4" />
+                    <span>Optimizing timing</span>
+                  </span>
+                  <span className="flex items-center space-x-1">
+                    <MapPin className="w-4 h-4" />
+                    <span>Minimizing travel</span>
+                  </span>
+                  <span className="flex items-center space-x-1">
+                    <Zap className="w-4 h-4" />
+                    <span>Maximizing flow</span>
+                  </span>
+                </div>
+              </div>
+              
+              {/* Progress indicator */}
+              <div className="w-full bg-gray-200 rounded-full h-2 mb-4">
+                <div className="bg-gradient-to-r from-blue-600 to-purple-600 h-2 rounded-full animate-pulse" style={{width: '70%'}}></div>
+              </div>
+              
+              <p className="text-sm text-gray-500">This usually takes 5-10 seconds...</p>
+            </motion.div>
+          )}
+
+          {/* Schedule View */}
+          {viewMode === 'schedule' && dayPlan.length > 0 && (
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              className="space-y-4"
+            >
+                             {dayPlan.map((timeSlot, index) => {
+                 const PeriodIcon = getPeriodIcon(timeSlot);
+                 return (
+                   <motion.div
+                     key={`${timeSlot.id}-${index}`}
+                     initial={{ opacity: 0, x: -20 }}
+                     animate={{ opacity: 1, x: 0 }}
+                     transition={{ delay: index * 0.1 }}
+                     className="bg-white rounded-lg shadow-sm border border-gray-200 overflow-hidden"
+                   >
+                    <div className="p-6">
+                      <div className="flex items-start space-x-4">
+                        {/* Time */}
+                        <div className="flex-shrink-0 text-center">
+                          <div className={`w-12 h-12 rounded-full flex items-center justify-center ${getPeriodColor(timeSlot)}`}>
+                            <PeriodIcon className="w-5 h-5" />
+                          </div>
+                          <div className="mt-2">
+                            <div className="text-sm font-semibold text-gray-900">{timeSlot.time}</div>
+                            <div className="text-xs text-gray-500">{timeSlot.name}</div>
+                          </div>
+                        </div>
+                        
+                        {/* Activity */}
+                        <div className="flex-1">
+                          {timeSlot.item ? (
+                            <div>
+                              <div className="flex items-center space-x-2 mb-2">
+                                <span className="text-lg">{getCategoryIcon(timeSlot.item.category)}</span>
+                                <h3 className="text-lg font-semibold text-gray-900">{timeSlot.item.name}</h3>
+                              </div>
+                              
+                              <div className="flex items-center space-x-4 text-sm text-gray-600 mb-3">
+                                <span className="capitalize font-medium">{timeSlot.item.category}</span>
+                                <span>•</span>
+                                <span className="flex items-center">
+                                  <Timer className="w-3 h-3 mr-1" />
+                                  {timeSlot.duration || 90} min
+                                </span>
+                                {timeSlot.item.location && (
+                                  <>
+                                    <span>•</span>
+                                    <span className="flex items-center">
+                                      <MapPin className="w-3 h-3 mr-1" />
+                                      {timeSlot.item.location}
+                                    </span>
+                                  </>
+                                )}
+                              </div>
+                              
+                              {timeSlot.reasoning && (
+                                <div className="bg-blue-50 border border-blue-200 rounded-lg p-3 mb-3">
+                                  <p className="text-sm text-blue-800">
+                                    <strong>Why now:</strong> {timeSlot.reasoning}
+                                  </p>
+                                </div>
+                              )}
+                              
+                              {timeSlot.item.description && (
+                                <p className="text-gray-600 text-sm mb-3">{timeSlot.item.description}</p>
+                              )}
+                            </div>
+                          ) : (
+                            <div>
+                              <h3 className="text-lg font-semibold text-gray-900 mb-2">Free Time</h3>
+                              <p className="text-gray-600 text-sm">Enjoy some flexibility in your schedule</p>
+                            </div>
+                          )}
+                        </div>
+                        
+                        {/* Actions */}
+                        {timeSlot.item && (
+                          <div className="flex-shrink-0 flex items-center space-x-2">
+                            <button
+                              onClick={() => removeFromSelectedItems(timeSlot.item!.id)}
+                              className="p-2 text-gray-400 hover:text-red-600 hover:bg-red-50 rounded-lg transition-colors"
+                              title="Remove from plan"
+                            >
+                              <Trash2 className="w-4 h-4" />
+                            </button>
+                            {timeSlot.item.externalUrl && (
+                              <a
+                                href={timeSlot.item.externalUrl}
+                                target="_blank"
+                                rel="noopener noreferrer"
+                                className="p-2 text-gray-400 hover:text-blue-600 hover:bg-blue-50 rounded-lg transition-colors"
+                                title="View details"
+                              >
+                                <ExternalLink className="w-4 h-4" />
+                              </a>
+                            )}
+                          </div>
+                        )}
+                      </div>
+                    </div>
+                  </motion.div>
+                );
+              })}
+            </motion.div>
+          )}
+
+          {/* Category View */}
+          {viewMode === 'categories' && (
+            <div className="space-y-6">
               {Object.entries(categoryGroups).map(([category, items]) => (
                 <motion.div
                   key={category}
                   initial={{ opacity: 0, y: 20 }}
                   animate={{ opacity: 1, y: 0 }}
-                  className="bg-white rounded-2xl border border-slate-200 shadow-lg overflow-hidden"
+                  className="bg-white rounded-lg shadow-sm border border-gray-200 overflow-hidden"
                 >
                   {/* Category Header */}
-                  <div className={`bg-gradient-to-r ${getCategoryColor(category)} p-6`}>
+                  <div className={`bg-gradient-to-r ${getCategoryColor(category)} p-4`}>
                     <div className="flex items-center space-x-3">
-                      <div className="text-2xl">
+                      <div className="text-xl">
                         {getCategoryIcon(category)}
                       </div>
                       <div>
-                        <h2 className="text-xl font-bold text-white">
+                        <h2 className="text-lg font-semibold text-white">
                           {categoryNames[category] || category}
                         </h2>
                         <p className="text-white/80 text-sm">
-                          {items.length} {items.length === 1 ? 'recommendation' : 'recommendations'}
+                          {items.length} {items.length === 1 ? 'item' : 'items'}
                         </p>
                       </div>
                     </div>
                   </div>
 
                   {/* Items */}
-                  <div className="p-6">
-                    <div className="space-y-4">
+                  <div className="p-4">
+                    <div className="space-y-3">
                       {items.map((item, index) => (
                         <motion.div
                           key={item.id}
                           initial={{ opacity: 0, x: -20 }}
                           animate={{ opacity: 1, x: 0 }}
-                          transition={{ delay: index * 0.1 }}
-                          className="group relative p-4 bg-slate-50 rounded-xl border border-slate-200 hover:border-slate-300 hover:shadow-md transition-all duration-200"
+                          transition={{ delay: index * 0.05 }}
+                          className="p-4 bg-gray-50 rounded-lg border border-gray-200 hover:border-gray-300 transition-colors"
                         >
                           <div className="flex items-start justify-between">
                             <div className="flex-1">
-                              <div className="flex items-start space-x-3">
-                                <div className="flex-1">
-                                  <h3 className="font-semibold text-slate-900 text-lg mb-2">
-                                    {item.name}
-                                  </h3>
-                                  
-                                  {item.description && (
-                                    <p className="text-slate-600 mb-3 leading-relaxed">
-                                      {item.description}
-                                    </p>
-                                  )}
+                              <h3 className="font-semibold text-gray-900 mb-1">{item.name}</h3>
+                              
+                              {item.description && (
+                                <p className="text-gray-600 text-sm mb-2">{item.description}</p>
+                              )}
 
-                                  <div className="flex items-center flex-wrap gap-4 text-sm text-slate-500">
-                                    {item.location && (
-                                      <div className="flex items-center space-x-1">
-                                        <MapPin className="w-4 h-4" />
-                                        <span>{item.location}</span>
-                                      </div>
-                                    )}
-                                    
-                                    <div className="flex items-center space-x-1">
-                                      <Star className="w-4 h-4 text-yellow-500 fill-current" />
-                                      <span className="font-medium">
-                                        {Math.round(item.tasteStrength * 100)}% match
-                                      </span>
-                                    </div>
-                                  </div>
-
-                                  {item.whyItFits && (
-                                    <div className="mt-3 p-3 bg-blue-50 border border-blue-200 rounded-lg">
-                                      <p className="text-sm text-blue-800">
-                                        <span className="font-medium">Why it fits:</span> {item.whyItFits}
-                                      </p>
-                                    </div>
-                                  )}
-                                </div>
+                              <div className="flex items-center space-x-4 text-xs text-gray-500">
+                                {item.location && (
+                                  <span className="flex items-center">
+                                    <MapPin className="w-3 h-3 mr-1" />
+                                    {item.location}
+                                  </span>
+                                )}
+                                <span className="flex items-center">
+                                  <Star className="w-3 h-3 mr-1 text-yellow-500 fill-current" />
+                                  {Math.round(item.tasteStrength * 100)}% match
+                                </span>
                               </div>
+
+                              {item.whyItFits && (
+                                <div className="mt-2 p-2 bg-blue-50 border border-blue-200 rounded text-xs text-blue-800">
+                                  <strong>Why it fits:</strong> {item.whyItFits}
+                                </div>
+                              )}
                             </div>
 
-                            {/* Action Buttons */}
-                            <div className="flex items-center space-x-2 ml-4">
+                            <div className="flex items-center space-x-1 ml-4">
                               <button
                                 onClick={() => removeFromSelectedItems(item.id)}
-                                className="p-2 text-slate-400 hover:text-red-600 hover:bg-red-50 rounded-lg transition-all duration-200"
-                                title="Remove from plan"
+                                className="p-1.5 text-gray-400 hover:text-red-600 hover:bg-red-50 rounded transition-colors"
+                                title="Remove"
                               >
-                                <Trash2 className="w-4 h-4" />
+                                <Trash2 className="w-3 h-3" />
                               </button>
                               
                               {item.externalUrl && (
@@ -336,10 +618,10 @@ const Plan: React.FC = () => {
                                   href={item.externalUrl}
                                   target="_blank"
                                   rel="noopener noreferrer"
-                                  className="p-2 text-slate-400 hover:text-blue-600 hover:bg-blue-50 rounded-lg transition-all duration-200"
+                                  className="p-1.5 text-gray-400 hover:text-blue-600 hover:bg-blue-50 rounded transition-colors"
                                   title="View details"
                                 >
-                                  <ExternalLink className="w-4 h-4" />
+                                  <ExternalLink className="w-3 h-3" />
                                 </a>
                               )}
                             </div>
@@ -351,43 +633,20 @@ const Plan: React.FC = () => {
                 </motion.div>
               ))}
             </div>
+          )}
 
-            {/* Summary */}
+          {/* Success Message */}
+          {exportSuccess && (
             <motion.div
-              initial={{ opacity: 0, y: 20 }}
+              initial={{ opacity: 0, y: 10 }}
               animate={{ opacity: 1, y: 0 }}
-              transition={{ delay: 0.4 }}
-              className="mt-12 bg-gradient-to-r from-blue-50 to-purple-50 rounded-2xl border border-slate-200 p-8 text-center"
+              className="fixed bottom-4 right-4 bg-green-600 text-white px-4 py-2 rounded-lg shadow-lg"
             >
-              <div className="max-w-2xl mx-auto">
-                <h3 className="text-2xl font-bold text-slate-900 mb-4">
-                  Your Perfect Day Awaits! 🎉
-                </h3>
-                <p className="text-slate-600 leading-relaxed mb-6">
-                  You've curated {selectedItems.length} amazing recommendations across{' '}
-                  {Object.keys(categoryGroups).length} categories. Ready to make some memories?
-                </p>
-                <div className="flex flex-col sm:flex-row gap-4 justify-center">
-                  <Link
-                    to="/results"
-                    className="inline-flex items-center px-6 py-3 bg-blue-600 text-white font-semibold rounded-lg hover:bg-blue-700 transition-all duration-200 shadow-lg hover:shadow-xl"
-                  >
-                    <Plus className="w-5 h-5 mr-2" />
-                    Add More Items
-                  </Link>
-                  <Link
-                    to="/create-plan"
-                    className="inline-flex items-center px-6 py-3 bg-white text-slate-700 font-semibold rounded-lg border-2 border-slate-200 hover:border-slate-300 transition-all duration-200"
-                  >
-                    <Sparkles className="w-5 h-5 mr-2" />
-                    Create New Plan
-                  </Link>
-                </div>
-              </div>
+              ✅ Plan exported successfully!
             </motion.div>
-          </div>
+          )}
         </div>
-      </section>
+      </div>
     </div>
   );
 };
