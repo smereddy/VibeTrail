@@ -94,11 +94,11 @@ ehthumbs.db
 Thumbs.db
 
 # Test outputs and reports
-tests/reports/*.json
-tests/test-results/
-tests/playwright-report/
 test-results/
 playwright-report/
+tests/reports/
+tests/test-results/
+tests/playwright-report/
 
 # Debug and analysis files
 *-analysis-report-*.json
