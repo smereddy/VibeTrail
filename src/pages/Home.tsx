@@ -150,19 +150,7 @@ const Home: React.FC = () => {
               ))}
             </motion.div>
 
-            {/* Powered by Qloo - Repositioned to bottom right */}
-            <motion.div
-              initial={{ opacity: 0, scale: 0.9 }}
-              animate={{ opacity: 1, scale: 1 }}
-              transition={{ duration: 0.6, delay: 1.4 }}
-              className="flex justify-end"
-            >
-              <div className="inline-flex items-center bg-black/20 backdrop-blur-md rounded-full px-4 py-2 border border-white/20">
-                <span className="text-white/80 text-sm font-medium mr-2">Powered by</span>
-                <span className="text-xl font-bold text-white">Qloo</span>
-                <span className="text-xs text-white/70 ml-1">Taste AI</span>
-              </div>
-            </motion.div>
+
           </div>
         </div>
       </section>
