@@ -42,72 +42,149 @@ const Home: React.FC = () => {
 
   return (
     <div className="min-h-screen bg-white">
-      {/* Hero Section */}
-      <section className="relative bg-gradient-to-br from-blue-600 via-purple-600 to-blue-800 min-h-screen flex items-center">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-20">
+      {/* Hero Section with City Skyline */}
+      <section className="relative bg-gradient-to-br from-orange-400 via-pink-500 to-red-500 min-h-screen flex items-center overflow-hidden">
+        {/* City Skyline Background */}
+        <div className="absolute bottom-0 left-0 right-0 h-64 opacity-20">
+          <svg viewBox="0 0 1200 300" className="w-full h-full" preserveAspectRatio="none">
+            {/* City Buildings Silhouette */}
+            <rect x="0" y="180" width="80" height="120" fill="currentColor" className="text-black" />
+            <rect x="80" y="160" width="60" height="140" fill="currentColor" className="text-black" />
+            <rect x="140" y="200" width="40" height="100" fill="currentColor" className="text-black" />
+            <rect x="180" y="140" width="70" height="160" fill="currentColor" className="text-black" />
+            <rect x="250" y="120" width="90" height="180" fill="currentColor" className="text-black" />
+            <rect x="340" y="170" width="50" height="130" fill="currentColor" className="text-black" />
+            <rect x="390" y="100" width="80" height="200" fill="currentColor" className="text-black" />
+            <rect x="470" y="150" width="60" height="150" fill="currentColor" className="text-black" />
+            <rect x="530" y="90" width="100" height="210" fill="currentColor" className="text-black" />
+            <rect x="630" y="160" width="70" height="140" fill="currentColor" className="text-black" />
+            <rect x="700" y="130" width="80" height="170" fill="currentColor" className="text-black" />
+            <rect x="780" y="180" width="50" height="120" fill="currentColor" className="text-black" />
+            <rect x="830" y="110" width="90" height="190" fill="currentColor" className="text-black" />
+            <rect x="920" y="170" width="60" height="130" fill="currentColor" className="text-black" />
+            <rect x="980" y="140" width="75" height="160" fill="currentColor" className="text-black" />
+            <rect x="1055" y="190" width="55" height="110" fill="currentColor" className="text-black" />
+            <rect x="1110" y="160" width="90" height="140" fill="currentColor" className="text-black" />
+            
+            {/* Palm Trees */}
+            <g className="text-black" fill="currentColor">
+              <rect x="200" y="240" width="8" height="60" />
+              <ellipse cx="204" cy="235" rx="25" ry="15" />
+              <rect x="450" y="250" width="6" height="50" />
+              <ellipse cx="453" cy="245" rx="20" ry="12" />
+              <rect x="750" y="245" width="8" height="55" />
+              <ellipse cx="754" cy="240" rx="22" ry="14" />
+              <rect x="1000" y="255" width="6" height="45" />
+              <ellipse cx="1003" cy="250" rx="18" ry="10" />
+            </g>
+          </svg>
+        </div>
+
+        {/* Gradient Overlay */}
+        <div className="absolute inset-0 bg-gradient-to-t from-black/10 via-transparent to-transparent"></div>
+
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-20 relative z-10">
           <div className="max-w-6xl mx-auto">
             {/* Main Content */}
             <motion.div
               initial={{ opacity: 0, y: 30 }}
               animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 1, ease: "easeOut" }}
+              transition={{ duration: 0.8 }}
               className="text-center mb-16"
             >
-              <h1 className="text-5xl md:text-7xl font-bold text-white mb-8 leading-tight">
-                Your perfect day,
-                <span className="bg-gradient-to-r from-cyan-400 via-blue-400 to-purple-400 bg-clip-text text-transparent">
-                  {" "}planned in seconds
-                </span>
-              </h1>
-              <p className="text-xl md:text-2xl text-white/90 leading-relaxed max-w-4xl mx-auto mb-12">
-                AI-powered cultural intelligence that understands your vibe and creates 
-                personalized experiences across food, activities, and entertainment.
-              </p>
-              
-              {/* CTA Buttons */}
-              <div className="flex flex-col sm:flex-row gap-4 justify-center items-center mb-16">
+              {/* Logo/Brand */}
+              <motion.div
+                initial={{ opacity: 0, scale: 0.9 }}
+                animate={{ opacity: 1, scale: 1 }}
+                transition={{ duration: 0.6, delay: 0.2 }}
+                className="mb-8"
+              >
+                <h1 className="text-7xl md:text-8xl lg:text-9xl font-bold text-white mb-4 tracking-tight">
+                  vibetrail
+                </h1>
+                <p className="text-xl md:text-2xl text-white/90 font-light tracking-wide">
+                  Privacy-first recommendations
+                </p>
+              </motion.div>
+
+              {/* Category Tabs */}
+              <motion.div
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.6, delay: 0.4 }}
+                className="bg-white/95 backdrop-blur-sm rounded-2xl p-4 mb-12 inline-flex items-center space-x-8 shadow-2xl"
+              >
+                <div className="flex items-center space-x-3 px-6 py-3 bg-white rounded-xl shadow-sm">
+                  <span className="text-2xl">🍴</span>
+                  <span className="text-lg font-medium text-gray-800">Food</span>
+                </div>
+                <div className="flex items-center space-x-3 px-6 py-3 hover:bg-white/50 rounded-xl transition-colors">
+                  <MapPin className="w-6 h-6 text-gray-600" />
+                  <span className="text-lg font-medium text-gray-700">Things To Do</span>
+                </div>
+                <div className="flex items-center space-x-3 px-6 py-3 hover:bg-white/50 rounded-xl transition-colors">
+                  <Star className="w-6 h-6 text-gray-600" />
+                  <span className="text-lg font-medium text-gray-700">Media</span>
+                </div>
+                <div className="flex items-center space-x-3 px-6 py-3 hover:bg-white/50 rounded-xl transition-colors">
+                  <Sparkles className="w-6 h-6 text-gray-600" />
+                  <span className="text-lg font-medium text-gray-700">More</span>
+                </div>
+              </motion.div>
+
+              {/* Powered by Qloo */}
+              <motion.div
+                initial={{ opacity: 0, scale: 0.9 }}
+                animate={{ opacity: 1, scale: 1 }}
+                transition={{ duration: 0.6, delay: 0.6 }}
+                className="inline-flex items-center bg-white/90 backdrop-blur-sm rounded-full px-6 py-3 shadow-lg mb-12"
+              >
+                <span className="text-gray-700 text-sm font-medium mr-2">Powered by</span>
+                <span className="text-2xl font-bold text-gray-800">Qloo</span>
+                <span className="text-sm text-gray-600 ml-1">Taste AI</span>
+              </motion.div>
+
+              {/* CTA Button */}
+              <motion.div
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.6, delay: 0.8 }}
+              >
                 <Link
                   to="/create-plan"
-                  className="group relative px-8 py-4 bg-white text-blue-600 rounded-lg font-semibold text-lg hover:bg-gray-50 transition-all duration-300 shadow-lg hover:shadow-xl hover:scale-105"
+                  className="inline-flex items-center bg-white text-orange-500 px-8 py-4 rounded-full text-lg font-semibold hover:bg-white/90 transition-all duration-300 shadow-2xl hover:shadow-3xl transform hover:scale-105"
                 >
-                  <span className="relative z-10 flex items-center">
-                    Start Your Journey
-                    <ArrowRight className="ml-2 w-5 h-5 group-hover:translate-x-1 transition-transform" />
-                  </span>
+                  Start Your Vibe Journey
+                  <ArrowRight className="ml-2 w-5 h-5" />
                 </Link>
-                <Link
-                  to="/how-it-works"
-                  className="group px-8 py-4 bg-white/10 backdrop-blur-md border border-white/20 rounded-lg font-semibold text-white text-lg hover:bg-white/20 transition-all duration-300"
-                >
-                  See How It Works
-                </Link>
-              </div>
+              </motion.div>
             </motion.div>
 
-            {/* Stats */}
+            {/* Quick Start Options */}
             <motion.div
-              initial={{ opacity: 0, y: 40 }}
+              initial={{ opacity: 0, y: 30 }}
               animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 1, delay: 0.3 }}
-              className="grid grid-cols-1 md:grid-cols-3 gap-6 max-w-4xl mx-auto"
+              transition={{ duration: 0.8, delay: 1 }}
+              className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 mb-16"
             >
-              {stats.map((stat, index) => (
-                <div
-                  key={index}
-                  className="group relative p-6 bg-white/10 backdrop-blur-md border border-white/20 rounded-lg hover:bg-white/15 transition-all duration-300 hover:scale-105"
+              {quickStartOptions.map((option, index) => (
+                <motion.div
+                  key={option.text}
+                  initial={{ opacity: 0, y: 20 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ duration: 0.5, delay: 1.2 + index * 0.1 }}
+                  className="bg-white/10 backdrop-blur-sm border border-white/20 rounded-2xl p-6 hover:bg-white/20 transition-all duration-300 cursor-pointer group"
                 >
-                  <div className="text-center">
-                    <div className="text-3xl md:text-4xl font-bold text-white mb-2">
-                      {stat.number}
-                    </div>
-                    <div className="text-lg font-semibold text-white/90 mb-1">
-                      {stat.label}
-                    </div>
-                    <div className="text-sm text-white/70">
-                      {stat.subtext}
+                  <div className="flex items-center space-x-4">
+                    <div className="text-3xl">{option.icon}</div>
+                    <div>
+                      <h3 className="text-white font-medium text-lg group-hover:text-white/90 transition-colors">
+                        {option.text}
+                      </h3>
+                      <p className="text-white/70 text-sm capitalize">{option.category}</p>
                     </div>
                   </div>
-                </div>
+                </motion.div>
               ))}
             </motion.div>
           </div>
