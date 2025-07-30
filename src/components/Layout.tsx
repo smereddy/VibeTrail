@@ -60,18 +60,17 @@ const Layout: React.FC<LayoutProps> = ({ children }) => {
               ))}
             </nav>
 
-            {/* CTA Button */}
+            {/* Qloo Badge */}
             <div className="hidden md:flex items-center space-x-4">
-              <Link
-                to="/create-plan"
-                className={`px-6 py-2 rounded-lg font-semibold transition-all duration-200 ${
-                  isHomePage 
-                    ? 'bg-white text-blue-600 hover:bg-gray-100 shadow-sm' 
-                    : 'bg-blue-600 text-white hover:bg-blue-700 shadow-sm hover:shadow-md'
-                }`}
-              >
-                Create a plan
-              </Link>
+              <div className={`inline-flex items-center rounded-full px-4 py-2 transition-all duration-200 ${
+                isHomePage 
+                  ? 'bg-white/10 backdrop-blur-sm border border-white/20 text-white' 
+                  : 'bg-gray-100 border border-gray-200 text-gray-800'
+              }`}>
+                <span className="text-sm font-medium mr-2">Powered by</span>
+                <span className="text-lg font-bold">Qloo</span>
+                <span className="text-xs ml-1 opacity-80">Taste AI</span>
+              </div>
             </div>
 
             {/* Mobile Menu Button */}
@@ -112,13 +111,11 @@ const Layout: React.FC<LayoutProps> = ({ children }) => {
                   </Link>
                 ))}
                 <div className="pt-4 border-t border-gray-200">
-                  <Link
-                    to="/create-plan"
-                    onClick={() => setMobileMenuOpen(false)}
-                    className="flex items-center justify-center w-full px-6 py-2 bg-blue-600 text-white font-semibold rounded-lg hover:bg-blue-700 transition-colors"
-                  >
-                    Create a plan
-                  </Link>
+                  <div className="flex items-center justify-center w-full px-4 py-2 bg-gray-100 border border-gray-200 text-gray-800 rounded-lg">
+                    <span className="text-sm font-medium mr-2">Powered by</span>
+                    <span className="text-lg font-bold">Qloo</span>
+                    <span className="text-xs ml-1 opacity-80">Taste AI</span>
+                  </div>
                 </div>
               </nav>
             </div>
