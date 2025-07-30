@@ -42,46 +42,19 @@ const Home: React.FC = () => {
 
   return (
     <div className="min-h-screen bg-white">
-      {/* Hero Section with City Skyline */}
-      <section className="relative bg-gradient-to-br from-orange-400 via-pink-500 to-red-500 min-h-screen flex items-center overflow-hidden">
-        {/* City Skyline Background */}
-        <div className="absolute bottom-0 left-0 right-0 h-64 opacity-20">
-          <svg viewBox="0 0 1200 300" className="w-full h-full" preserveAspectRatio="none">
-            {/* City Buildings Silhouette */}
-            <rect x="0" y="180" width="80" height="120" fill="currentColor" className="text-black" />
-            <rect x="80" y="160" width="60" height="140" fill="currentColor" className="text-black" />
-            <rect x="140" y="200" width="40" height="100" fill="currentColor" className="text-black" />
-            <rect x="180" y="140" width="70" height="160" fill="currentColor" className="text-black" />
-            <rect x="250" y="120" width="90" height="180" fill="currentColor" className="text-black" />
-            <rect x="340" y="170" width="50" height="130" fill="currentColor" className="text-black" />
-            <rect x="390" y="100" width="80" height="200" fill="currentColor" className="text-black" />
-            <rect x="470" y="150" width="60" height="150" fill="currentColor" className="text-black" />
-            <rect x="530" y="90" width="100" height="210" fill="currentColor" className="text-black" />
-            <rect x="630" y="160" width="70" height="140" fill="currentColor" className="text-black" />
-            <rect x="700" y="130" width="80" height="170" fill="currentColor" className="text-black" />
-            <rect x="780" y="180" width="50" height="120" fill="currentColor" className="text-black" />
-            <rect x="830" y="110" width="90" height="190" fill="currentColor" className="text-black" />
-            <rect x="920" y="170" width="60" height="130" fill="currentColor" className="text-black" />
-            <rect x="980" y="140" width="75" height="160" fill="currentColor" className="text-black" />
-            <rect x="1055" y="190" width="55" height="110" fill="currentColor" className="text-black" />
-            <rect x="1110" y="160" width="90" height="140" fill="currentColor" className="text-black" />
-            
-            {/* Palm Trees */}
-            <g className="text-black" fill="currentColor">
-              <rect x="200" y="240" width="8" height="60" />
-              <ellipse cx="204" cy="235" rx="25" ry="15" />
-              <rect x="450" y="250" width="6" height="50" />
-              <ellipse cx="453" cy="245" rx="20" ry="12" />
-              <rect x="750" y="245" width="8" height="55" />
-              <ellipse cx="754" cy="240" rx="22" ry="14" />
-              <rect x="1000" y="255" width="6" height="45" />
-              <ellipse cx="1003" cy="250" rx="18" ry="10" />
-            </g>
-          </svg>
-        </div>
-
-        {/* Gradient Overlay */}
-        <div className="absolute inset-0 bg-gradient-to-t from-black/10 via-transparent to-transparent"></div>
+      {/* Hero Section with Phoenix City Background */}
+      <section className="relative min-h-screen flex items-center overflow-hidden">
+        {/* Phoenix City Background Image */}
+        <div 
+          className="absolute inset-0 bg-cover bg-center bg-no-repeat"
+          style={{
+            backgroundImage: 'url(/phoenix-banner.jpg)',
+          }}
+        />
+        
+        {/* Gradient Overlay to enhance text readability */}
+        <div className="absolute inset-0 bg-gradient-to-br from-orange-500/60 via-pink-500/50 to-purple-600/40"></div>
+        <div className="absolute inset-0 bg-gradient-to-t from-black/30 via-transparent to-transparent"></div>
 
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-20 relative z-10">
           <div className="max-w-6xl mx-auto">
@@ -99,10 +72,10 @@ const Home: React.FC = () => {
                 transition={{ duration: 0.6, delay: 0.2 }}
                 className="mb-8"
               >
-                <h1 className="text-7xl md:text-8xl lg:text-9xl font-bold text-white mb-4 tracking-tight">
+                <h1 className="text-7xl md:text-8xl lg:text-9xl font-bold text-white mb-4 tracking-tight drop-shadow-2xl">
                   vibetrail
                 </h1>
-                <p className="text-xl md:text-2xl text-white/90 font-light tracking-wide">
+                <p className="text-xl md:text-2xl text-white/95 font-light tracking-wide drop-shadow-lg">
                   Privacy-first recommendations
                 </p>
               </motion.div>
@@ -132,23 +105,12 @@ const Home: React.FC = () => {
                 </div>
               </motion.div>
 
-              {/* Powered by Qloo */}
-              <motion.div
-                initial={{ opacity: 0, scale: 0.9 }}
-                animate={{ opacity: 1, scale: 1 }}
-                transition={{ duration: 0.6, delay: 0.6 }}
-                className="inline-flex items-center bg-white/90 backdrop-blur-sm rounded-full px-6 py-3 shadow-lg mb-12"
-              >
-                <span className="text-gray-700 text-sm font-medium mr-2">Powered by</span>
-                <span className="text-2xl font-bold text-gray-800">Qloo</span>
-                <span className="text-sm text-gray-600 ml-1">Taste AI</span>
-              </motion.div>
-
               {/* CTA Button */}
               <motion.div
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.6, delay: 0.8 }}
+                transition={{ duration: 0.6, delay: 0.6 }}
+                className="mb-12"
               >
                 <Link
                   to="/create-plan"
@@ -186,6 +148,20 @@ const Home: React.FC = () => {
                   </div>
                 </motion.div>
               ))}
+            </motion.div>
+
+            {/* Powered by Qloo - Repositioned to bottom right */}
+            <motion.div
+              initial={{ opacity: 0, scale: 0.9 }}
+              animate={{ opacity: 1, scale: 1 }}
+              transition={{ duration: 0.6, delay: 1.4 }}
+              className="flex justify-end"
+            >
+              <div className="inline-flex items-center bg-black/20 backdrop-blur-md rounded-full px-4 py-2 border border-white/20">
+                <span className="text-white/80 text-sm font-medium mr-2">Powered by</span>
+                <span className="text-xl font-bold text-white">Qloo</span>
+                <span className="text-xs text-white/70 ml-1">Taste AI</span>
+              </div>
             </motion.div>
           </div>
         </div>
